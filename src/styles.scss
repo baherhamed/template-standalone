@@ -1,0 +1,390 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import "@angular/material/prebuilt-themes/indigo-pink.css";
+// @import "@angular/material/prebuilt-themes/pink-bluegrey.css";
+// @import "@angular/material/prebuilt-themes/purple-green.css";
+
+@import 'ngx-toastr/toastr';
+
+@font-face {
+  font-family: kofi_droid;
+  src: url(assets/fonts/kofi_droid.ttf);
+}
+
+@media print {
+  .no_print {
+    display: none;
+    visibility: hidden;
+    background: #ffffff;
+  }
+}
+
+html * {
+  font-family: kofi_droid;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+:root {
+  --primary: #673ab7;
+  --text: #0000ff;
+  --border: #1e90ff;
+  --warn: #e67e22;
+  --white: #ffffff;
+  --black: #000000;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 9px;
+  scrollbar-width: thin;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
+
+mat-form-field.mat-mdc-form-field {
+  color: teal !important;
+}
+// mdc-list-item mat-mdc-option-active
+input.mat-mdc-input-element.mat-mdc-form-field-input-control.mdc-text-field__input,
+.mat-mdc-option.mdc-list-item {
+  color: var(--text);
+}
+
+.login-form {
+  width: 50vw;
+  margin: 0 auto;
+  height: 70vh;
+}
+
+.result {
+  width: 90vw;
+  height: 70vh;
+  max-height: 75vh;
+  overflow: auto;
+  margin: 1em auto;
+  padding: 1em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .mat-focused .mat-form-field {
+  /*change color of label*/
+  color: green !important;
+}
+::ng-deep.mat-form-field {
+  /*change color of underline*/
+  background-color: green !important;
+}
+
+::ng-deep.mat-form-field {
+  /*change color of underline when focused*/
+  background-color: green !important;
+}
+
+mat-checkbox,
+mat-mdc-button-ripple {
+  display: inline-flex;
+}
+
+.mat-success {
+  color: #fff !important;
+  background-color: #28a745 !important;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--primary);
+  color: #ffffff;
+  text-align: center;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.status-active {
+  color: #32cd32;
+}
+
+.status-not-active {
+  color: #dc143c;
+}
+
+.mat-warn {
+  color: #fff !important;
+  background-color: #ffc107 !important;
+}
+
+.mat-search {
+  color: #fff !important;
+  background-color: #1e90ff !important;
+}
+
+.mat-edit {
+  color: #fff !important;
+  background-color: #ff8c00 !important;
+}
+
+.mat-info {
+  color: #fff !important;
+  background-color: #17a2b8 !important;
+}
+
+.mat-danger {
+  color: #fff !important;
+  background-color: #dc3545 !important;
+}
+
+.model-header {
+  border-radius: 7px;
+  color: #ffffff;
+  background-color: #673ab7;
+  font-size: large;
+  text-align: center;
+  padding: 0.5em;
+  width: inherit;
+}
+
+.custom-nav-item {
+  color: #fff;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.custom-nav-item:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+.custom-nav-item ood::after {
+  content: ' | ';
+}
+
+.custom-nav-item:last-child::after {
+  display: none;
+}
+
+.actions-buttons {
+  margin: 1rem;
+}
+
+.table-dark {
+  height: 2em;
+}
+
+td > * {
+  color: var(--text);
+}
+
+table {
+  border-radius: 1em;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.mat-icon.view-icon {
+  font-size: 2rem;
+}
+
+.paginiantion {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-add {
+  color: #fff !important;
+  background-color: #32cd32 !important;
+}
+
+.mat-search {
+  color: #fff !important;
+  background-color: #1e90ff !important;
+}
+
+.mat-add-disabled {
+  opacity: 1 !important;
+  font-weight: bold !important;
+  color: black !important;
+}
+
+.mat-search {
+  color: #fff !important;
+  background-color: #1e90ff !important;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.title {
+  margin: 0 auto;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mat-slider {
+  width: 300px;
+}
+
+.active {
+  color: var(--white);
+  background-color: var(--primary);
+  border-radius: 5px;
+  padding: 0px 1px;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+
+a.menu-element {
+  display: block;
+  margin: 1em;
+}
+
+a.menu-element:hover {
+  color: var(--white);
+  background-color: var(--primary);
+  border-radius: 5px;
+  padding: 0px 1px;
+}
+
+fieldset {
+  border: 2px solid var(--border);
+  border-radius: 7px;
+  padding: 0.5em 0.5em;
+  position: relative;
+  margin: 0.5em 0.5em;
+  align-content: center;
+  max-width: 95vw;
+}
+
+.legend {
+  border: 3px solid var(--warn);
+  border-radius: 7px;
+  margin: 0.5em;
+  padding: 0.5em;
+  width: fit-content;
+  text-decoration: underline;
+  font-weight: lighter;
+  font-size: 1rem;
+  background-color: gray;
+  font-weight: bold;
+  color: #ffffff;
+  // color: var(--text);
+}
+
+.legend::after {
+  content: ' : ';
+}
+
+.tooltip {
+  font-size: 11px;
+  color: red !important;
+  background-color: yellow;
+  border: 1px solid black;
+  position: relative;
+  text-align: center;
+}
+
+::placeholder {
+  font-style: italic;
+  font-size: 10px;
+  color: mintcream;
+  padding: 5px;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 576px) {
+  //
+  .login-form {
+    width: 90vw;
+    margin: 0 auto;
+    height: 70vh;
+  }
+}
+
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+  //
+  .login-form {
+    width: 70vw;
+    margin: 0 auto;
+    height: 70vh;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+  //
+  .login-form {
+    width: 70vw;
+    margin: 0 auto;
+    height: 70vh;
+  }
+}
+
+@media only screen and (min-width: 993px) and (max-width: 1200px) {
+  //
+}
+
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {
+  //
+}
+
+@media only screen and (min-width: 1401px) {
+  //
+}

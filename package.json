@@ -1,0 +1,62 @@
+{
+  "name": "template-standalone",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "prettier": "prettier --config .prettierrc \"src/**/*.ts\" --write",
+    "lint": "eslint **/*.ts",
+    "build": "npm run prettier && npm run  lint && ng build",
+    "watch": "ng build --watch --configuration development"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.2.3",
+    "@angular/cdk": "^16.2.2",
+    "@angular/common": "^16.2.3",
+    "@angular/compiler": "^16.2.3",
+    "@angular/core": "^16.2.3",
+    "@angular/forms": "^16.2.3",
+    "@angular/material": "^16.2.1",
+    "@angular/platform-browser": "^16.2.3",
+    "@angular/platform-browser-dynamic": "^16.2.3",
+    "@angular/router": "^16.2.3",
+    "@auth0/angular-jwt": "^5.1.2",
+    "@fortawesome/angular-fontawesome": "^0.13.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
+    "bootstrap": "^5.3.1",
+    "devtools-detect": "^4.0.1",
+    "ngx-toastr": "^17.0.2",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.6.2",
+    "xlsx": "^0.18.5",
+    "zone.js": "~0.13.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.1",
+    "@angular/cli": "~16.2.1",
+    "@angular/compiler-cli": "^16.2.3",
+    "@types/jasmine": "~4.3.5",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "eslint": "^8.48.0",
+    "eslint-config-standard-with-typescript": "^39.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.0.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "jasmine-core": "~5.1.1",
+    "prettier": "^3.0.3",
+    "karma": "~6.4.2",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.1",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/baherhamed/template-standalone.git"
+  }
+}
