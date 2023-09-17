@@ -336,23 +336,23 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-sm-3">
-            <mat-label>{{ 'Forms.Route-Ar' | translate }} </mat-label>
-            <input
-              matInput
-              [(ngModel)]="route.ar"
-              placeholder="{{ 'Forms.Route-Ar' | translate }}"
-              name="search-Route-ar"
-              autocomplete="off"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="col-sm-3">
             <mat-label>{{ 'Forms.Route-En' | translate }} </mat-label>
             <input
               matInput
               [(ngModel)]="route.en"
               placeholder="{{ 'Forms.Route-En' | translate }}"
               name="search-Route-en"
+              autocomplete="off"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-sm-3">
+            <mat-label>{{ 'Forms.Route-Ar' | translate }} </mat-label>
+            <input
+              matInput
+              [(ngModel)]="route.ar"
+              placeholder="{{ 'Forms.Route-Ar' | translate }}"
+              name="search-Route-ar"
               autocomplete="off"
             />
           </mat-form-field>

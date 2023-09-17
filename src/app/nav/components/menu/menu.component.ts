@@ -3,22 +3,25 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ChangePassword } from 'src/app/interfaces';
-import { SetAppNameService, UsersService } from 'src/app/services';
+import {
+  DialogService,
+  NotificationService,
+  SetAppNameService,
+  UsersService,
+} from 'src/app/services';
 
 import {
   site,
   getTokenValue,
   inputsLength,
-  routesNames,  
-  
-  // validateResponse,
+  routesNames,
+  validateResponse,
 } from 'src/app/shared';
 
 @Component({
   selector: 'menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-
 })
 export class MenuComponent {
   userLoggedIn: boolean = false;
@@ -37,10 +40,10 @@ export class MenuComponent {
   };
   title: any;
   constructor(
-    // public dialog: DialogService,
+    public dialog: DialogService,
     public userService: UsersService,
     public translateService: TranslateService,
-    // public notification: NotificationService,
+    public notification: NotificationService,
     public setAppNameService: SetAppNameService,
   ) {
     this.inputsLength = inputsLength;
@@ -103,20 +106,20 @@ export class MenuComponent {
     };
     this.busy = true;
     this.userService.changePassword(newPassData).subscribe(async (res) => {
-      // const response = await validateResponse(res);
-      // if (!response.success || !response.data) {
-        // this.notification.info(response.message);
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        this.notification.info(response.message);
         this.busy = false;
-      // } else {
-        // this.notification.success(response.message);
-      // }
+      }
+      this.notification.success(response.message);
+
       this.busy = false;
     });
   }
 
   showDetails(templateRef: any) {
     this.newPasswordPassword.password = '';
-    // this.dialog.showDetails(templateRef);
+    this.dialog.showDetails(templateRef);
   }
 
   logout() {

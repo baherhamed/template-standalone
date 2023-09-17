@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Gov } from 'src/app/interfaces';
@@ -19,6 +18,7 @@ import {
   validateResponse,
   ResponsePaginationData,
   TokenValues,
+  Pagination,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -31,9 +31,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class GovsComponent implements OnInit {
   responsePaginationData: ResponsePaginationData | undefined;
-  inputsLength: any;
-  site: any;
-  permissionsNames: any;
+  inputsLength: unknown | any;
+  site: unknown | any;
+  permissionsNames: unknown | any;
   actionType: string = '';
   govsList: Gov[] = [];
   busy = false;
@@ -65,19 +65,19 @@ export class GovsComponent implements OnInit {
     this.permissionsNames = permissionsNames;
   }
 
-  displayAdd(templateRef: any) {
+  displayAdd(templateRef: unknown) {
     this.dialog.showAdd(templateRef);
   }
 
-  displayUpdate(templateRef: any) {
+  displayUpdate(templateRef: unknown) {
     this.dialog.showUpdate(templateRef);
   }
 
-  displaySearch(templateRef: any) {
+  displaySearch(templateRef: unknown) {
     this.dialog.showSearch(templateRef);
   }
 
-  showDetails(templateRef: any) {
+  showDetails(templateRef: unknown) {
     this.dialog.showDetails(templateRef);
   }
 
@@ -87,7 +87,7 @@ export class GovsComponent implements OnInit {
     this.getAllGovs();
   }
 
-  async exportDataToExcel(table: any, file: any) {
+  async exportDataToExcel(table: string, file: string) {
     exportToExcel(table, file);
   }
 
@@ -161,7 +161,7 @@ export class GovsComponent implements OnInit {
         this.notification.warning(response.message);
         for await (const item of this.govsList) {
           if (String(item._id) === String(res.data._id)) {
-            this.govsList.forEach((item: any, index: number) => {
+            this.govsList.forEach((item: Gov, index: number) => {
               if (item._id === res.data._id) {
                 this.govsList.splice(index, 1);
               }
@@ -173,7 +173,7 @@ export class GovsComponent implements OnInit {
     }
   }
 
-  searchGov(gov: Gov, pagination?: any) {
+  searchGov(gov: Gov, pagination?: Pagination) {
     const searchData = {
       query: gov,
       page: pagination?.pageIndex,
@@ -203,7 +203,7 @@ export class GovsComponent implements OnInit {
     };
   }
 
-  getAllGovs(pagination?: any) {
+  getAllGovs(pagination?: Pagination) {
     const paginationData = {
       page: pagination?.pageIndex,
       limit: pagination?.pageSize,

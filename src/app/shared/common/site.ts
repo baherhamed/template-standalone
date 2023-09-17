@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 
 import devtools from 'devtools-detect';
 
-export const site = {
+export const site  = {
   companyInfo: {
     address:
       'السنطة ش الجمهورية برج الكمال الدور الثاني بجوار مكتب بريد السنطة فرعي',

@@ -19,6 +19,7 @@ import {
   IResponse,
   ResponsePaginationData,
   TokenValues,
+  Pagination,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -31,8 +32,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class RoutesComponent implements OnInit {
   responsePaginationData: ResponsePaginationData | undefined;
-  inputsLength: any;
-  site: any;
+  inputsLength: unknown | any;
+  site: unknown | any;
   actionType: string = '';
   routesList: Route[] = [];
   busy = false;
@@ -71,19 +72,19 @@ export class RoutesComponent implements OnInit {
     this.site = site;
   }
 
-  displayAdd(templateRef: any) {
+  displayAdd(templateRef: unknown) {
     this.dialog.showAdd(templateRef);
   }
 
-  displayUpdate(templateRef: any) {
+  displayUpdate(templateRef: unknown) {
     this.dialog.showUpdate(templateRef);
   }
 
-  displaySearch(templateRef: any) {
+  displaySearch(templateRef: unknown) {
     this.dialog.showSearch(templateRef);
   }
 
-  showDetails(templateRef: any) {
+  showDetails(templateRef: unknown) {
     this.dialog.showDetails(templateRef);
   }
 
@@ -92,7 +93,7 @@ export class RoutesComponent implements OnInit {
     this.getAllRouts();
   }
 
-  async exportDataToExcel(table: any, file: any) {
+  async exportDataToExcel(table: string, file: string) {
     exportToExcel(table, file);
   }
 
@@ -144,6 +145,7 @@ export class RoutesComponent implements OnInit {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
         this.notification.info(response.message);
+        return;
       }
       this.notification.success(response.message);
       this.routesList.push({
@@ -154,13 +156,12 @@ export class RoutesComponent implements OnInit {
         active: route.active,
         permissionsList: Object(res.data).permissionsList,
       });
-      this.actionType = site.operation.result;
-
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
-  searchRoute(route: Route, pagination?: any) {
+  searchRoute(route: Route, pagination?: Pagination) {
     const searchData = {
       query: route,
       page: pagination?.pageIndex,
@@ -172,13 +173,13 @@ export class RoutesComponent implements OnInit {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
         this.notification.info(response.message);
+        return;
       }
       this.notification.success(response.message);
       this.routesList = res.data;
-      this.actionType = site.operation.result;
-
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
   setData(route: Route) {
@@ -211,6 +212,7 @@ export class RoutesComponent implements OnInit {
         const response = await validateResponse(res);
         if (!response.success) {
           this.notification.info(response.message);
+          return;
         }
 
         this.notification.success(response.message);
@@ -219,10 +221,9 @@ export class RoutesComponent implements OnInit {
             site.spliceElementToUpdate(this.routesList, Object(res.data));
           }
         }
-        this.actionType = site.operation.result;
-
-        this.busy = false;
       });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
   deleteRoute(route: Route) {
@@ -241,28 +242,28 @@ export class RoutesComponent implements OnInit {
       this.busy = true;
       this.routeService
         .deleteRoute(deletedRoute)
-        .subscribe(async (res: any) => {
+        .subscribe(async (res: IResponse) => {
           const response = await validateResponse(res);
           if (!response.success || !response.data) {
             this.notification.info(response.message);
+            return;
           }
           this.notification.warning(response.message);
           for await (const item of this.routesList) {
             if (String(item._id) === String(res.data._id)) {
-              this.routesList.forEach((item: any, index: number) => {
+              this.routesList.forEach((item: Route, index: number) => {
                 if (item._id === res.data._id) {
                   this.routesList.splice(index, 1);
                 }
               });
             }
           }
-
-          this.busy = false;
         });
+      this.busy = false;
     }
   }
 
-  getAllRouts(pagination?: any) {
+  getAllRouts(pagination?: Pagination) {
     const paginationData = {
       page: pagination?.pageIndex,
       limit: pagination?.pageSize,
@@ -272,13 +273,14 @@ export class RoutesComponent implements OnInit {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
         this.notification.info(response.message);
+        return;
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.routesList = res.data || [];
-      this.actionType = site.operation.getAll;
-      this.busy = false;
     });
+    this.actionType = site.operation.getAll;
+    this.busy = false;
   }
 
   pushPermissionToPermissionsList(permission: Permission) {
