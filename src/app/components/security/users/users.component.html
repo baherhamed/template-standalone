@@ -61,7 +61,7 @@
         </legend>
 
         <div class="row">
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
             <input
               matInput
@@ -74,7 +74,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Mobile' | translate }} </mat-label>
             <input
               matInput
@@ -88,7 +88,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Email' | translate }} </mat-label>
             <input
               matInput
@@ -100,7 +100,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Password' | translate }}</mat-label>
             <input
               matInput
@@ -113,7 +113,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Language' | translate }} </mat-label>
             <mat-select
               matNativeControl
@@ -127,7 +127,7 @@
             </mat-select>
           </mat-form-field>
 
-          <div class="col-sm-2">
+          <div class="col-lg-4 col-md-6 col-sm-12">
             <mat-checkbox
               [(ngModel)]="user.active"
               name="primary-status"
@@ -143,7 +143,7 @@
           </legend>
 
           <fieldset *ngFor="let route of user.routesList; let i = index">
-            <div class="col-sm-2">
+            <div class="col-lg-4 col-md-6 col-sm-12">
               <mat-checkbox
                 [ngModelOptions]="{ standalone: true }"
                 [(ngModel)]="route.active"
@@ -160,7 +160,7 @@
               </legend>
               <div class="row">
                 <div
-                  class="col-sm-2"
+                  class="col-lg-4 col-md-6 col-sm-12"
                   *ngFor="let permission of route.permissionsList"
                 >
                   <div class="col">
@@ -245,7 +245,7 @@
     <form #searchUserForm="ngForm">
       <fieldset>
         <div class="row">
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
             <input
               matInput
@@ -255,7 +255,7 @@
               autocomplete="off"
             />
           </mat-form-field>
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Mobile' | translate }} </mat-label>
             <input
               matInput
@@ -266,7 +266,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-3">
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Email' | translate }} </mat-label>
             <input
               matInput
