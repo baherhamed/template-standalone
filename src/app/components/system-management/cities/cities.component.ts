@@ -120,7 +120,7 @@ export class CitiesComponent {
     this.cityService.addCity(newCity).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
 
       this.citiesList.push({
@@ -146,7 +146,7 @@ export class CitiesComponent {
       this.responsePaginationData = res.paginationInfo;
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
 
       this.notification.success(response.message);
@@ -186,7 +186,7 @@ export class CitiesComponent {
       .subscribe(async (res: IResponse) => {
         const response = await validateResponse(res);
         if (!response.success || !response.data) {
-          this.notification.info(response.message);
+           return this.notification.info(response.message);
         }
         this.notification.success(response.message);
         for await (const item of this.citiesList) {
@@ -217,7 +217,7 @@ export class CitiesComponent {
         const response = await validateResponse(res);
 
         if (!response.success || !response.data) {
-          this.notification.info(response.message);
+           return this.notification.info(response.message);
         }
         this.notification.warning(response.message);
         for await (const item of this.citiesList) {
@@ -244,7 +244,7 @@ export class CitiesComponent {
     this.cityService.getAllCities(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;

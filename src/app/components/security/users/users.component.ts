@@ -146,7 +146,7 @@ export class UsersComponent implements OnInit {
     this.userService.addUser(newUser).subscribe(async (res: any) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.actionType = '';
@@ -177,7 +177,7 @@ export class UsersComponent implements OnInit {
       this.responsePaginationData = res.paginationInfo;
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.usersList = res.data;
@@ -207,7 +207,7 @@ export class UsersComponent implements OnInit {
     this.userService.updateUser(updatedUser).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       for await (const item of this.usersList) {
@@ -237,7 +237,7 @@ export class UsersComponent implements OnInit {
       this.userService.deleteUser(deletedRuser).subscribe(async (res: any) => {
         const response = await validateResponse(res);
         if (!response.success || !response.data) {
-          this.notification.info(response.message);
+           return this.notification.info(response.message);
         }
         this.notification.warning(response.message);
         for await (const item of this.usersList) {
@@ -334,7 +334,7 @@ export class UsersComponent implements OnInit {
     this.userService.getAllUsers(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+         return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;

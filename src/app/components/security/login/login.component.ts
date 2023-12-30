@@ -35,7 +35,6 @@ export class LoginComponent {
   constructor(
     private securityService: SecurityService,
     private notification: NotificationService,
-
   ) {
     this.inputsLength = inputsLength;
   }
@@ -46,7 +45,7 @@ export class LoginComponent {
       const response = await validateResponse(res);
 
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       try {
         this.notification.success(response.message);
@@ -55,12 +54,12 @@ export class LoginComponent {
         localStorage.setItem(site.permissionsList, res.data.permissionsList);
         localStorage.setItem(site.currentLangValue, res.data.language);
         const tokenValues = await getTokenValue();
-        this.userLoggedIn = tokenValues?.userLoggedIn;      
+        this.userLoggedIn = tokenValues?.userLoggedIn;
         location.assign('/');
       } catch (error) {
         alert(error);
       }
- 
+
       this.busy = false;
     });
   }

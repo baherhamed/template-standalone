@@ -144,8 +144,7 @@ export class RoutesComponent implements OnInit {
     this.routeService.addRoute(newRoute).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
-        return;
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.routesList.push({
@@ -172,8 +171,7 @@ export class RoutesComponent implements OnInit {
       this.responsePaginationData = res.paginationInfo;
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
-        return;
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.routesList = res.data;
@@ -211,8 +209,7 @@ export class RoutesComponent implements OnInit {
       .subscribe(async (res: IResponse) => {
         const response = await validateResponse(res);
         if (!response.success) {
-          this.notification.info(response.message);
-          return;
+          return this.notification.info(response.message);
         }
 
         this.notification.success(response.message);
@@ -245,8 +242,7 @@ export class RoutesComponent implements OnInit {
         .subscribe(async (res: IResponse) => {
           const response = await validateResponse(res);
           if (!response.success || !response.data) {
-            this.notification.info(response.message);
-            return;
+            return this.notification.info(response.message);
           }
           this.notification.warning(response.message);
           for await (const item of this.routesList) {
@@ -272,8 +268,7 @@ export class RoutesComponent implements OnInit {
     this.routeService.getAllRouts(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-        this.notification.info(response.message);
-        return;
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
