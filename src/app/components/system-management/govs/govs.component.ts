@@ -105,7 +105,7 @@ export class GovsComponent implements OnInit {
     this.govService.addGov(gov).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.govsList.push({
@@ -114,10 +114,10 @@ export class GovsComponent implements OnInit {
         code: gov.code,
         active: gov.active,
       });
-      this.actionType = site.operation.result;
-
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+
+    this.busy = false;
   }
 
   async updateGov(gov: Gov) {
@@ -125,7 +125,7 @@ export class GovsComponent implements OnInit {
     this.govService.updateGov(gov).subscribe(async (res: IResponse) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       for await (const item of this.govsList) {
@@ -133,9 +133,9 @@ export class GovsComponent implements OnInit {
           site.spliceElementToUpdate(this.govsList, Object(res.data));
         }
       }
-      this.actionType = site.operation.result;
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
   deleteGov(gov: Gov) {
@@ -156,7 +156,7 @@ export class GovsComponent implements OnInit {
         const response = await validateResponse(res);
 
         if (!response.success || !response.data) {
-           return this.notification.info(response.message);
+          return this.notification.info(response.message);
         }
         this.notification.warning(response.message);
         for await (const item of this.govsList) {
@@ -174,6 +174,7 @@ export class GovsComponent implements OnInit {
   }
 
   searchGov(gov: Gov, pagination?: Pagination) {
+    this.govsList = [];
     const searchData = {
       query: gov,
       page: pagination?.pageIndex,
@@ -184,14 +185,14 @@ export class GovsComponent implements OnInit {
       this.responsePaginationData = res.paginationInfo;
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.govsList = res.data;
-      this.actionType = site.operation.result;
-
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+
+    this.busy = false;
   }
 
   setData(gov: Gov) {
@@ -212,14 +213,14 @@ export class GovsComponent implements OnInit {
     this.govService.getAllGovs(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.govsList = res.data || [];
-      this.actionType = site.operation.getAll;
-      this.busy = false;
     });
+    this.actionType = site.operation.getAll;
+    this.busy = false;
   }
 
   resetActionTypeToClose() {

@@ -161,6 +161,7 @@ export class RoutesComponent implements OnInit {
   }
 
   searchRoute(route: Route, pagination?: Pagination) {
+    this.routesList = [];
     const searchData = {
       query: route,
       page: pagination?.pageIndex,

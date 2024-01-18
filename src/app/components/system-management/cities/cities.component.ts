@@ -20,6 +20,7 @@ import {
   validateResponse,
   ResponsePaginationData,
   TokenValues,
+  Pagination,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -120,7 +121,7 @@ export class CitiesComponent {
     this.cityService.addCity(newCity).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
 
       this.citiesList.push({
@@ -129,13 +130,14 @@ export class CitiesComponent {
         name: city.name,
         active: city.active,
       });
-      this.actionType = site.operation.result;
-
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+
+    this.busy = false;
   }
 
-  searchCity(city: City, pagination?: any) {
+  searchCity(city: City, pagination?: Pagination) {
+    this.citiesList = [];
     const searchData = {
       query: city,
       page: pagination?.pageIndex,
@@ -146,14 +148,13 @@ export class CitiesComponent {
       this.responsePaginationData = res.paginationInfo;
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
-
       this.notification.success(response.message);
       this.citiesList = res.data;
-      this.actionType = site.operation.result;
-      this.busy = false;
     });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
   async setData(city: City) {
@@ -186,7 +187,7 @@ export class CitiesComponent {
       .subscribe(async (res: IResponse) => {
         const response = await validateResponse(res);
         if (!response.success || !response.data) {
-           return this.notification.info(response.message);
+          return this.notification.info(response.message);
         }
         this.notification.success(response.message);
         for await (const item of this.citiesList) {
@@ -194,9 +195,9 @@ export class CitiesComponent {
             site.spliceElementToUpdate(this.citiesList, Object(res.data));
           }
         }
-        this.actionType = site.operation.result;
-        this.busy = false;
       });
+    this.actionType = site.operation.result;
+    this.busy = false;
   }
 
   deleteCity(city: City) {
@@ -217,7 +218,7 @@ export class CitiesComponent {
         const response = await validateResponse(res);
 
         if (!response.success || !response.data) {
-           return this.notification.info(response.message);
+          return this.notification.info(response.message);
         }
         this.notification.warning(response.message);
         for await (const item of this.citiesList) {
@@ -244,15 +245,14 @@ export class CitiesComponent {
     this.cityService.getAllCities(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
-         return this.notification.info(response.message);
+        return this.notification.info(response.message);
       }
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.citiesList = res.data || [];
-
-      this.actionType = site.operation.getAll;
-      this.busy = false;
     });
+    this.actionType = site.operation.getAll;
+    this.busy = false;
   }
 
   getActiveGovs() {

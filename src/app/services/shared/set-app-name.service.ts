@@ -1,17 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { appsNames, site } from 'src/app/shared';
-
-
 
 @Injectable({
   providedIn: 'root',
 })
-export class SetAppNameService {
+export class SetAppNameService implements OnInit {
   constructor(public title: Title) {}
 
-  setAppName = async (screen: string) => {
-    const selectedScreen = screen.split('/')[4] || screen;
+  ngOnInit(): void {
+    this.setAppName();
+  }
+
+  setAppName = async (screen?: string) => {
+    const selectedScreen =
+      screen?.split('/')[3] || screen?.split('/')[4] || screen;
     const currentLang = localStorage.getItem(site.currentLangValue);
     let selectedApp = appsNames.findIndex(
       (co) => co.app?.toLowerCase() === selectedScreen?.toLowerCase(),
