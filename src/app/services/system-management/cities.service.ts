@@ -21,9 +21,7 @@ export class CitiesService {
         success: boolean;
         message: string;
         data: any;
-      }>(`${this.citiesUrl}${site.appsRoutes.add}`, city, {
-        headers: site.requestHeaders().headers,
-      })
+      }>(`${this.citiesUrl}${site.appsRoutes.add}`, city)
       .pipe(retry(5));
   }
 
@@ -32,7 +30,6 @@ export class CitiesService {
       .put<{ success: boolean; message: string; data: any }>(
         `${this.citiesUrl}${site.appsRoutes.update}`,
         city,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -42,7 +39,6 @@ export class CitiesService {
       .put<{ success: boolean; message: string; data: any }>(
         `${this.citiesUrl}${site.appsRoutes.delete}`,
         city,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -52,7 +48,6 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: any }>(
         `${this.citiesUrl}${site.appsRoutes.search}`,
         city,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -62,7 +57,6 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: any }>(
         `${this.citiesUrl}${site.appsRoutes.getCitiesByGov}`,
         city,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -72,7 +66,6 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: any }>(
         `${this.citiesUrl}${site.appsRoutes.getAll}`,
         pagination,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -82,7 +75,6 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: [] }>(
         `${this.citiesUrl}${site.appsRoutes.getActive}`,
         null,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }

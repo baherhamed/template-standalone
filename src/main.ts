@@ -4,7 +4,7 @@ import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 
 import { importProvidersFrom } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {  HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app/routes';
@@ -12,6 +12,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import {  MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule  } from 'ngx-toastr';
+import {   loggerInterceptor } from './app/services';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -33,7 +34,9 @@ bootstrapApplication(AppComponent, {
               deps: [HttpClient],
             },
           }),
-        )
+        ),
+        provideHttpClient(withInterceptors([loggerInterceptor]))
+
     ]
 })
 

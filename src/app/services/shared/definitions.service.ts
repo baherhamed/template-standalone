@@ -4,7 +4,6 @@ import { Language, site } from 'src/app/shared';
 
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -20,9 +19,6 @@ export class DefinitionsService {
       success: boolean;
       message: string;
       data: Language[];
-    }>(`${this.languageUrl}${site.appsRoutes.getActive}`, null, {
-      headers: site.requestHeaders().headers,
-      // observe: 'response',
-    });
+    }>(`${this.languageUrl}${site.appsRoutes.getActive}`, null);
   }
 }

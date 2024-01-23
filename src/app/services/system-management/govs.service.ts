@@ -7,7 +7,6 @@ import { Gov } from 'src/app/interfaces';
 import { site } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -24,9 +23,7 @@ export class GovsService {
         success: boolean;
         message: string;
         data: Gov;
-      }>(`${this.govsUrl}${site.appsRoutes.add}`, gov, {
-        headers: site.requestHeaders().headers,
-      })
+      }>(`${this.govsUrl}${site.appsRoutes.add}`, gov)
       .pipe(retry(5));
   }
 
@@ -35,7 +32,6 @@ export class GovsService {
       .put<{ success: boolean; message: string; data: Gov }>(
         `${this.govsUrl}${site.appsRoutes.update}`,
         gov,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -45,7 +41,6 @@ export class GovsService {
       .put<{ success: boolean; message: string; data: any }>(
         `${this.govsUrl}${site.appsRoutes.delete}`,
         gov,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -55,7 +50,6 @@ export class GovsService {
       .post<{ success: boolean; message: string; data: Gov }>(
         `${this.govsUrl}${site.appsRoutes.search}`,
         gov,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -65,7 +59,6 @@ export class GovsService {
       .post<{ success: boolean; message: string; data: Gov }>(
         `${this.govsUrl}${site.appsRoutes.getAll}`,
         pagination,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -75,7 +68,6 @@ export class GovsService {
       .post<{ success: boolean; message: string; data: Gov[] }>(
         `${this.govsUrl}${site.appsRoutes.getActive}`,
         null,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }

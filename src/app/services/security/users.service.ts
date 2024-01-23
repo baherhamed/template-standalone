@@ -7,7 +7,6 @@ import { site } from 'src/app/shared';
 
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -24,9 +23,7 @@ export class UsersService {
         success: boolean;
         message: string;
         data: any;
-      }>(`${this.usersUrl}${site.appsRoutes.add}`, user, {
-        headers: site.requestHeaders().headers,
-      })
+      }>(`${this.usersUrl}${site.appsRoutes.add}`, user)
       .pipe(retry(5));
   }
 
@@ -35,7 +32,6 @@ export class UsersService {
       .put<{ success: boolean; message: string; data: User }>(
         `${this.usersUrl}${site.appsRoutes.update}`,
         user,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -45,7 +41,6 @@ export class UsersService {
       .put<{ success: boolean; message: string; data: User }>(
         `${this.usersUrl}${site.appsRoutes.delete}`,
         user,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -55,7 +50,6 @@ export class UsersService {
       .post<{ success: boolean; message: string; data: User }>(
         `${this.usersUrl}${site.appsRoutes.search}`,
         user,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -65,7 +59,6 @@ export class UsersService {
       .post<{ success: boolean; message: string; data: User }>(
         `${this.usersUrl}${site.appsRoutes.getAll}`,
         pagination,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -75,7 +68,6 @@ export class UsersService {
       .post<{ success: boolean; message: string; data: User[] }>(
         `${this.usersUrl}${site.appsRoutes.getAll}`,
         null,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -86,9 +78,7 @@ export class UsersService {
         success: boolean;
         message: string;
         data: ChangePassword;
-      }>(`${this.usersUrl}${site.appsRoutes.changePassword}`, changePassword, {
-        headers: site.requestHeaders().headers,
-      })
+      }>(`${this.usersUrl}${site.appsRoutes.changePassword}`, changePassword)
       .pipe(retry(5));
   }
 }

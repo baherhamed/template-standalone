@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpHeaders } from '@angular/common/http';
+// import { HttpHeaders } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 
 import devtools from 'devtools-detect';
 
-export const site  = {
+export const site = {
   companyInfo: {
     address:
       'السنطة ش الجمهورية برج الكمال الدور الثاني بجوار مكتب بريد السنطة فرعي',
@@ -42,24 +42,33 @@ export const site  = {
   permissionsList: 'permissionsList',
   currentLangValue: 'language',
   language: { ar: 'ar', en: 'en' },
-  requestHeaders: () => {
-    const token = localStorage.getItem('token');
-    const language = localStorage.getItem('language');
-    const newHeader = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('accept-language', `${language}`)
-      .set('Authorization', `Bearer ${token}`);
+  // requestHeaders: () => {
+  //   const token = localStorage.getItem('token');
+  //   const language = localStorage.getItem('language');
+  //   const newHeader = new HttpHeaders()
+  //     .set('Content-Type', 'application/json')
+  //     .set('accept-language', `${language}`)
+  //     .set('Authorization', `Bearer ${token}`);
 
-    return { headers: newHeader, observe: 'response' };
-  },
-  requestHeadersForLogin: () => {
-    const language = localStorage.getItem('language');
-    const newHeader = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('accept-language', `${language}`);
+  //   return { headers: newHeader, observe: 'response' };
+  // },
+  // requestHeadersForLogin: () => {
+  //   const language = localStorage.getItem('language');
+  //   const newHeader = new HttpHeaders()
+  //     .set('Content-Type', 'application/json')
+  //     .set('accept-language', `${language}`);
 
-    return { headers: newHeader };
-  },
+  //   return { headers: newHeader };
+  // },
+  // requestHeadersForUpload: () => {
+  //   const language = localStorage.getItem('language');
+  //   const token = localStorage.getItem('token');
+  //   const newHeader = new HttpHeaders()
+  //     .set('accept-language', `${language}`)
+  //     .set('Authorization', `Bearer ${token}`);
+
+  //   return { headers: newHeader };
+  // },
   notificationType: {
     error: 'error',
     success: 'success',
@@ -160,5 +169,4 @@ export const site  = {
   convertDate: (date: string) => {
     return new Date(date).toISOString().slice(0, 10);
   },
-
 };

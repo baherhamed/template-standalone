@@ -6,7 +6,6 @@ import { Route } from 'src/app/interfaces';
 import { site } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -21,7 +20,6 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.add}`,
         route,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -31,7 +29,6 @@ export class RoutesService {
       .put<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.update}`,
         route,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -41,7 +38,6 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.search}`,
         route,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -51,7 +47,6 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: any }>(
         `${this.baseUrl}${site.appsRoutes.getActive}`,
         null,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -61,7 +56,6 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.getAll}`,
         pagination,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
@@ -71,7 +65,6 @@ export class RoutesService {
       .put<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.delete}`,
         Route,
-        { headers: site.requestHeaders().headers },
       )
       .pipe(retry(5));
   }
