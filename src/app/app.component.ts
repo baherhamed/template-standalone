@@ -16,6 +16,7 @@ import {
   GlobalSettingComponent
 } from './components';
 import { DialogService, NotificationService } from './services';
+
 // import { ToastrModule } from 'ngx-toastr';
 
 @Component({

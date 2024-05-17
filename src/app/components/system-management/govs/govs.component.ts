@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CommonModule, NgComponentOutlet } from '@angular/common';
+import { CommonModule, } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Gov } from 'src/app/interfaces';
 
@@ -29,7 +29,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   templateUrl: './govs.component.html',
   styleUrls: ['./govs.component.scss'],
   standalone: true,
-  imports: [CommonModule, SharedModule, NgComponentOutlet],
+  imports: [CommonModule, SharedModule],
 })
 export class GovsComponent implements OnInit {
   @ViewChild('govDetails') govDetails: any;

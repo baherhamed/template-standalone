@@ -201,7 +201,7 @@ export class UsersComponent implements OnInit {
   async updateUser(user: User) {
     const routesList = await this.setRoleRoutesList();
     const permissionsList = await this.setPermissionsList();
-
+    this.busy = true;
     const updatedUser = {
       _id: user._id,
       name: user.name,
@@ -213,7 +213,7 @@ export class UsersComponent implements OnInit {
       permissionsList,
       active: user.active,
     };
-    this.busy = true;
+
 
     this.userService.updateUser(updatedUser).subscribe(async (res) => {
       const response = await validateResponse(res);
@@ -265,39 +265,39 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  async setDetailsData(user: User) {
-    this.user = {
-      _id: user._id,
-      name: user.name,
-      mobile: user.mobile,
-      email: user.email,
-      language: user.language,
-      routesList: user.routesList,
-      permissionsList: user.permissionsList,
-      active: user.active,
-      addInfo: user.addInfo ? user.addInfo : undefined,
-      lastUpdateInfo: user.lastUpdateInfo ? user.lastUpdateInfo : undefined,
-    };
-  }
+  // async setDetailsData(user: User) {
+  //   this.user = {
+  //     _id: user._id,
+  //     name: user.name,
+  //     mobile: user.mobile,
+  //     email: user.email,
+  //     language: user.language,
+  //     routesList: user.routesList,
+  //     permissionsList: user.permissionsList,
+  //     active: user.active,
+  //     addInfo: user.addInfo ? user.addInfo : undefined,
+  //     lastUpdateInfo: user.lastUpdateInfo ? user.lastUpdateInfo : undefined,
+  //   };
+  // }
 
-  async setData(user: User) {
-    let selectedLanguage;
-    for await (const lang of this.languagesList) {
-      if (lang && lang._id === user.language._id) {
-        selectedLanguage = lang;
-      }
-    }
+  // async setData(user: User) {
+  //   let selectedLanguage;
+  //   for await (const lang of this.languagesList) {
+  //     if (lang && lang._id === user.language._id) {
+  //       selectedLanguage = lang;
+  //     }
+  //   }
 
-    this.user = {
-      _id: user._id,
-      name: user.name,
-      mobile: user.mobile,
-      email: user.email,
-      language: selectedLanguage || user.language,
-      routesList: user.routesList,
-      active: user.active,
-    };
-  }
+  //   this.user = {
+  //     _id: user._id,
+  //     name: user.name,
+  //     mobile: user.mobile,
+  //     email: user.email,
+  //     language: selectedLanguage || user.language,
+  //     routesList: user.routesList,
+  //     active: user.active,
+  //   };
+  // }
 
   viewUser(user: User) {
     const query = {

@@ -489,64 +489,64 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="table-responsive" *ngIf="user.routesList">
+          <table class="table table-sm table-striped align-middle table-hover">
+            <thead>
+
+              <tr class="table-dark">
+                <th>{{ 'Forms.S' | translate }}</th>
+                <th>{{ 'Forms.Route-Ar' | translate }}</th>
+                <th>{{ 'Forms.Route-En' | translate }}</th>
+                <th>{{ 'Menu.Permissions' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let route of user.routesList; let i = index">
+                <td>
+                  <p class="text-center">{{ i + 1 }}</p>
+                </td>
+                <td>
+                  <p class="text-center">{{ route.ar }}</p>
+                </td>
+                <td>
+                  <p class="text-center">{{ route.en }}</p>
+                </td>
+
+                <td>
+                  <div class="table-responsive">
+                    <table
+                      class="table table-sm table-striped align-middle table-hover"
+                    >
+                      <thead>
+                        <tr class="table-dark">
+                          <th>{{ 'Forms.Permission-Ar' | translate }}</th>
+                          <th>{{ 'Forms.Permission-En' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let permission of route.permissionsList;
+                            let i = index
+                          "
+                        >
+                          <td *ngIf="permission.active">
+                            <p class="text-center">{{ permission.ar }}</p>
+                          </td>
+                          <td *ngIf="permission.active">
+                            <p class="text-center">{{ permission.en }}</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      <div class="table-responsive" *ngIf="user.routesList">
-        <table class="table table-sm table-striped align-middle table-hover">
-          <thead>
-            <tr class="table-dark">
-              <th>{{ 'Forms.S' | translate }}</th>
-              <th>{{ 'Forms.Route-Ar' | translate }}</th>
-              <th>{{ 'Forms.Route-En' | translate }}</th>
-              <th>{{ 'Menu.Permissions' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let route of user.routesList; let i = index">
-              <td>
-                <p class="text-center">{{ i + 1 }}</p>
-              </td>
-              <td>
-                <p class="text-center">{{ route.ar }}</p>
-              </td>
-              <td>
-                <p class="text-center">{{ route.en }}</p>
-              </td>
-
-              <td>
-                <div class="table-responsive">
-                  <table
-                    class="table table-sm table-striped align-middle table-hover"
-                  >
-                    <thead>
-                      <tr class="table-dark">
-                        <th>{{ 'Forms.Permission-Ar' | translate }}</th>
-                        <th>{{ 'Forms.Permission-En' | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        *ngFor="
-                          let permission of route.permissionsList;
-                          let i = index
-                        "
-                      >
-                        <td *ngIf="permission.active">
-                          <p class="text-center">{{ permission.ar }}</p>
-                        </td>
-                        <td *ngIf="permission.active">
-                          <p class="text-center">{{ permission.en }}</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
       <record-details
         [addInfo]="user.addInfo"
         *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"

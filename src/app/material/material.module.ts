@@ -37,11 +37,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   MatDialogModule,
-
   MAT_DIALOG_DEFAULT_OPTIONS,
   MatDialogRef,
   MAT_DIALOG_DATA,
-
 } from '@angular/material/dialog';
 import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 // Material Popups & Modals

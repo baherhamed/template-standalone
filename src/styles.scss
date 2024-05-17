@@ -284,6 +284,7 @@ table {
   -moz-transform: translateX(-50%) translateY(-50%);
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
+  z-index: 999999999999999;
 }
 
 a.menu-element {

@@ -46,10 +46,8 @@
     </button>
 
     <a
-      mat-menu-item
-      *ngIf="
-        routesList && routesList.includes(routesNames.globalSetting)
-      "
+      class="menu-element"
+      *ngIf="routesList && routesList.includes(routesNames.globalSetting)"
       routerLinkActive="active"
       [routerLink]="[routesNames.globalSetting]"
       (click)="setTitle(routesNames.globalSetting)"
@@ -60,7 +58,7 @@
     </a>
 
     <button mat-menu-item (click)="logout()">
-      <mat-icon color="primary">logout</mat-icon>
+      <mat-icon color="danger">logout</mat-icon>
       <p class="text-danger" title="{{ 'Actions.Logout' | translate }}">
         {{ 'Actions.Logout' | translate }}
       </p>
