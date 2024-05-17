@@ -1,5 +1,10 @@
 export const appsNames = [
   {
+    app: 'globalSetting',
+    ar: 'الإعدادات العامة',
+    en: 'Global Setting',
+  },
+  {
     app: 'home',
     ar: 'الرئيسية',
     en: 'Home',

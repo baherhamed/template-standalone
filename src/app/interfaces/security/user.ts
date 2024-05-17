@@ -1,3 +1,4 @@
+import { RecordDetails } from 'src/app/shared';
 import { Permission, Route } from '.';
 
 export interface User {
@@ -13,4 +14,6 @@ export interface User {
   routesList: Route[];
   permissionsList?: Permission[];
   active: boolean;
+  addInfo?: RecordDetails;
+  lastUpdateInfo?: RecordDetails;
 }

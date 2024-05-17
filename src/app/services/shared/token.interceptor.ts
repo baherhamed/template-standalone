@@ -1,8 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { site } from 'src/app/shared';
 
 export const loggerInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token');
-  const language = localStorage.getItem('language');
+  const token = localStorage.getItem(site.token);
+  const language = localStorage.getItem(site.currentLangValue);
   const authReq = req.clone({
     headers: req.headers
       .set('Content-Type', 'application/json')

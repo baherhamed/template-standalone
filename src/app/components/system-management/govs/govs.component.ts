@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, NgComponentOutlet } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Gov } from 'src/app/interfaces';
 
 import {
@@ -20,6 +20,7 @@ import {
   ResponsePaginationData,
   TokenValues,
   Pagination,
+  getGlobalSetting,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -28,9 +29,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
   templateUrl: './govs.component.html',
   styleUrls: ['./govs.component.scss'],
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, NgComponentOutlet],
 })
 export class GovsComponent implements OnInit {
+  @ViewChild('govDetails') govDetails: any;
   responsePaginationData: ResponsePaginationData | undefined;
   inputsLength: unknown | any;
   site: unknown | any;
@@ -38,7 +40,14 @@ export class GovsComponent implements OnInit {
   actionType: string = '';
   govsList: Gov[] = [];
   busy = false;
+
+  showMessage = {
+    show: false,
+    title: '',
+    message: '',
+  };
   lang: string = '';
+  getGlobalSetting: any = undefined;
 
   gov: Gov = {
     name: '',
@@ -84,12 +93,16 @@ export class GovsComponent implements OnInit {
 
   async ngOnInit() {
     this.tokenValues = await getTokenValue();
-
+    this.getSetting();
     this.getAllGovs();
   }
 
   async exportDataToExcel(table: string, file: string) {
     exportToExcel(table, file);
+  }
+
+  async getSetting() {
+    this.getGlobalSetting = await getGlobalSetting();
   }
 
   resetModel(action: string) {
@@ -114,11 +127,11 @@ export class GovsComponent implements OnInit {
         name: gov.name,
         code: gov.code,
         active: gov.active,
+        addInfo: Object(res.data).addInfo,
       });
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-
-    this.busy = false;
   }
 
   async updateGov(gov: Gov) {
@@ -134,9 +147,9 @@ export class GovsComponent implements OnInit {
           site.spliceElementToUpdate(this.govsList, Object(res.data));
         }
       }
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   deleteGov(gov: Gov) {
@@ -147,6 +160,12 @@ export class GovsComponent implements OnInit {
     if (this.lang === site.language.ar) {
       confirmMessage = site.confirmMessage.ar;
     }
+
+    this.showMessage = {
+      show: true,
+      title: '',
+      message: '',
+    };
     const confirmDelete = confirm(confirmMessage);
     if (confirmDelete) {
       const deletedGov = {
@@ -190,27 +209,49 @@ export class GovsComponent implements OnInit {
       }
       this.notification.success(response.message);
       this.govsList = res.data;
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-
-    this.busy = false;
   }
 
-  setData(gov: Gov) {
-    this.gov = {
+  viewGov(gov: Gov) {
+    const query = {
       _id: gov._id,
-      name: gov.name,
-      code: gov.code,
-      active: gov.active,
     };
+    this.busy = true;
+    this.govService.viewGov(query).subscribe(async (res) => {
+      //IResponse
+
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        return this.notification.info(response.message);
+      }
+      for await (const item of this.govsList) {
+        if (item._id === Object(res.data)._id) {
+          site.spliceElementToUpdate(this.govsList, Object(res.data));
+        }
+      }
+      this.gov = {
+        _id: response.data._id,
+        name: response.data.name,
+        code: response.data.code,
+        active: response.data.active,
+        addInfo: response.data.addInfo ? response.data.addInfo : undefined,
+        lastUpdateInfo: response.data.lastUpdateInfo
+          ? response.data.lastUpdateInfo
+          : undefined,
+      };
+      this.busy = false;
+    });
   }
 
-  getAllGovs(pagination?: Pagination) {
+  async getAllGovs(pagination?: Pagination) {
+    this.busy = true;
     const paginationData = {
       page: pagination?.pageIndex,
       limit: pagination?.pageSize,
     };
-    this.busy = true;
+
     this.govService.getAllGovs(paginationData).subscribe(async (res) => {
       const response = await validateResponse(res);
       if (!response.success || !response.data) {
@@ -219,9 +260,9 @@ export class GovsComponent implements OnInit {
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.govsList = res.data || [];
+      this.actionType = site.operation.getAll;
+      this.busy = false;
     });
-    this.actionType = site.operation.getAll;
-    this.busy = false;
   }
 
   resetActionTypeToClose() {

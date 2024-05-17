@@ -12,3 +12,4 @@ export * from './hash-string';
 export * from './meta';
 export * from './set-meta-language';
 export * from './apps-names';
+export * from './global-setting';

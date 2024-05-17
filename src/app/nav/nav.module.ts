@@ -4,7 +4,7 @@ import { FooterComponent, MenuComponent } from '.';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [MenuComponent, FooterComponent],
@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
     TranslateModule,
     MaterialModule,
     RouterModule,
-    SharedModule,
+    // SharedModule,
   ],
   exports: [MenuComponent, FooterComponent],
 })

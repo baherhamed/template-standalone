@@ -9,7 +9,6 @@
     color="success"
     (click)="resetModel(site.operation.add); displayAdd(showAdd)"
     [disabled]="busy"
-    class="m-1"
   >
     {{ 'Actions.Add' | translate }}
     <mat-icon>add</mat-icon>
@@ -20,7 +19,6 @@
     color="search"
     (click)="resetModel(site.operation.search); displaySearch(showSearch)"
     [disabled]="busy"
-    class="m-1"
   >
     {{ 'Actions.Search' | translate }}
     <mat-icon>search</mat-icon>
@@ -31,7 +29,6 @@
     color="info"
     (click)="exportDataToExcel('govsList', 'govs')"
     [disabled]="busy"
-    class="m-1"
     *ngIf="
       tokenValues.userLoggedIn &&
       tokenValues.permissionsList &&
@@ -42,6 +39,7 @@
     <mat-icon>import_export</mat-icon>
   </button>
 </div>
+
 <ng-template #showAdd>
   <fieldset>
     <div class="model-header">
@@ -225,7 +223,7 @@
 </ng-template>
 
 <div
-  class="result"
+  class="container"
   *ngIf="
     govsList &&
     govsList.length &&
@@ -257,54 +255,61 @@
           </td>
 
           <td>
-            <p *ngIf="gov.active" class="status-active">
+            <span *ngIf="gov.active" class="text-center status-active">
               {{ 'Forms.Active' | translate }}
-            </p>
-            <p *ngIf="!gov.active" class="status-not-active">
+            </span>
+            <span *ngIf="!gov.active" class="text-center status-not-active">
               {{ 'Forms.Not-Active' | translate }}
-            </p>
+            </span>
           </td>
           <td class="no_print">
-            <button
-              mat-mini-fab
-              color="edit"
-              (click)="
-                setData(gov);
-                displayUpdate(showAdd);
-                actionType = site.operation.update
-              "
-              *ngIf="
-                tokenValues.userLoggedIn &&
-                tokenValues.permissionsList &&
-                tokenValues.permissionsList.includes(permissionsNames.updateGov)
-              "
-              class="m-1"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+            <div class="row-buttons">
+              <button
+                mat-mini-fab
+                color="edit"
+                (click)="
+                  viewGov(gov);
+                  displayUpdate(showAdd);
+                  actionType = site.operation.update
+                "
+                *ngIf="
+                  tokenValues.userLoggedIn &&
+                  tokenValues.permissionsList &&
+                  tokenValues.permissionsList.includes(
+                    permissionsNames.updateGov
+                  )
+                "
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Update' | translate }}"
+                #tooltip="matTooltip"
+              >
+                <!-- [matTooltipPosition]="site.tooltipPosiition" -->
+                <mat-icon>edit</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="info"
-              (click)="showDetails(govDetails); setData(gov)"
-              class="m-1"
-            >
-              <mat-icon>view_list</mat-icon>
-            </button>
+              <button
+                mat-mini-fab
+                color="info"
+                (click)="viewGov(gov); showDetails(govDetails)"
+              >
+                <mat-icon>view_list</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="danger"
-              (click)="deleteGov(gov)"
-              *ngIf="
-                tokenValues.userLoggedIn &&
-                tokenValues.permissionsList &&
-                tokenValues.permissionsList.includes(permissionsNames.deleteGov)
-              "
-              class="m-1"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button
+                mat-mini-fab
+                color="danger"
+                (click)="deleteGov(gov)"
+                *ngIf="
+                  tokenValues.userLoggedIn &&
+                  tokenValues.permissionsList &&
+                  tokenValues.permissionsList.includes(
+                    permissionsNames.deleteGov
+                  )
+                "
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -356,10 +361,10 @@
               </td>
 
               <td>
-                <p *ngIf="gov.active" class="status-active">
+                <p *ngIf="gov.active" class="text-center status-active">
                   {{ 'Forms.Active' | translate }}
                 </p>
-                <p *ngIf="!gov.active" class="status-not-active">
+                <p *ngIf="!gov.active" class="text-center status-not-active">
                   {{ 'Forms.Not-Active' | translate }}
                 </p>
               </td>
@@ -368,6 +373,18 @@
         </table>
       </div>
     </fieldset>
+
+    <record-details
+      [addInfo]="gov.addInfo"
+      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+    >
+    </record-details>
+    <record-details
+      [lastUpdateInfo]="gov.lastUpdateInfo"
+      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+    >
+    </record-details>
+
     <div class="actions-buttons">
       <button mat-raised-button color="danger" [mat-dialog-close]="true">
         {{ 'Actions.Close' | translate }}
@@ -377,4 +394,7 @@
   </fieldset>
 </ng-template>
 
+
+
 <spinner [busy]="busy"></spinner>
+<message *ngIf="showMessage.show"> </message>

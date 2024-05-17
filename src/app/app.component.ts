@@ -13,9 +13,10 @@ import {
   LoginComponent,
   RoutesComponent,
   UsersComponent,
+  GlobalSettingComponent
 } from './components';
 import { DialogService, NotificationService } from './services';
-import { ToastrModule } from 'ngx-toastr';
+// import { ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +34,9 @@ import { ToastrModule } from 'ngx-toastr';
     RoutesComponent,
     GovsComponent,
     CitiesComponent,
+    GlobalSettingComponent,
     RouterOutlet,
-    ToastrModule,
+    // ToastrModule,
   ],
   providers: [DialogService,  NotificationService],
 })

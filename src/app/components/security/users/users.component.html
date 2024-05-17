@@ -8,7 +8,6 @@
       (tokenValues.permissionsList &&
         tokenValues.permissionsList.includes(permissionsNames.addUser))
     "
-    class="m-1"
   >
     {{ 'Actions.Add' | translate }}
     <mat-icon>add</mat-icon>
@@ -18,7 +17,6 @@
     mat-raised-button
     color="search"
     (click)="resetModel(site.operation.search); displaySearch(showSearch)"
-    class="m-1"
   >
     {{ 'Actions.Search' | translate }}
     <mat-icon>search</mat-icon>
@@ -29,7 +27,6 @@
     color="info"
     (click)="exportDataToExcel('usersList', 'users')"
     [disabled]="busy"
-    class="m-1"
     *ngIf="
       tokenValues.userLoggedIn &&
       tokenValues.permissionsList &&
@@ -53,15 +50,18 @@
     </div>
 
     <form #addUsersForm="ngForm">
-      <fieldset >
-        <legend >
+      <fieldset>
+        <legend>
           <p class="legend">
             {{ 'Legends.Basic-Informations' | translate }}
           </p>
         </legend>
 
         <div class="row">
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
             <input
               matInput
@@ -74,7 +74,10 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Mobile' | translate }} </mat-label>
             <input
               matInput
@@ -88,7 +91,10 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Email' | translate }} </mat-label>
             <input
               matInput
@@ -100,7 +106,10 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Password' | translate }}</mat-label>
             <input
               matInput
@@ -113,7 +122,10 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Language' | translate }} </mat-label>
             <mat-select
               matNativeControl
@@ -245,7 +257,10 @@
     <form #searchUserForm="ngForm">
       <fieldset>
         <div class="row">
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
             <input
               matInput
@@ -255,7 +270,10 @@
               autocomplete="off"
             />
           </mat-form-field>
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Mobile' | translate }} </mat-label>
             <input
               matInput
@@ -266,7 +284,10 @@
             />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+          <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
             <mat-label>{{ 'Forms.Email' | translate }} </mat-label>
             <input
               matInput
@@ -306,7 +327,7 @@
 </ng-template>
 
 <div
-  class="result"
+  class="container"
   *ngIf="
     usersList &&
     usersList.length &&
@@ -354,51 +375,50 @@
               {{ 'Forms.Not-Active' | translate }}
             </p>
           </td>
-          <td>
-            <button
-              mat-mini-fab
-              color="edit"
-              (click)="
-                setData(user);
-                displayUpdate(showAdd);
-                actionType = site.operation.update
-              "
-              *ngIf="
-                (tokenValues.userLoggedIn && tokenValues.isDeveloper) ||
-                (tokenValues.permissionsList &&
-                  tokenValues.permissionsList.includes(
-                    permissionsNames.updateUser
-                  ))
-              "
-              class="m-1"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+          <td class="no_print">
+            <div class="row-buttons">
+              <button
+                mat-mini-fab
+                color="edit"
+                (click)="
+                  viewUser(user);
+                  displayUpdate(showAdd);
+                  actionType = site.operation.update
+                "
+                *ngIf="
+                  (tokenValues.userLoggedIn && tokenValues.isDeveloper) ||
+                  (tokenValues.permissionsList &&
+                    tokenValues.permissionsList.includes(
+                      permissionsNames.updateUser
+                    ))
+                "
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="info"
-              (click)="showDetails(userDetails); setDetailsData(user)"
-              class="m-1"
-            >
-              <mat-icon>view_list</mat-icon>
-            </button>
+              <button
+                mat-mini-fab
+                color="info"
+                (click)="viewUser(user); showDetails(userDetails)"
+              >
+                <mat-icon>view_list</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="danger"
-              (click)="deleteUser(user)"
-              *ngIf="
-                (tokenValues.userLoggedIn && tokenValues.isDeveloper) ||
-                (tokenValues.permissionsList &&
-                  tokenValues.permissionsList.includes(
-                    permissionsNames.deleteUser
-                  ))
-              "
-              class="m-1"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button
+                mat-mini-fab
+                color="danger"
+                (click)="deleteUser(user)"
+                *ngIf="
+                  (tokenValues.userLoggedIn && tokenValues.isDeveloper) ||
+                  (tokenValues.permissionsList &&
+                    tokenValues.permissionsList.includes(
+                      permissionsNames.deleteUser
+                    ))
+                "
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -526,6 +546,17 @@
           </tbody>
         </table>
       </div>
+
+      <record-details
+        [addInfo]="user.addInfo"
+        *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+      >
+      </record-details>
+      <record-details
+        [lastUpdateInfo]="user.lastUpdateInfo"
+        *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+      >
+      </record-details>
     </fieldset>
     <div class="actions-buttons">
       <button mat-raised-button color="danger" [mat-dialog-close]="true">

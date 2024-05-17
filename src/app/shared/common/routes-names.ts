@@ -10,4 +10,5 @@ export const routesNames = {
   rates: 'rates',
   offers: 'offers',
   customers: 'customers',
+  globalSetting: 'globalSetting',
 };

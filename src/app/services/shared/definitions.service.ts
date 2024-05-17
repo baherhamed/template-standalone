@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Language, site } from 'src/app/shared';
-
+import {  Language, site } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,8 +8,9 @@ import { environment } from 'src/environments/environment';
 })
 export class DefinitionsService {
   languageUrl = `${environment.url}${site.api}${site.modules.systemManagement}${site.apps.languages}`;
-  token = localStorage.getItem(site.token);
-  language = localStorage.getItem(site.currentLangValue);
+
+  // token = localStorage.getItem(site.token);
+  // language = localStorage.getItem(site.currentLangValue);
 
   constructor(private http: HttpClient) {}
 
@@ -21,4 +21,5 @@ export class DefinitionsService {
       data: Language[];
     }>(`${this.languageUrl}${site.appsRoutes.getActive}`, null);
   }
+
 }

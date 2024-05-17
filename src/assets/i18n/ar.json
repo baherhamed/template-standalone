@@ -10,7 +10,8 @@
     "Permissions": "الصلاحيات",
     "Roles": "الأدوار",
     "Govs": "المحافظات",
-    "Cities": "المدن"
+    "Cities": "المدن",
+    "Global-Setting": "الإعدادات العامة"
   },
   "Actions": {
     "Logout": "خروج",
@@ -24,12 +25,24 @@
     "Close": "إغلاق",
     "Export": "تصدير"
   },
+  "Record-Details": {
+    "Add-Details": "تفاصيل الإضافة",
+    "Last-Update-Details": "تفاصيل آخر تعديل",
+    "User": "المستخدم",
+    "Browser": "المتصفح",
+    "Mobile": "محمول",
+    "Ip-Address": "عنوان الأي بي",
+    "Os": "نظام التشغيل",
+    "Date": "التاريخ",
+    "Time": "الوقت"
+  },
   "Modules": {
     "System-Management": "إدارة النظام",
     "Security": "الحماية"
   },
-  "Legends":{
-    "Basic-Informations":"البيانات الأساسية"
+  "Legends": {
+    "Basic-Informations": "البيانات الأساسية",
+    "Display-Settings": "إعدادات العرض"
   },
   "Forms": {
     "S": "م",
@@ -59,6 +72,8 @@
     "New-Password": "كلمة المرور الجديدة",
     "Gov": "المحافظة",
     "Gov-Code": "كود المحافظة",
-    "City": "المدينة"
+    "City": "المدينة",
+    "Display-Record-Details": "عرض تفاصيل السجلات",
+    "Show-Tooltip": "عرض التلميحات"
   }
 }

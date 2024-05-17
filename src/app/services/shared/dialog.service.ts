@@ -7,10 +7,9 @@ import { MatDialog } from '@angular/material/dialog';
   providedIn: 'root',
 })
 export class DialogService {
-  constructor(
-    public dialog: MatDialog,
-  ) //  private scrollStrategyOptions: ScrollStrategyOptions,
-  {}
+  constructor(public dialog: MatDialog) {
+    //  private scrollStrategyOptions: ScrollStrategyOptions,
+  }
 
   showAdd(templateRef?: any) {
     this.dialog.open(templateRef, {

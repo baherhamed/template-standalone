@@ -60,12 +60,22 @@ export class RoutesService {
       .pipe(retry(5));
   }
 
-  deleteRoute(Route: any): Observable<any> {
+  deleteRoute(route: any): Observable<any> {
     return this.http
       .put<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.delete}`,
-        Route,
+        route,
       )
       .pipe(retry(5));
   }
+
+  viewRoute(route: any): Observable<any> {
+    return this.http
+      .post<{ success: boolean; message: string; data: Route }>(
+        `${this.baseUrl}${site.appsRoutes.view}`,
+        route,
+      )
+      .pipe(retry(5));
+  }
+
 }

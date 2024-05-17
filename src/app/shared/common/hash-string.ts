@@ -75,7 +75,7 @@ export const hashString = async (text: string) => {
     { key: 'N', with: 'n' },
     { key: 'o', with: '|' },
     { key: 'O', with: 'o' },
-    { key: 'p', with: ':' },
+    { key: 'p', with: '∫' },
     { key: 'P', with: 'p' },
     { key: 'q', with: ';' },
     { key: 'Q', with: 'q' },
@@ -98,11 +98,16 @@ export const hashString = async (text: string) => {
     { key: 'z', with: '╚' },
     { key: 'Z', with: 'z' },
     { key: ',', with: '.' },
-    { key: '[', with: '#' },
-    { key: ']', with: '#' },
+    { key: '[', with: 'A' },
+    { key: ']', with: 'B' },
+    { key: '{', with: 'C' },
+    { key: '}', with: 'D' },
+    { key: ' ', with: 'E' },
+    { key: ':', with: 'F' },
+    { key: '"', with: 'G' },
   ];
 
-  const wordsList = text.split('.');
+  const wordsList = text && text.length ? text.split('.') : ' ';
 
   const hashedText = [];
   for await (const elm of wordsList) {

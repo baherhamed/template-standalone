@@ -17,7 +17,13 @@
       title="{{ 'Modules.System-Management' | translate }}"
       mat-menu-item
       [matMenuTriggerFor]="systemManagementMenu"
-      *ngIf="userLoggedIn && !isDeveloper"
+      *ngIf="
+        (userLoggedIn &&
+          !isDeveloper &&
+          routesList &&
+          routesList.includes(routesNames.govs)) ||
+        routesList.includes(routesNames.cities)
+      "
     >
       <mat-icon color="primary"> settings </mat-icon>
       <p title="{{ 'Modules.System-Management' | translate }}">
@@ -38,6 +44,20 @@
         {{ 'Modules.Security' | translate }}
       </p>
     </button>
+
+    <a
+      mat-menu-item
+      *ngIf="
+        routesList && routesList.includes(routesNames.globalSetting)
+      "
+      routerLinkActive="active"
+      [routerLink]="[routesNames.globalSetting]"
+      (click)="setTitle(routesNames.globalSetting)"
+    >
+      <p title="{{ 'Menu.Global-Setting' | translate }} ">
+        {{ 'Menu.Global-Setting' | translate }}
+      </p>
+    </a>
 
     <button mat-menu-item (click)="logout()">
       <mat-icon color="primary">logout</mat-icon>
@@ -117,7 +137,6 @@
         mat-mini-fab
         [matMenuTriggerFor]="systemMenu"
         *ngIf="userLoggedIn"
-        
         color="success"
       >
         <mat-icon>menu</mat-icon>

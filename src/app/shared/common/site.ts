@@ -4,6 +4,7 @@
 import { environment } from 'src/environments/environment';
 
 import devtools from 'devtools-detect';
+import { HttpHeaders } from '@angular/common/http';
 
 export const site = {
   companyInfo: {
@@ -25,8 +26,10 @@ export const site = {
     delete: 'delete',
     getAll: 'getAll',
     getActive: 'getActive',
+    view: 'view',
     getCitiesByGov: 'getCitiesByGov',
     changePassword: 'changePassword',
+    logout: 'logout',
   },
   apps: {
     home: 'home',
@@ -36,12 +39,43 @@ export const site = {
     users: 'users/',
     govs: 'govs/',
     cities: 'cities/',
+    generalSystemSetting: 'generalSystemSetting/',
   },
   token: 'token',
   routesList: 'routesList',
   permissionsList: 'permissionsList',
-  currentLangValue: 'language',
+  currentLangValue: 'lang',
   language: { ar: 'ar', en: 'en' },
+  globalSetting: 'globalSetting',
+
+  requestHeaders: () => {
+    const token = localStorage.getItem(site.token);
+    const language = localStorage.getItem(site.currentLangValue);
+   
+    const newHeader = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('accept-language', `${language}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    return { headers: newHeader, observe: 'response' };
+  },
+  requestHeadersForUpload: () => {
+    const token = localStorage.getItem(site.token);
+    const language = localStorage.getItem(site.currentLangValue);
+    const newHeader = new HttpHeaders()
+      .set('accept-language', `${language}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    return { headers: newHeader };
+  },
+  requestHeadersForLogin: () => {
+    const language = localStorage.getItem(site.currentLangValue);
+    const newHeader = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('accept-language', `${language}`);
+
+    return { headers: newHeader };
+  },
   // requestHeaders: () => {
   //   const token = localStorage.getItem('token');
   //   const language = localStorage.getItem('language');

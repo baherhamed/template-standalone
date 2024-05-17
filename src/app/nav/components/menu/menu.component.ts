@@ -16,6 +16,7 @@ import {
   inputsLength,
   routesNames,
   validateResponse,
+  getGlobalSetting,
 } from 'src/app/shared';
 
 @Component({
@@ -34,6 +35,7 @@ export class MenuComponent {
   busy = false;
   inputsLength: any;
   routesNames: any;
+  getGlobalSetting: any = undefined;
   newPasswordPassword: ChangePassword = {
     _id: '',
     password: '',
@@ -59,7 +61,8 @@ export class MenuComponent {
     this.permissionsList = this.tokenValues?.permissionsList;
     this.name = this.tokenValues?.name;
     this.language = this.tokenValues?.language;
-    this.getRoute();
+
+    this.getSetting();
   }
 
   async setTitle(screen: string) {
@@ -68,6 +71,10 @@ export class MenuComponent {
 
   getRoute() {
     this.setTitle(location.href);
+  }
+
+  async getSetting() {
+    this.getGlobalSetting = await getGlobalSetting();
   }
 
   changeLanguage() {
@@ -123,9 +130,20 @@ export class MenuComponent {
   }
 
   logout() {
+    this.userService.logout().subscribe(async (res) => {
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        this.notification.info(response.message);
+        this.busy = false;
+      }
+      this.notification.success(response.message);
+
+      this.busy = false;
+    });
     localStorage.removeItem(site.token);
     localStorage.removeItem(site.routesList);
     localStorage.removeItem(site.permissionsList);
+    localStorage.removeItem(site.globalSetting);
     location.assign('/');
   }
 }

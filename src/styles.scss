@@ -84,8 +84,8 @@ input.mat-mdc-input-element.mat-mdc-form-field-input-control.mdc-text-field__inp
   height: 70vh;
   max-height: 75vh;
   overflow: auto;
-  margin: 1em auto;
-  padding: 1em;
+  margin: 0.5em auto;
+  // padding: 0.5em;
 }
 
 .full-width {
@@ -194,14 +194,24 @@ mat-mdc-button-ripple {
   display: none;
 }
 
-.actions-buttons {
-  margin: 1rem;
+.actions-buttons,
+.actions-buttons > * {
+  margin: 0.4em;
+}
+
+.row-buttons
+, .row-buttons > *
+ {
+  margin: .09em;
 }
 
 .table-dark {
   height: 2em;
 }
 
+tr {
+  height: auto;
+}
 td > * {
   color: var(--text);
 }
@@ -276,7 +286,6 @@ table {
   transform: translateX(-50%) translateY(-50%);
 }
 
-
 a.menu-element {
   display: block;
   margin: 1em;
@@ -292,9 +301,9 @@ a.menu-element:hover {
 fieldset {
   border: 2px solid var(--border);
   border-radius: 7px;
-  padding: 0.5em 0.5em;
+  padding: 0.5em;
   position: relative;
-  margin: 0.5em 0.5em;
+  margin: 0.5em;
   align-content: center;
   max-width: 95vw;
 }
@@ -322,10 +331,12 @@ fieldset {
   font-size: 11px;
   color: red !important;
   background-color: yellow;
-  border: 1px solid black;
+  // border: 1px solid black;
   position: relative;
+  font-family: kofi_droid;
   text-align: center;
 }
+
 
 ::placeholder {
   font-style: italic;
@@ -349,6 +360,28 @@ a:hover {
 a:active {
   text-decoration: none;
 }
+
+.add-details-header {
+  border-radius: 7px;
+  color: #ffffff;
+  background-color: #64cc56;
+  font-size: medium;
+  text-align: center;
+  padding: 0.1em;
+  // width: inherit;
+}
+
+.last-update-details-header {
+  border-radius: 7px;
+  color: #ffffff;
+  background-color: #df8a0c;
+  font-size: medium;
+  text-align: center;
+  padding: 0.1em;
+  width: inherit;
+}
+
+
 
 @media only screen and (max-width: 576px) {
   //

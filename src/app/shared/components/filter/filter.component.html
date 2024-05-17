@@ -1,0 +1,21 @@
+<mat-form-field class="example-full-width" appearance="outline">
+  <mat-label>{{controlName|translate}} </mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="selectFilter"
+    [matAutocomplete]="auto"
+    required
+    (click)="clear()"
+    name="control"
+  />
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option
+      *ngFor="let elem of filteredOptions | async"
+      [value]="elem"
+      (click)="returnData(elem)"
+    >
+      {{elem.name}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

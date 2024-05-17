@@ -20,6 +20,7 @@ import {
   ResponsePaginationData,
   TokenValues,
   Pagination,
+  getGlobalSetting,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -52,7 +53,7 @@ export class RoutesComponent implements OnInit {
     en: '',
     active: true,
   };
-
+  getGlobalSetting: any = undefined;
   tokenValues: TokenValues = {
     userId: '',
     name: '',
@@ -88,8 +89,13 @@ export class RoutesComponent implements OnInit {
     this.dialog.showDetails(templateRef);
   }
 
+  async getSetting() {
+    this.getGlobalSetting = await getGlobalSetting();
+  }
+
   async ngOnInit() {
     this.tokenValues = await getTokenValue();
+    this.getSetting();
     this.getAllRouts();
   }
 
@@ -154,10 +160,11 @@ export class RoutesComponent implements OnInit {
         en: route.en,
         active: route.active,
         permissionsList: Object(res.data).permissionsList,
+        addInfo: Object(res.data).addInfo,
       });
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   searchRoute(route: Route, pagination?: Pagination) {
@@ -176,20 +183,36 @@ export class RoutesComponent implements OnInit {
       }
       this.notification.success(response.message);
       this.routesList = res.data;
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
-  setData(route: Route) {
-    this.route = {
+  viewRoute(route: Route) {
+    const query = {
       _id: route._id,
-      name: route.name,
-      ar: route.ar,
-      en: route.en,
-      permissionsList: route.permissionsList,
-      active: route.active,
     };
+    this.busy = true;
+    this.routeService.viewRoute(query).subscribe(async (res: IResponse) => {
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        return this.notification.info(response.message);
+      }
+
+      this.route = {
+        _id: response.data._id,
+        name: response.data.name,
+        ar: response.data.ar,
+        en: response.data.en,
+        permissionsList: response.data.permissionsList,
+        active: response.data.active,
+        addInfo: response.data.addInfo ? response.data.addInfo : undefined,
+        lastUpdateInfo: response.data.lastUpdateInfo
+          ? response.data.lastUpdateInfo
+          : undefined,
+      };
+      this.busy = false;
+    });
   }
 
   async updateRoute(route: Route) {
@@ -219,9 +242,9 @@ export class RoutesComponent implements OnInit {
             site.spliceElementToUpdate(this.routesList, Object(res.data));
           }
         }
+        this.actionType = site.operation.result;
+        this.busy = false;
       });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   deleteRoute(route: Route) {
@@ -255,8 +278,8 @@ export class RoutesComponent implements OnInit {
               });
             }
           }
+          this.busy = false;
         });
-      this.busy = false;
     }
   }
 
@@ -274,9 +297,9 @@ export class RoutesComponent implements OnInit {
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.routesList = res.data || [];
+      this.actionType = site.operation.getAll;
+      this.busy = false;
     });
-    this.actionType = site.operation.getAll;
-    this.busy = false;
   }
 
   pushPermissionToPermissionsList(permission: Permission) {

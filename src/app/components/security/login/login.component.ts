@@ -44,6 +44,7 @@ export class LoginComponent {
     this.securityService.login(login).subscribe(async (res: IResponse) => {
       const response = await validateResponse(res);
 
+      this.busy = false;
       if (!response.success || !response.data) {
         return this.notification.info(response.message);
       }
@@ -53,14 +54,13 @@ export class LoginComponent {
         localStorage.setItem(site.routesList, res.data.routesList);
         localStorage.setItem(site.permissionsList, res.data.permissionsList);
         localStorage.setItem(site.currentLangValue, res.data.language);
+        localStorage.setItem(site.globalSetting, res.data.globalSetting);
         const tokenValues = await getTokenValue();
         this.userLoggedIn = tokenValues?.userLoggedIn;
         location.assign('/');
       } catch (error) {
         alert(error);
       }
-
-      this.busy = false;
     });
   }
 }

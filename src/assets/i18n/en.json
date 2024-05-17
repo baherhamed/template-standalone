@@ -10,7 +10,8 @@
     "Permissions": "Permissions",
     "Roles": "Roles",
     "Govs": "Govs",
-    "Cities": "Cities"
+    "Cities": "Cities",
+    "Global-Setting": "Global Setting"
   },
   "Actions": {
     "Logout": "Logout",
@@ -24,12 +25,24 @@
     "Close": "Close",
     "Export": "Export"
   },
+  "Record-Details": {
+    "Add-Details": "Add Details",
+    "Last-Update-Details": "Last Update Details",
+    "User": "User",
+    "Browser": "Browser",
+    "Mobile": "Mobile",
+    "Ip-Address": "Ip Address",
+    "Os": "Os",
+    "Date": "Date",
+    "Time": "Time"
+  },
   "Modules": {
     "System-Management": "System Management",
     "Security": "Security"
   },
   "Legends": {
-    "Basic-Informations": "Basic Informations"
+    "Basic-Informations": "Basic Informations",
+    "Display-Settings": "Display Settings"
   },
   "Forms": {
     "S": "S",
@@ -59,6 +72,8 @@
     "New-Password": "New Password",
     "Gov": "Gov",
     "Gov-Code": "Gov Code",
-    "City": "City"
+    "City": "City",
+    "Display-Record-Details": "Display Record Details",
+    "Show-Tooltip": "Show Tooltip"
   }
 }

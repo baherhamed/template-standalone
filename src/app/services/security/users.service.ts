@@ -23,52 +23,69 @@ export class UsersService {
         success: boolean;
         message: string;
         data: any;
-      }>(`${this.usersUrl}${site.appsRoutes.add}`, user)
+      }>(`${this.usersUrl}${site.appsRoutes.add}`, user, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
   updateUser(user: any): Observable<any> {
     return this.http
-      .put<{ success: boolean; message: string; data: User }>(
-        `${this.usersUrl}${site.appsRoutes.update}`,
-        user,
-      )
+      .put<{
+        success: boolean;
+        message: string;
+        data: User;
+      }>(`${this.usersUrl}${site.appsRoutes.update}`, user, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
   deleteUser(user: any): Observable<any> {
     return this.http
-      .put<{ success: boolean; message: string; data: User }>(
-        `${this.usersUrl}${site.appsRoutes.delete}`,
-        user,
-      )
+      .put<{
+        success: boolean;
+        message: string;
+        data: User;
+      }>(`${this.usersUrl}${site.appsRoutes.delete}`, user, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
   searchUser(user: any): Observable<any> {
     return this.http
-      .post<{ success: boolean; message: string; data: User }>(
-        `${this.usersUrl}${site.appsRoutes.search}`,
-        user,
-      )
+      .post<{
+        success: boolean;
+        message: string;
+        data: User;
+      }>(`${this.usersUrl}${site.appsRoutes.search}`, user, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
   getAllUsers(pagination?: any): Observable<any> {
     return this.http
-      .post<{ success: boolean; message: string; data: User }>(
-        `${this.usersUrl}${site.appsRoutes.getAll}`,
-        pagination,
-      )
+      .post<{
+        success: boolean;
+        message: string;
+        data: User;
+      }>(`${this.usersUrl}${site.appsRoutes.getAll}`, pagination, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
   getActiveUsers() {
     return this.http
-      .post<{ success: boolean; message: string; data: User[] }>(
-        `${this.usersUrl}${site.appsRoutes.getAll}`,
-        null,
-      )
+      .post<{
+        success: boolean;
+        message: string;
+        data: User[];
+      }>(`${this.usersUrl}${site.appsRoutes.getAll}`, null,{
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
@@ -78,7 +95,31 @@ export class UsersService {
         success: boolean;
         message: string;
         data: ChangePassword;
-      }>(`${this.usersUrl}${site.appsRoutes.changePassword}`, changePassword)
+      }>(`${this.usersUrl}${site.appsRoutes.changePassword}`, changePassword,{
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
+
+  logout(): Observable<any> {
+    return this.http
+      .put<{
+        success: boolean;
+        message: string;
+        data: User;
+      }>(`${this.usersUrl}${site.appsRoutes.logout}`, null,{
+        headers: site.requestHeaders().headers,
+      })
+      .pipe(retry(5));
+  }
+
+  viewUser(user: any): Observable<any> {
+    return this.http
+      .post<{ success: boolean; message: string; data: User }>(
+        `${this.usersUrl}${site.appsRoutes.view}`,
+        user,
+      )
+      .pipe(retry(5));
+  }
+
 }

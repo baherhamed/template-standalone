@@ -5,7 +5,6 @@
     (click)="resetModel(site.operation.add); displayAdd(showAdd)"
     *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
     [disabled]="busy"
-    class="m-1"
   >
     {{ 'Actions.Add' | translate }}
     <mat-icon>add</mat-icon>
@@ -17,7 +16,6 @@
     (click)="resetModel(site.operation.search); displaySearch(showSearch)"
     *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
     [disabled]="busy"
-    class="m-1"
   >
     {{ 'Actions.Search' | translate }}
     <mat-icon>search</mat-icon>
@@ -29,7 +27,6 @@
     (click)="exportDataToExcel('routesList', 'routes')"
     *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
     [disabled]="busy"
-    class="m-1"
   >
     {{ 'Actions.Export' | translate }}
     <mat-icon>import_export</mat-icon>
@@ -121,10 +118,7 @@
           </legend>
           <form #addPermissionForm="ngForm">
             <div class="row">
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-4 col-md-6 col-sm-12"
-              >
+              <mat-form-field appearance="outline" class="col-sm-3">
                 <mat-label>{{ 'Forms.Permission' | translate }} </mat-label>
                 <input
                   matInput
@@ -138,10 +132,7 @@
                 />
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-4 col-md-6 col-sm-12"
-              >
+              <mat-form-field appearance="outline" class="col-sm-3">
                 <mat-label>{{ 'Forms.Permission-En' | translate }} </mat-label>
                 <input
                   matInput
@@ -154,10 +145,7 @@
                 />
               </mat-form-field>
 
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-4 col-md-6 col-sm-12"
-              >
+              <mat-form-field appearance="outline" class="col-sm-4">
                 <mat-label>{{ 'Forms.Permission-Ar' | translate }} </mat-label>
                 <input
                   matInput
@@ -169,7 +157,7 @@
                   autocomplete="off"
                 />
               </mat-form-field>
-              <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="col-sm-2">
                 <button
                   mat-mini-fab
                   color="primary"
@@ -414,7 +402,7 @@
 </ng-template>
 
 <div
-  class="result"
+  class="container"
   *ngIf="
     routesList &&
     routesList.length &&
@@ -457,38 +445,33 @@
             </p>
           </td>
           <td class="no_print">
-            <button
-              mat-mini-fab
-              color="edit"
-              (click)="
-                setData(route);
-                displayUpdate(showAdd);
-                actionType = site.operation.update
-              "
-              *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
-              class="m-1"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+            <div class="row-buttons">
+              <button
+                mat-mini-fab
+                color="edit"
+                (click)="
+                  viewRoute(route);
+                  displayUpdate(showAdd);
+                  actionType = site.operation.update
+                "
+                *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="info"
-              (click)="showDetails(routeDetails); setData(route)"
-              *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
-              class="m-1"
-            >
-              <mat-icon>view_list</mat-icon>
-            </button>
+              <button
+                mat-mini-fab
+                color="info"
+                (click)="showDetails(routeDetails); viewRoute(route)"
+                *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
+              >
+                <mat-icon>view_list</mat-icon>
+              </button>
 
-            <button
-              mat-mini-fab
-              color="danger"
-              (click)="deleteRoute(route)"
-              class="m-1"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button mat-mini-fab color="danger" (click)="deleteRoute(route)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -603,6 +586,17 @@
         </table>
       </div>
     </fieldset>
+    <record-details
+      [addInfo]="route.addInfo"
+      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+    >
+    </record-details>
+    <record-details
+      [lastUpdateInfo]="route.lastUpdateInfo"
+      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
+    >
+    </record-details>
+
     <div class="actions-buttons">
       <button mat-raised-button color="danger" [mat-dialog-close]="true">
         {{ 'Actions.Close' | translate }}

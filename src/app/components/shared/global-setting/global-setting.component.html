@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <fieldset>
+    <div class="add-details-header">
+      <p class="text-center">
+        {{ 'Legends.Display-Settings' | translate }}
+      </p>
+    </div>
+    <!-- 
+    <fieldset>
+        <legend>
+        <p class="legend">{{ 'Legends.Display-Settings' | translate }}</p>
+      </legend> 
+    </fieldset>
+-->
+    <form #setSystemSettingForm="ngForm">
+      <!--
+         <fieldset>
+        <legend>
+          <p class="legend">{{ 'Legends.Basic-Informations' | translate }}</p>
+        </legend> -->
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <mat-checkbox
+            class="margin"
+            [(ngModel)]="
+              globalSetting.displaySetting.displayRecordDetails
+            "
+            name="displaySetting-displayRecordDetails"
+            color="primary"
+          >
+            {{ 'Forms.Display-Record-Details' | translate }}
+          </mat-checkbox>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <mat-checkbox
+            class="margin"
+            [(ngModel)]="
+              globalSetting.displaySetting.showTooltip
+            "
+            name="displaySetting-showTooltip"
+            color="primary"
+          >
+            {{ 'Forms.Show-Tooltip' | translate }}
+          </mat-checkbox>
+        </div>
+        <!-- <mat-form-field
+            appearance="outline"
+            class="col-lg-4 col-md-6 col-sm-12"
+          >
+            <mat-label>{{ 'Forms.Display-Record-Details' | translate }} </mat-label>
+            <input
+              matInput
+              [(ngModel)]="generalSystemSetting.displaySetting.displayRecordDetails"
+              placeholder="{{ 'Forms.Name' | translate }}"
+              name="gov-name"
+              autofocus
+              required
+              minlength="{{ inputsLength.govName }}"
+              autocomplete="off"
+            />
+          </mat-form-field> -->
+      </div>
+    </form>
+    <div class="actions-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!setSystemSettingForm.form.valid"
+        (click)="setGeneralSystemSetting(globalSetting)"
+      >
+        {{ 'Actions.Save' | translate }}<mat-icon>save</mat-icon>
+      </button>
+    </div>
+  </fieldset>
+</div>

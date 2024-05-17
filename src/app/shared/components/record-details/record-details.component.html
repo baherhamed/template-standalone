@@ -1,0 +1,120 @@
+<fieldset *ngIf="addInfo">
+  <div class="add-details-header">
+    <p class="text-center">{{ 'Record-Details.Add-Details' | translate }}</p>
+  </div>
+  <fieldset>
+    <div class="table-responsive">
+      <table class="table table-sm table-striped align-middle table-hover">
+        <thead>
+          <tr class="table-dark">
+            <th>{{ 'Record-Details.User' | translate }}</th>
+            <th>{{ 'Record-Details.Browser' | translate }}</th>
+            <th>{{ 'Record-Details.Mobile' | translate }}</th>
+            <th>{{ 'Record-Details.Ip-Address' | translate }}</th>
+            <th>{{ 'Record-Details.Os' | translate }}</th>
+            <th>{{ 'Record-Details.Date' | translate }}</th>
+            <th>{{ 'Record-Details.Time' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <p class="text-center">{{ addInfo.userName }}</p>
+            </td>
+            <td>
+              <p class="text-center">{{ addInfo.browser }}</p>
+            </td>
+
+            <td>
+              <p *ngIf="addInfo.mobile" class="status-active">
+                {{ 'Forms.Yes' | translate }}
+              </p>
+              <p *ngIf="!addInfo.mobile" class="status-not-active">
+                {{ 'Forms.No' | translate }}
+              </p>
+            </td>
+            <td>
+              <p class="text-center">{{ addInfo.ipAddress }}</p>
+            </td>
+            <td>
+              <p class="text-center">{{ addInfo.os }}</p>
+            </td>
+
+            <td>
+              <p class="text-center">
+                {{ addInfo.date | date: 'dd/MM/YYYY' }}
+              </p>
+            </td>
+
+            <td>
+              <p class="text-center">
+                {{ addInfo.date | date: 'hh:mm:ss a' }}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </fieldset>
+</fieldset>
+
+<fieldset *ngIf="lastUpdateInfo">
+  <div class="last-update-details-header">
+    <p class="text-center">
+      {{ 'Record-Details.Last-Update-Details' | translate }}
+    </p>
+  </div>
+  <fieldset>
+    <div class="table-responsive">
+      <table class="table table-sm table-striped align-middle table-hover">
+        <thead>
+          <tr class="table-dark">
+            <th>{{ 'Record-Details.User' | translate }}</th>
+            <th>{{ 'Record-Details.Browser' | translate }}</th>
+            <th>{{ 'Record-Details.Mobile' | translate }}</th>
+            <th>{{ 'Record-Details.Ip-Address' | translate }}</th>
+            <th>{{ 'Record-Details.Os' | translate }}</th>
+            <th>{{ 'Record-Details.Date' | translate }}</th>
+            <th>{{ 'Record-Details.Time' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <p class="text-center">{{ lastUpdateInfo.userName }}</p>
+            </td>
+            <td>
+              <p class="text-center">{{ lastUpdateInfo.browser }}</p>
+            </td>
+
+            <td>
+              <p *ngIf="lastUpdateInfo.mobile" class="status-active">
+                {{ 'Forms.Yes' | translate }}
+              </p>
+              <p *ngIf="!lastUpdateInfo.mobile" class="status-not-active">
+                {{ 'Forms.No' | translate }}
+              </p>
+            </td>
+            <td>
+              <p class="text-center">{{ lastUpdateInfo.ipAddress }}</p>
+            </td>
+            <td>
+              <p class="text-center">{{ lastUpdateInfo.os }}</p>
+            </td>
+            <td>
+              <p class="text-center">
+                {{ lastUpdateInfo.date | date: 'dd/MM/YYYY' }}
+              </p>
+            </td>
+
+            <td>
+              <p class="text-center">
+                {{ lastUpdateInfo.date | date: 'hh:mm:ss a' }}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </fieldset>
+</fieldset>

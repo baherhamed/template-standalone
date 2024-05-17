@@ -1,3 +1,5 @@
+import { RecordDetails } from 'src/app/shared';
+
 export interface Permission {
   _id?: string;
   permission_id?: string;
@@ -6,4 +8,6 @@ export interface Permission {
   ar: string;
   en: string;
   active: boolean;
+  addInfo?: RecordDetails;
+  lastUpdateInfo?: RecordDetails;
 }

@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
+import { City } from 'src/app/interfaces';
 import { site } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 
@@ -20,14 +21,14 @@ export class CitiesService {
       .post<{
         success: boolean;
         message: string;
-        data: any;
+        data: City;
       }>(`${this.citiesUrl}${site.appsRoutes.add}`, city)
       .pipe(retry(5));
   }
 
   updateCity(city: any): Observable<any> {
     return this.http
-      .put<{ success: boolean; message: string; data: any }>(
+      .put<{ success: boolean; message: string; data: City }>(
         `${this.citiesUrl}${site.appsRoutes.update}`,
         city,
       )
@@ -36,7 +37,7 @@ export class CitiesService {
 
   deleteCity(city: any): Observable<any> {
     return this.http
-      .put<{ success: boolean; message: string; data: any }>(
+      .put<{ success: boolean; message: string; data: City }>(
         `${this.citiesUrl}${site.appsRoutes.delete}`,
         city,
       )
@@ -45,7 +46,7 @@ export class CitiesService {
 
   searchCity(city: any): Observable<any> {
     return this.http
-      .post<{ success: boolean; message: string; data: any }>(
+      .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.search}`,
         city,
       )
@@ -54,7 +55,7 @@ export class CitiesService {
 
   getCitiesByGov(city: any): Observable<any> {
     return this.http
-      .post<{ success: boolean; message: string; data: any }>(
+      .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.getCitiesByGov}`,
         city,
       )
@@ -63,7 +64,7 @@ export class CitiesService {
 
   getAllCities(pagination?: any): Observable<any> {
     return this.http
-      .post<{ success: boolean; message: string; data: any }>(
+      .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.getAll}`,
         pagination,
       )
@@ -72,9 +73,17 @@ export class CitiesService {
 
   getActiveCities() {
     return this.http
-      .post<{ success: boolean; message: string; data: [] }>(
+      .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.getActive}`,
         null,
+      )
+      .pipe(retry(5));
+  }
+  viewCity(gov: any): Observable<any> {
+    return this.http
+      .post<{ success: boolean; message: string; data: City }>(
+        `${this.citiesUrl}${site.appsRoutes.view}`,
+        gov,
       )
       .pipe(retry(5));
   }

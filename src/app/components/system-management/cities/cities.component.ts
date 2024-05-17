@@ -21,6 +21,7 @@ import {
   ResponsePaginationData,
   TokenValues,
   Pagination,
+  getGlobalSetting,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -41,6 +42,7 @@ export class CitiesComponent {
   citiesList: City[] = [];
   busy = false;
   lang: string = '';
+  getGlobalSetting: any = undefined;
 
   city: City = {
     gov: {
@@ -90,13 +92,17 @@ export class CitiesComponent {
 
   async ngOnInit() {
     this.tokenValues = await getTokenValue();
-
+    this.getSetting();
     this.getActiveGovs();
     this.getAllCities();
   }
 
   async exportDataToExcel(table: any, file: any) {
     exportToExcel(table, file);
+  }
+
+  async getSetting() {
+    this.getGlobalSetting = await getGlobalSetting();
   }
 
   resetModel(action: string) {
@@ -129,11 +135,11 @@ export class CitiesComponent {
         gov: city.gov,
         name: city.name,
         active: city.active,
+        addInfo: Object(res.data).addInfo,
       });
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-
-    this.busy = false;
   }
 
   searchCity(city: City, pagination?: Pagination) {
@@ -152,26 +158,9 @@ export class CitiesComponent {
       }
       this.notification.success(response.message);
       this.citiesList = res.data;
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
-  }
-
-  async setData(city: City) {
-    let selectedGov;
-
-    for await (const gov of this.govsList) {
-      if (gov && gov._id === city.gov._id) {
-        selectedGov = gov;
-      }
-    }
-
-    this.city = {
-      _id: city._id,
-      gov: selectedGov || city.gov,
-      name: city.name,
-      active: city.active,
-    };
   }
 
   async updateCity(city: City) {
@@ -195,9 +184,9 @@ export class CitiesComponent {
             site.spliceElementToUpdate(this.citiesList, Object(res.data));
           }
         }
+        this.actionType = site.operation.result;
+        this.busy = false;
       });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   deleteCity(city: City) {
@@ -230,10 +219,48 @@ export class CitiesComponent {
             });
           }
         }
-
         this.busy = false;
       });
     }
+  }
+
+  viewCity(city: City) {
+    const query = {
+      _id: city._id,
+    };
+    this.busy = true;
+    this.cityService.viewCity(query).subscribe(async (res: IResponse) => {
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        return this.notification.info(response.message);
+      }
+
+      const selectedCityIndex = this.citiesList.findIndex(
+        (city) => city && city._id === res.data._id,
+      );
+      selectedCityIndex >= 0
+        ? (this.citiesList[selectedCityIndex] = res.data)
+        : res.data;
+
+      const selectedGovIndex = this.govsList.findIndex(
+        (gov) => gov && gov._id === res.data.gov._id,
+      );
+
+      this.city = {
+        _id: response.data._id,
+        name: response.data.name,
+        gov:
+          selectedGovIndex >= 0
+            ? this.govsList[selectedGovIndex]
+            : response.data.gov,
+        active: response.data.active,
+        addInfo: response.data.addInfo ? response.data.addInfo : undefined,
+        lastUpdateInfo: response.data.lastUpdateInfo
+          ? response.data.lastUpdateInfo
+          : undefined,
+      };
+      this.busy = false;
+    });
   }
 
   getAllCities(pagination?: any) {
@@ -250,9 +277,9 @@ export class CitiesComponent {
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.citiesList = res.data || [];
+      this.actionType = site.operation.getAll;
+      this.busy = false;
     });
-    this.actionType = site.operation.getAll;
-    this.busy = false;
   }
 
   getActiveGovs() {

@@ -22,6 +22,8 @@ import {
   ResponsePaginationData,
   TokenValues,
   Pagination,
+  getGlobalSetting,
+  IResponse,
 } from 'src/app/shared';
 
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -59,6 +61,8 @@ export class UsersComponent implements OnInit {
     permissionsList: [],
     active: true,
   };
+
+  getGlobalSetting: any = undefined;
 
   tokenValues: TokenValues = {
     userId: '',
@@ -98,9 +102,14 @@ export class UsersComponent implements OnInit {
     this.dialog.showDetails(templateRef);
   }
 
+  async getSetting() {
+    this.getGlobalSetting = await getGlobalSetting();
+  }
+
   async ngOnInit() {
     this.tokenValues = await getTokenValue();
 
+    this.getSetting();
     this.getActiveLanguages();
     this.getActiveRouts();
     this.getAllUsers();
@@ -161,10 +170,11 @@ export class UsersComponent implements OnInit {
         routesList: user.routesList,
         permissionsList: user.permissionsList,
         active: user.active,
+        addInfo: Object(res.data).addInfo,
       });
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   searchUser(user: User, pagination?: Pagination) {
@@ -183,10 +193,9 @@ export class UsersComponent implements OnInit {
       }
       this.notification.success(response.message);
       this.usersList = res.data;
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-
-    this.busy = false;
   }
 
   async updateUser(user: User) {
@@ -217,9 +226,9 @@ export class UsersComponent implements OnInit {
           site.spliceElementToUpdate(this.usersList, res.data);
         }
       }
+      this.actionType = site.operation.result;
+      this.busy = false;
     });
-    this.actionType = site.operation.result;
-    this.busy = false;
   }
 
   deleteUser(user: User) {
@@ -251,7 +260,6 @@ export class UsersComponent implements OnInit {
             });
           }
         }
-
         this.busy = false;
       });
     }
@@ -267,6 +275,8 @@ export class UsersComponent implements OnInit {
       routesList: user.routesList,
       permissionsList: user.permissionsList,
       active: user.active,
+      addInfo: user.addInfo ? user.addInfo : undefined,
+      lastUpdateInfo: user.lastUpdateInfo ? user.lastUpdateInfo : undefined,
     };
   }
 
@@ -289,6 +299,37 @@ export class UsersComponent implements OnInit {
     };
   }
 
+  viewUser(user: User) {
+    const query = {
+      _id: user._id,
+    };
+    this.busy = true;
+    this.userService.viewUser(query).subscribe(async (res: IResponse) => {
+      const response = await validateResponse(res);
+      if (!response.success || !response.data) {
+        return this.notification.info(response.message);
+      }
+      for await (const lang of this.languagesList) {
+        if (lang._id === Object(res.data.language)._id) {
+          site.spliceElementToUpdate(this.languagesList, Object(res.data));
+        }
+      }
+      this.user = {
+        _id: response.data._id,
+        name: response.data.name,
+        mobile: response.data.mobile,
+        email: response.data.email,
+        language: response.data.language,
+        routesList: response.data.routesList,
+        active: response.data.active,
+        addInfo: response.data.addInfo ? response.data.addInfo : undefined,
+        lastUpdateInfo: response.data.lastUpdateInfo
+          ? response.data.lastUpdateInfo
+          : undefined,
+      };
+      this.busy = false;
+    });
+  }
   async setRoleRoutesList() {
     const selectedRoutesList = [];
     for await (const route of this.user.routesList) {
@@ -341,9 +382,9 @@ export class UsersComponent implements OnInit {
       this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.usersList = res.data || [];
+      this.actionType = site.operation.getAll;
+      this.busy = false;
     });
-    this.actionType = site.operation.getAll;
-    this.busy = false;
   }
 
   resetActionTypeToClose() {

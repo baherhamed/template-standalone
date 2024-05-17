@@ -1,13 +1,25 @@
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
-import { PaginatorComponent, SpinnerComponent } from '.';
+import {
+  FilterComponent,
+  MessageComponent,
+  PaginatorComponent,
+  RecordDetailsComponent,
+  SpinnerComponent,
+} from '.';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [PaginatorComponent, SpinnerComponent],
+  declarations: [
+    PaginatorComponent,
+    SpinnerComponent,
+    RecordDetailsComponent,
+    MessageComponent,
+    FilterComponent,
+  ],
   imports: [
     MaterialModule,
     TranslateModule,
@@ -19,6 +31,9 @@ import { CommonModule } from '@angular/common';
   exports: [
     PaginatorComponent,
     SpinnerComponent,
+    RecordDetailsComponent,
+    MessageComponent,
+    FilterComponent,
     MaterialModule,
     RouterLink,
     RouterLinkActive,

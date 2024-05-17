@@ -75,7 +75,7 @@ export async function getTokenValue() {
       localStorage.removeItem(site.token);
       localStorage.removeItem(site.routesList);
       localStorage.removeItem(site.permissionsList);
-      location.replace('/security/login');
+      location.replace('/login');
       tokenValues.userLoggedIn = false;
     }
   } else if (!token) {
