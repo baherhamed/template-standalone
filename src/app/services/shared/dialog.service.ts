@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ScrollStrategy, ScrollStrategyOptions } from '@angular/cdk/overlay';
+// import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -7,12 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
   providedIn: 'root',
 })
 export class DialogService {
-  scrollStrategy: ScrollStrategy;
-  constructor(
-    public dialog: MatDialog,
-    private scrollStrategyOptions: ScrollStrategyOptions,
-  ) {
-    this.scrollStrategy = this.scrollStrategyOptions.noop();
+  constructor(public dialog: MatDialog) {
+    //  private scrollStrategyOptions: ScrollStrategyOptions,
   }
 
   showAdd(templateRef?: any) {
@@ -22,7 +18,6 @@ export class DialogService {
       maxWidth: '100vw',
       maxHeight: '90vh',
       position: { top: '5vh', bottom: '25vh' },
-      scrollStrategy: this.scrollStrategy,
       disableClose: true,
     });
   }
@@ -34,7 +29,6 @@ export class DialogService {
       maxWidth: '100vw',
       maxHeight: '90vh',
       position: { top: '5vh', bottom: '25vh' },
-      scrollStrategy: this.scrollStrategy,
       disableClose: true,
     });
   }
@@ -46,7 +40,6 @@ export class DialogService {
       maxWidth: '100vw',
       maxHeight: '90vh',
       position: { top: '5vh', bottom: '25vh' },
-      scrollStrategy: this.scrollStrategy,
       disableClose: true,
       ariaModal: true,
     });
@@ -59,7 +52,6 @@ export class DialogService {
       maxWidth: '100vw',
       maxHeight: '80vh',
       position: { top: '5vh', bottom: '25vh' },
-      scrollStrategy: this.scrollStrategy,
       disableClose: true,
       ariaModal: true,
     });
