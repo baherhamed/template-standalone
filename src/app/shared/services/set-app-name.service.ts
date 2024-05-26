@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { appsNames, site } from 'src/app/shared';
+import { appsNames, site } from '..';
+
 
 @Injectable({
   providedIn: 'root',

@@ -12,8 +12,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SecurityService {
-  securityUrl = `${environment.url}${site.api}${site.modules.security}`;
-  usersUrl = `${environment.url}${site.api}${site.modules.security}${site.apps.users}`;
+  securityUrl = `${environment.url}${site.api}`;
 
   constructor(private http: HttpClient) {}
 

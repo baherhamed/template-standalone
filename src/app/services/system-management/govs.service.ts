@@ -11,9 +11,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class GovsService {
-  govsUrl = `${environment.url}${site.api}${site.modules.systemManagement}${site.apps.govs}`;
-  // token = localStorage.getItem(site.token);
-  // language = localStorage.getItem(site.currentLangValue);
+  govsUrl = `${environment.url}${site.api}${site.apps.govs}`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +19,7 @@ export class GovsService {
     return this.http
       .post<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: Gov;
       }>(`${this.govsUrl}${site.appsRoutes.add}`, gov)
@@ -31,6 +30,7 @@ export class GovsService {
     return this.http
       .put<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: Gov;
       }>(`${this.govsUrl}${site.appsRoutes.update}`, gov)
@@ -41,6 +41,7 @@ export class GovsService {
     return this.http
       .put<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: any;
       }>(`${this.govsUrl}${site.appsRoutes.delete}`, gov)
@@ -51,8 +52,9 @@ export class GovsService {
     return this.http
       .post<{
         success: boolean;
+        statusCode: number;
         message: string;
-        data: Gov;
+        data: Gov[];
       }>(`${this.govsUrl}${site.appsRoutes.search}`, gov)
       .pipe(retry(5));
   }
@@ -61,6 +63,7 @@ export class GovsService {
     return this.http
       .post<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: Gov[];
       }>(`${this.govsUrl}${site.appsRoutes.getAll}`, pagination)
@@ -71,16 +74,18 @@ export class GovsService {
     return this.http
       .post<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: Gov[];
       }>(`${this.govsUrl}${site.appsRoutes.getActive}`, null)
       .pipe(retry(5));
   }
 
-  viewGov(gov: any): Observable<any> {
+  viewGov<Observable>(gov: any) {
     return this.http
       .post<{
         success: boolean;
+        statusCode: number;
         message: string;
         data: Gov;
       }>(`${this.govsUrl}${site.appsRoutes.view}`, gov)

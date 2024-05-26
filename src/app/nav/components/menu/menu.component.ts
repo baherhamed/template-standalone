@@ -3,20 +3,17 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ChangePassword } from 'src/app/interfaces';
-import {
-  DialogService,
-  NotificationService,
-  SetAppNameService,
-  UsersService,
-} from 'src/app/services';
+import { UsersService } from 'src/app/services';
 
 import {
   site,
   getTokenValue,
   inputsLength,
   routesNames,
-  validateResponse,
   getGlobalSetting,
+  DialogService,
+  SetAppNameService,
+  HandleResponseService,
 } from 'src/app/shared';
 
 @Component({
@@ -43,10 +40,10 @@ export class MenuComponent {
   title: any;
   constructor(
     public dialog: DialogService,
+    private handleResponse: HandleResponseService,
+    public setAppNameService: SetAppNameService,
     public userService: UsersService,
     public translateService: TranslateService,
-    public notification: NotificationService,
-    public setAppNameService: SetAppNameService,
   ) {
     this.inputsLength = inputsLength;
     this.routesNames = routesNames;
@@ -113,14 +110,11 @@ export class MenuComponent {
     };
     this.busy = true;
     this.userService.changePassword(newPassData).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        this.notification.info(response.message);
-        this.busy = false;
-      }
-      this.notification.success(response.message);
-
+      const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
+      if (!response.success) {
+        return;
+      }
     });
   }
 
@@ -131,12 +125,11 @@ export class MenuComponent {
 
   logout() {
     this.userService.logout().subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        this.notification.info(response.message);
-        this.busy = false;
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
 
       this.busy = false;
     });

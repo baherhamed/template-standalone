@@ -6,3 +6,4 @@ export * from './auth.guard';
 export * from './set-app-name.service';
 export * from './token.interceptor';
 export * from './shared.service';
+export * from './handle-response.service';

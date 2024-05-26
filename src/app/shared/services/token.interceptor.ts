@@ -1,5 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { site } from 'src/app/shared';
+import { site } from '..';
+
 
 export const loggerInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem(site.token);

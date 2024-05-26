@@ -3,14 +3,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Login } from 'src/app/interfaces';
-import { NotificationService, SecurityService } from 'src/app/services';
-import {
-  IResponse,
-  getTokenValue,
-  inputsLength,
-  site,
-  validateResponse,
-} from 'src/app/shared';
+import { SecurityService } from 'src/app/services';
+import { HandleResponseService, IResponse, getTokenValue, inputsLength, site } from 'src/app/shared';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
@@ -34,22 +28,21 @@ export class LoginComponent {
 
   constructor(
     private securityService: SecurityService,
-    private notification: NotificationService,
+    private handleResponse: HandleResponseService,
   ) {
     this.inputsLength = inputsLength;
   }
 
   tryLogin(login: Login) {
-    this.busy = true;
-    this.securityService.login(login).subscribe(async (res: IResponse) => {
-      const response = await validateResponse(res);
+    try {
+      this.busy = true;
+      this.securityService.login(login).subscribe(async (res: IResponse) => {
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
 
-      this.busy = false;
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
-      }
-      try {
-        this.notification.success(response.message);
         localStorage.setItem(site.token, res.data.token);
         localStorage.setItem(site.routesList, res.data.routesList);
         localStorage.setItem(site.permissionsList, res.data.permissionsList);
@@ -58,9 +51,9 @@ export class LoginComponent {
         const tokenValues = await getTokenValue();
         this.userLoggedIn = tokenValues?.userLoggedIn;
         location.assign('/');
-      } catch (error) {
-        alert(error);
-      }
-    });
+      })
+    } catch (error) {
+      alert(error);
+    };
   }
 }

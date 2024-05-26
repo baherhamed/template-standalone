@@ -455,6 +455,14 @@
                   actionType = site.operation.update
                 "
                 *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Update' | translate }}"
+                #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
+                "
               >
                 <mat-icon>edit</mat-icon>
               </button>
@@ -464,11 +472,31 @@
                 color="info"
                 (click)="showDetails(routeDetails); viewRoute(route)"
                 *ngIf="tokenValues.userLoggedIn && tokenValues.isDeveloper"
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Details' | translate }}"
+                #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
+                "
               >
                 <mat-icon>view_list</mat-icon>
               </button>
 
-              <button mat-mini-fab color="danger" (click)="deleteRoute(route)">
+              <button
+                mat-mini-fab
+                color="danger"
+                (click)="deleteRoute(route)"
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Delete' | translate }}"
+                #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
+                "
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </div>

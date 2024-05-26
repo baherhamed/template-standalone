@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { getTokenValue } from 'src/app/shared';
-
+import { getTokenValue } from '..';
 
 @Injectable({
   providedIn: 'root',

@@ -23,7 +23,11 @@
     "Details": "تفاصيل",
     "Delete": "حذف",
     "Close": "إغلاق",
-    "Export": "تصدير"
+    "Export": "تصدير",
+    "Hide-Page-Size": "إخفاء عدد نتائج الصفحة",
+    "Show-Mmultiple-Page-Size-Options": "التحكم في عدد النتائج",
+    "Show-First-Last-Buttons": "إظهار أزرار البداية والنهاية",
+    "Disabled": "إلغاء التحكم"
   },
   "Record-Details": {
     "Add-Details": "تفاصيل الإضافة",
@@ -74,6 +78,7 @@
     "Gov-Code": "كود المحافظة",
     "City": "المدينة",
     "Display-Record-Details": "عرض تفاصيل السجلات",
-    "Show-Tooltip": "عرض التلميحات"
+    "Show-Tooltip": "عرض التلميحات",
+    "Tooltip-Position": "موقع عرض التلميح"
   }
 }

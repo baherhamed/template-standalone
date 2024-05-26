@@ -5,26 +5,13 @@
         {{ 'Legends.Display-Settings' | translate }}
       </p>
     </div>
-    <!-- 
-    <fieldset>
-        <legend>
-        <p class="legend">{{ 'Legends.Display-Settings' | translate }}</p>
-      </legend> 
-    </fieldset>
--->
+
     <form #setSystemSettingForm="ngForm">
-      <!--
-         <fieldset>
-        <legend>
-          <p class="legend">{{ 'Legends.Basic-Informations' | translate }}</p>
-        </legend> -->
       <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-12">
           <mat-checkbox
             class="margin"
-            [(ngModel)]="
-              globalSetting.displaySetting.displayRecordDetails
-            "
+            [(ngModel)]="globalSetting.displaySetting.displayRecordDetails"
             name="displaySetting-displayRecordDetails"
             color="primary"
           >
@@ -35,31 +22,32 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
           <mat-checkbox
             class="margin"
-            [(ngModel)]="
-              globalSetting.displaySetting.showTooltip
-            "
+            [(ngModel)]="globalSetting.displaySetting.showTooltip"
             name="displaySetting-showTooltip"
             color="primary"
           >
             {{ 'Forms.Show-Tooltip' | translate }}
           </mat-checkbox>
         </div>
-        <!-- <mat-form-field
-            appearance="outline"
-            class="col-lg-4 col-md-6 col-sm-12"
+
+        <mat-form-field
+          appearance="outline"
+          class="col-lg-2 col-md-3 col-sm-6"
+        >
+          <mat-label>{{ 'Forms.Tooltip-Position' | translate }} </mat-label>
+          <mat-select
+            matNativeControl
+            [(ngModel)]="globalSetting.displaySetting.tooltipPosition"
+            required
+            name="position"
           >
-            <mat-label>{{ 'Forms.Display-Record-Details' | translate }} </mat-label>
-            <input
-              matInput
-              [(ngModel)]="generalSystemSetting.displaySetting.displayRecordDetails"
-              placeholder="{{ 'Forms.Name' | translate }}"
-              name="gov-name"
-              autofocus
-              required
-              minlength="{{ inputsLength.govName }}"
-              autocomplete="off"
-            />
-          </mat-form-field> -->
+            <mat-option
+              [value]="position"
+              *ngFor="let position of tooltipPositionList"
+              >{{ position.ar }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
       </div>
     </form>
     <div class="actions-buttons">
@@ -67,10 +55,11 @@
         mat-raised-button
         color="primary"
         [disabled]="!setSystemSettingForm.form.valid"
-        (click)="setGeneralSystemSetting(globalSetting)"
+        (click)="setGlobalSystemSetting(globalSetting)"
       >
         {{ 'Actions.Save' | translate }}<mat-icon>save</mat-icon>
       </button>
     </div>
   </fieldset>
 </div>
+<spinner [busy]="busy"></spinner>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, HostListener } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { site } from './shared';
+import { DialogService, NotificationService, site } from './shared';
 import { CommonModule } from '@angular/common';
 
 import { RouterOutlet } from '@angular/router';
@@ -13,9 +13,8 @@ import {
   LoginComponent,
   RoutesComponent,
   UsersComponent,
-  GlobalSettingComponent
+  GlobalSettingComponent,
 } from './components';
-import { DialogService, NotificationService } from './services';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -39,7 +38,7 @@ import { DialogService, NotificationService } from './services';
     RouterOutlet,
     // ToastrModule,
   ],
-  providers: [DialogService,  NotificationService],
+  providers: [DialogService, NotificationService],
 })
 export class AppComponent {
   site: any;

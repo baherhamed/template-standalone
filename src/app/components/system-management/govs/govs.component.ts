@@ -1,13 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CommonModule, } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Gov } from 'src/app/interfaces';
-
-import {
-  DialogService,
-  GovsService,
-  NotificationService,
-} from 'src/app/services';
+import { GovsService } from 'src/app/services';
 
 import {
   IResponse,
@@ -16,11 +11,12 @@ import {
   exportToExcel,
   getTokenValue,
   inputsLength,
-  validateResponse,
   ResponsePaginationData,
   TokenValues,
   Pagination,
   getGlobalSetting,
+  DialogService,
+  HandleResponseService,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -67,8 +63,8 @@ export class GovsComponent implements OnInit {
 
   constructor(
     private dialog: DialogService,
+    private handleResponse: HandleResponseService,
     private govService: GovsService,
-    private notification: NotificationService,
   ) {
     this.inputsLength = inputsLength;
     this.site = site;
@@ -117,38 +113,37 @@ export class GovsComponent implements OnInit {
   async addGov(gov: Gov) {
     this.busy = true;
     this.govService.addGov(gov).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       this.govsList.push({
-        _id: Object(res.data)._id,
+        _id: Object(response.data)._id,
         name: gov.name,
         code: gov.code,
         active: gov.active,
-        addInfo: Object(res.data).addInfo,
+        addInfo: Object(response.data).addInfo,
       });
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
   async updateGov(gov: Gov) {
     this.busy = true;
     this.govService.updateGov(gov).subscribe(async (res: IResponse) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
+
       for await (const item of this.govsList) {
-        if (item._id === Object(res.data)._id) {
-          site.spliceElementToUpdate(this.govsList, Object(res.data));
+        if (item._id === Object(response.data)._id) {
+          site.spliceElementToUpdate(this.govsList, response.data);
         }
       }
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
@@ -173,22 +168,23 @@ export class GovsComponent implements OnInit {
       };
       this.busy = true;
       this.govService.deleteGov(deletedGov).subscribe(async (res) => {
-        const response = await validateResponse(res);
-
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
         }
-        this.notification.warning(response.message);
         for await (const item of this.govsList) {
-          if (String(item._id) === String(res.data._id)) {
+          if (
+            response?.data &&
+            String(item._id) === String(response?.data._id)
+          ) {
             this.govsList.forEach((item: Gov, index: number) => {
-              if (item._id === res.data._id) {
+              if (item._id === response.data._id) {
                 this.govsList.splice(index, 1);
               }
             });
           }
         }
-        this.busy = false;
       });
     }
   }
@@ -202,33 +198,33 @@ export class GovsComponent implements OnInit {
     };
     this.busy = true;
     this.govService.searchGov(searchData).subscribe(async (res) => {
-      this.responsePaginationData = res.paginationInfo;
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
-      }
-      this.notification.success(response.message);
-      this.govsList = res.data;
-      this.actionType = site.operation.result;
+      const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
+      if (!response.success) {
+        return;
+      }
+      this.responsePaginationData = response?.paginationInfo;
+      this.govsList = response.data;
+      this.actionType = site.operation.result;
+    
     });
   }
 
-  viewGov(gov: Gov) {
+  async viewGov(gov: Gov) {
     const query = {
       _id: gov._id,
     };
     this.busy = true;
     this.govService.viewGov(query).subscribe(async (res) => {
-      //IResponse
-
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
+
       for await (const item of this.govsList) {
-        if (item._id === Object(res.data)._id) {
-          site.spliceElementToUpdate(this.govsList, Object(res.data));
+        if (item._id === Object(response.data)._id) {
+          site.spliceElementToUpdate(this.govsList, Object(response.data));
         }
       }
       this.gov = {
@@ -241,27 +237,28 @@ export class GovsComponent implements OnInit {
           ? response.data.lastUpdateInfo
           : undefined,
       };
-      this.busy = false;
+  
     });
   }
 
   async getAllGovs(pagination?: Pagination) {
     this.busy = true;
+
     const paginationData = {
       page: pagination?.pageIndex,
       limit: pagination?.pageSize,
     };
 
     this.govService.getAllGovs(paginationData).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
-      }
-      this.notification.success(response.message);
-      this.responsePaginationData = res.paginationInfo;
-      this.govsList = res.data || [];
-      this.actionType = site.operation.getAll;
+      const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
+      if (!response.success) {
+        return;
+      }
+      this.actionType = site.operation.getAll;
+      this.responsePaginationData = response.paginationInfo;
+      this.govsList = response.data || [];
+  
     });
   }
 

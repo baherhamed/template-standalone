@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import { SecuritRoutes, SystemManagementRoutes } from './configs';
-import { AuthGuard } from './services';
+import { AuthGuard } from './shared';
 
 export const routes: Routes = [
   // {
   //   path: '',
   //   pathMatch: 'full',
-    // redirectTo: '/',
+  // redirectTo: '/',
   //   canActivate: [AuthGuard]
   // },
   {
@@ -41,15 +41,18 @@ export const routes: Routes = [
     loadComponent: async () =>
       (await import('./components/system-management/cities/cities.component'))
         .CitiesComponent,
-        
+
     canActivate: [AuthGuard],
   },
   {
     path: 'globalSetting',
     loadComponent: async () =>
-      (await import('./components/shared/global-setting/global-setting.component'))
-        .GlobalSettingComponent,
-        
+      (
+        await import(
+          './components/shared/global-setting/global-setting.component'
+        )
+      ).GlobalSettingComponent,
+
     canActivate: [AuthGuard],
   },
   // {

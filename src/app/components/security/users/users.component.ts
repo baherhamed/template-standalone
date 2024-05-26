@@ -3,20 +3,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Permission, Route, User } from 'src/app/interfaces';
-import {
-  DialogService,
-  NotificationService,
-  RoutesService,
-  UsersService,
-} from 'src/app/services';
-import { DefinitionsService } from 'src/app/services/shared/definitions.service';
+import { RoutesService, UsersService } from 'src/app/services';
+import { DefinitionsService } from 'src/app/shared/services/definitions.service';
 
 import {
   getTokenValue,
   inputsLength,
   Language,
   site,
-  validateResponse,
   exportToExcel,
   permissionsNames,
   ResponsePaginationData,
@@ -24,6 +18,9 @@ import {
   Pagination,
   getGlobalSetting,
   IResponse,
+  DialogService,
+  NotificationService,
+  HandleResponseService,
 } from 'src/app/shared';
 
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -76,10 +73,10 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private dialog: DialogService,
+    private handleResponse: HandleResponseService,
     private userService: UsersService,
     private routeService: RoutesService,
     private definitionService: DefinitionsService,
-    private notification: NotificationService,
   ) {
     this.inputLength = inputsLength;
     this.site = site;
@@ -154,11 +151,11 @@ export class UsersComponent implements OnInit {
     };
     this.busy = true;
     this.userService.addUser(newUser).subscribe(async (res: any) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       this.actionType = '';
       this.usersList.push({
         _id: Object(res.data)._id,
@@ -173,7 +170,6 @@ export class UsersComponent implements OnInit {
         addInfo: Object(res.data).addInfo,
       });
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
@@ -186,12 +182,12 @@ export class UsersComponent implements OnInit {
     };
     this.busy = true;
     this.userService.searchUser(searchData).subscribe(async (res) => {
-      this.responsePaginationData = res.paginationInfo;
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
+      this.responsePaginationData = response.paginationInfo;
       this.usersList = res.data;
       this.actionType = site.operation.result;
       this.busy = false;
@@ -214,20 +210,18 @@ export class UsersComponent implements OnInit {
       active: user.active,
     };
 
-
     this.userService.updateUser(updatedUser).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       for await (const item of this.usersList) {
         if (item._id === res.data._id) {
           site.spliceElementToUpdate(this.usersList, res.data);
         }
       }
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
@@ -246,11 +240,11 @@ export class UsersComponent implements OnInit {
       };
       this.busy = true;
       this.userService.deleteUser(deletedRuser).subscribe(async (res: any) => {
-        const response = await validateResponse(res);
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
         }
-        this.notification.warning(response.message);
         for await (const item of this.usersList) {
           if (String(item._id) === String(res.data._id)) {
             this.usersList.forEach((item: any, index: number) => {
@@ -260,7 +254,6 @@ export class UsersComponent implements OnInit {
             });
           }
         }
-        this.busy = false;
       });
     }
   }
@@ -305,9 +298,10 @@ export class UsersComponent implements OnInit {
     };
     this.busy = true;
     this.userService.viewUser(query).subscribe(async (res: IResponse) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
       for await (const lang of this.languagesList) {
         if (lang._id === Object(res.data.language)._id) {
@@ -327,9 +321,9 @@ export class UsersComponent implements OnInit {
           ? response.data.lastUpdateInfo
           : undefined,
       };
-      this.busy = false;
     });
   }
+
   async setRoleRoutesList() {
     const selectedRoutesList = [];
     for await (const route of this.user.routesList) {
@@ -375,15 +369,14 @@ export class UsersComponent implements OnInit {
     };
     this.busy = true;
     this.userService.getAllUsers(paginationData).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.usersList = res.data || [];
       this.actionType = site.operation.getAll;
-      this.busy = false;
     });
   }
 

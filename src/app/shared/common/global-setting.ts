@@ -18,6 +18,7 @@ export async function getGlobalSetting() {
       displayRecordDetails:
         Object(getSetting).displaySetting.displayRecordDetails,
       showTooltip: Object(getSetting).displaySetting.showTooltip,
+      tooltipPosition: Object(getSetting).displaySetting.tooltipPosition,
     },
   };
   return { ...setting };

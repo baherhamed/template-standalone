@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NotificationService, SharedService } from 'src/app/services';
-
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { IResponse, validateResponse } from 'src/app/shared';
-import { GlobalSetting } from 'src/app/interfaces';
+import {
+  HandleResponseService,
+  IResponse,
+  SharedService,
+  TokenValues,
+  getTokenValue,
+} from 'src/app/shared';
+import { GlobalSetting, IJson } from 'src/app/interfaces';
 
 @Component({
   selector: 'global-setting',
@@ -15,54 +19,96 @@ import { GlobalSetting } from 'src/app/interfaces';
   imports: [CommonModule, SharedModule],
 })
 export class GlobalSettingComponent implements OnInit {
+  lang: string = '';
+  tokenValues: TokenValues = {
+    userId: '',
+    name: '',
+    language: '',
+    routesList: [],
+    permissionsList: [],
+    isDeveloper: false,
+    userLoggedIn: false,
+  };
   globalSetting: GlobalSetting = {
     displaySetting: {
       displayRecordDetails: false,
       showTooltip: false,
+      tooltipPosition: {
+        id: 0,
+        name: '',
+        ar: '',
+        en: '',
+      },
     },
   };
-  busy = false;
 
+  busy = false;
+  tooltipPositionList: IJson[] = [];
   constructor(
     private sharedService: SharedService,
-    private notification: NotificationService,
-  ) {}
+    private handleResponse: HandleResponseService,
+  ) { }
 
-  ngOnInit() {
-    this.getGeneralSystemSetting();
+  async ngOnInit() {
+    this.tokenValues = await getTokenValue();
+    this.lang = this.tokenValues.language;
+    this.getTooltipPosition();
+    this.getGlobalSystemSetting();
   }
 
-  async getGeneralSystemSetting() {
+  async getGlobalSystemSetting() {
     this.busy = true;
     this.sharedService
-      .getGeneralSystemSetting()
+      .getGlobalSystemSetting()
       .subscribe(async (res: IResponse) => {
-        const response = await validateResponse(res);
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
-        }
-
-        // this.notification.success(response.message);
-        this.globalSetting = res.data?._id
-          ? res.data
-          : this.globalSetting;
+        const response = await this.handleResponse.checkResponse(res);
         this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        let selectToolTipPosionIndex = this.tooltipPositionList.findIndex(
+          (p) => p && p.id === res.data.displaySetting.tooltipPosition.id,
+        );
+
+        this.globalSetting = res.data?._id ? res.data : this.globalSetting;
+        this.globalSetting.displaySetting.tooltipPosition =
+          selectToolTipPosionIndex && selectToolTipPosionIndex >= 0
+            ? this.tooltipPositionList[selectToolTipPosionIndex]
+            : res.data.displaySetting.tooltipPosition;
       });
   }
 
-  async setGeneralSystemSetting(generalSystemSetting: GlobalSetting) {
+  async setGlobalSystemSetting(globalSystemSetting: GlobalSetting) {
     this.busy = true;
     this.sharedService
-      .setGeneralSystemSetting(generalSystemSetting)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .setGlobalSystemSetting(globalSystemSetting)
       .subscribe(async (res) => {
-        const response = await validateResponse(res);
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
-        }
-        this.notification.success(response.message);
-        this.globalSetting = res.data;
+        const response = await this.handleResponse.checkResponse(res);
         this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        let selectToolTipPosionIndex = this.tooltipPositionList.findIndex(
+          (p) => p && p.id === res.data.displaySetting.tooltipPosition.id,
+        );
+
+        this.globalSetting = res.data;
+        this.globalSetting.displaySetting.tooltipPosition =
+          globalSystemSetting.displaySetting.tooltipPosition;
+      });
+  }
+
+  async getTooltipPosition() {
+    this.busy = true;
+    this.sharedService
+      .getTooltipPosition()
+      .subscribe(async (res: IResponse) => {
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        this.tooltipPositionList = response.data;
       });
   }
 }

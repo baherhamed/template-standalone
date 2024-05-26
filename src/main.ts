@@ -12,7 +12,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import {  MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule  } from 'ngx-toastr';
-import {   loggerInterceptor } from './app/services';
+import { loggerInterceptor, site } from './app/shared';
+
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -27,7 +28,7 @@ bootstrapApplication(AppComponent, {
         importProvidersFrom(ToastrModule.forRoot()),         
         importProvidersFrom(MatDialogModule), 
         importProvidersFrom(TranslateModule.forRoot({
-            defaultLanguage: 'ar',
+            defaultLanguage: site.language.ar,
             loader: {
               provide: TranslateLoader,
               useFactory: HttpLoaderFactory,

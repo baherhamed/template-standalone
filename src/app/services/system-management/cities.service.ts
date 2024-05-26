@@ -10,9 +10,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class CitiesService {
-  citiesUrl = `${environment.url}${site.api}${site.modules.systemManagement}${site.apps.cities}`;
-  token = localStorage.getItem(site.token);
-  language = localStorage.getItem(site.currentLangValue);
+  // citiesUrl = `${environment.url}${site.api}${site.modules.systemManagement}${site.apps.cities}`;
+  citiesUrl = `${environment.url}${site.api}${site.apps.cities}`;
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +21,9 @@ export class CitiesService {
         success: boolean;
         message: string;
         data: City;
-      }>(`${this.citiesUrl}${site.appsRoutes.add}`, city)
+      }>(`${this.citiesUrl}${site.appsRoutes.add}`, city, {
+        headers: site.requestHeaders().headers,
+      })
       .pipe(retry(5));
   }
 
@@ -31,6 +32,9 @@ export class CitiesService {
       .put<{ success: boolean; message: string; data: City }>(
         `${this.citiesUrl}${site.appsRoutes.update}`,
         city,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -40,6 +44,9 @@ export class CitiesService {
       .put<{ success: boolean; message: string; data: City }>(
         `${this.citiesUrl}${site.appsRoutes.delete}`,
         city,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -49,6 +56,9 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.search}`,
         city,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -58,6 +68,9 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.getCitiesByGov}`,
         city,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -67,23 +80,31 @@ export class CitiesService {
       .post<{ success: boolean; message: string; data: City[] }>(
         `${this.citiesUrl}${site.appsRoutes.getAll}`,
         pagination,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
 
   getActiveCities() {
     return this.http
-      .post<{ success: boolean; message: string; data: City[] }>(
-        `${this.citiesUrl}${site.appsRoutes.getActive}`,
-        null,
-      )
+      .post<{
+        success: boolean;
+        message: string;
+        data: City[];
+      }>(`${this.citiesUrl}${site.appsRoutes.getActive}`, null)
       .pipe(retry(5));
   }
-  viewCity(gov: any): Observable<any> {
+
+  viewCity(city: any): Observable<any> {
     return this.http
       .post<{ success: boolean; message: string; data: City }>(
         `${this.citiesUrl}${site.appsRoutes.view}`,
-        gov,
+        city,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }

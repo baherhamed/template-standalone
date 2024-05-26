@@ -23,7 +23,11 @@
     "Details": "Details",
     "Delete": "Delete",
     "Close": "Close",
-    "Export": "Export"
+    "Export": "Export",
+    "Hide-Page-Size": "Hide Page Size",
+    "Show-Mmultiple-Page-Size": "Show Mmultiple Page Size",
+    "Show-First-Last-Buttons": "Show First Last Buttons",
+    "Disabled": "Disabled"
   },
   "Record-Details": {
     "Add-Details": "Add Details",
@@ -74,6 +78,7 @@
     "Gov-Code": "Gov Code",
     "City": "City",
     "Display-Record-Details": "Display Record Details",
-    "Show-Tooltip": "Show Tooltip"
+    "Show-Tooltip": "Show Tooltip",
+    "Tooltip-Position": "Tooltip Position"
   }
 }

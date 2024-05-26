@@ -279,11 +279,18 @@
                     permissionsNames.updateGov
                   )
                 "
+                [matTooltipDisabled]="
+                  !getGlobalSetting.displaySetting.showTooltip
+                "
                 matTooltipClass="tooltip"
                 matTooltip="{{ 'Actions.Update' | translate }}"
                 #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
+                "
               >
-                <!-- [matTooltipPosition]="site.tooltipPosiition" -->
                 <mat-icon>edit</mat-icon>
               </button>
 
@@ -291,6 +298,17 @@
                 mat-mini-fab
                 color="info"
                 (click)="viewGov(gov); showDetails(govDetails)"
+                [matTooltipDisabled]="
+                  !getGlobalSetting.displaySetting.showTooltip
+                "
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Details' | translate }}"
+                #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
+                "
               >
                 <mat-icon>view_list</mat-icon>
               </button>
@@ -305,6 +323,14 @@
                   tokenValues.permissionsList.includes(
                     permissionsNames.deleteGov
                   )
+                "
+                matTooltipClass="tooltip"
+                matTooltip="{{ 'Actions.Delete' | translate }}"
+                #tooltip="matTooltip"
+                [matTooltipPosition]="
+                  getGlobalSetting.displaySetting.showTooltip
+                    ? getGlobalSetting.displaySetting.tooltipPosition
+                    : 'null'
                 "
               >
                 <mat-icon>delete</mat-icon>
@@ -393,8 +419,6 @@
     </div>
   </fieldset>
 </ng-template>
-
-
 
 <spinner [busy]="busy"></spinner>
 <message *ngIf="showMessage.show"> </message>

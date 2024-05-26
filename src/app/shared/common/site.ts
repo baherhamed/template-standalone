@@ -14,10 +14,10 @@ export const site = {
     mobile: '01065055550',
   },
   api: '/api/',
-  modules: {
-    security: 'security/',
-    systemManagement: 'systemManagement/',
-  },
+  // modules: {
+  //   security: 'security/',
+  //   systemManagement: 'systemManagement/',
+  // },
   appsRoutes: {
     login: 'login',
     add: 'add',
@@ -39,7 +39,8 @@ export const site = {
     users: 'users/',
     govs: 'govs/',
     cities: 'cities/',
-    generalSystemSetting: 'generalSystemSetting/',
+    globalSystemSetting: 'globalSystemSetting/',
+    json: 'json/',
   },
   token: 'token',
   routesList: 'routesList',
@@ -202,5 +203,23 @@ export const site = {
   },
   convertDate: (date: string) => {
     return new Date(date).toISOString().slice(0, 10);
+  },
+  responseStatusCodes: {
+    add: 700,
+    update: 701,
+    delete: 702,
+    getAll: 703,
+    getActive: 704,
+    search: 705,
+    noData: 706,
+    error: 707,
+    missingData: 708,
+    unauthorized: 401,
+    exisit: 709,
+    loggedOut: 710,
+    loggedInFail: 711,
+    loggedInSuccess: 712,
+    globalSetting: 713,
+    view: 1000,
   },
 };

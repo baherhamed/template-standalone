@@ -3,7 +3,6 @@ export * from './site';
 export * from './inputs-length';
 export * from './show-message-language';
 export * from './validate-input-data';
-export * from './validate-response';
 export * from './pagination';
 export * from './export-to-excel';
 export * from './routes-names';

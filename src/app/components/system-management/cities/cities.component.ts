@@ -3,12 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 import { City, Gov } from 'src/app/interfaces';
-import {
-  CitiesService,
-  DialogService,
-  GovsService,
-  NotificationService,
-} from 'src/app/services';
+import { CitiesService, GovsService } from 'src/app/services';
 
 import {
   IResponse,
@@ -17,11 +12,12 @@ import {
   exportToExcel,
   getTokenValue,
   inputsLength,
-  validateResponse,
   ResponsePaginationData,
   TokenValues,
   Pagination,
   getGlobalSetting,
+  DialogService,
+  HandleResponseService,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -67,7 +63,7 @@ export class CitiesComponent {
     private dialog: DialogService,
     private govService: GovsService,
     private cityService: CitiesService,
-    private notification: NotificationService,
+    private handleResponse: HandleResponseService,
   ) {
     this.inputsLength = inputsLength;
     this.site = site;
@@ -125,11 +121,11 @@ export class CitiesComponent {
     };
     this.busy = true;
     this.cityService.addCity(newCity).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-
       this.citiesList.push({
         _id: Object(res.data)._id,
         gov: city.gov,
@@ -138,7 +134,6 @@ export class CitiesComponent {
         addInfo: Object(res.data).addInfo,
       });
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
@@ -152,14 +147,13 @@ export class CitiesComponent {
     this.busy = true;
     this.cityService.searchCity(searchData).subscribe(async (res) => {
       this.responsePaginationData = res.paginationInfo;
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       this.citiesList = res.data;
       this.actionType = site.operation.result;
-      this.busy = false;
     });
   }
 
@@ -174,18 +168,17 @@ export class CitiesComponent {
     this.cityService
       .updateCity(updatedCity)
       .subscribe(async (res: IResponse) => {
-        const response = await validateResponse(res);
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
         }
-        this.notification.success(response.message);
         for await (const item of this.citiesList) {
           if (item._id === Object(res.data)._id) {
             site.spliceElementToUpdate(this.citiesList, Object(res.data));
           }
         }
         this.actionType = site.operation.result;
-        this.busy = false;
       });
   }
 
@@ -204,12 +197,11 @@ export class CitiesComponent {
       };
       this.busy = true;
       this.cityService.deleteCity(deletedCity).subscribe(async (res) => {
-        const response = await validateResponse(res);
-
-        if (!response.success || !response.data) {
-          return this.notification.info(response.message);
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
         }
-        this.notification.warning(response.message);
         for await (const item of this.citiesList) {
           if (String(item._id) === String(res.data._id)) {
             this.citiesList.forEach((item: any, index: number) => {
@@ -219,7 +211,6 @@ export class CitiesComponent {
             });
           }
         }
-        this.busy = false;
       });
     }
   }
@@ -230,11 +221,11 @@ export class CitiesComponent {
     };
     this.busy = true;
     this.cityService.viewCity(query).subscribe(async (res: IResponse) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-
       const selectedCityIndex = this.citiesList.findIndex(
         (city) => city && city._id === res.data._id,
       );
@@ -270,20 +261,24 @@ export class CitiesComponent {
     };
     this.busy = true;
     this.cityService.getAllCities(paginationData).subscribe(async (res) => {
-      const response = await validateResponse(res);
-      if (!response.success || !response.data) {
-        return this.notification.info(response.message);
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
       }
-      this.notification.success(response.message);
       this.responsePaginationData = res.paginationInfo;
       this.citiesList = res.data || [];
       this.actionType = site.operation.getAll;
-      this.busy = false;
     });
   }
 
   getActiveGovs() {
     this.govService.getActiveGovs().subscribe(async (res) => {
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
+      }
       this.govsList = res.data || [];
     });
   }

@@ -10,9 +10,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class RoutesService {
-  baseUrl = `${environment.url}${site.api}${site.modules.security}${site.apps.routes}`;
-  token = localStorage.getItem(site.token);
-  language = localStorage.getItem(site.currentLangValue);
+  baseUrl = `${environment.url}${site.api}${site.apps.routes}`;
   constructor(private http: HttpClient) {}
 
   addRoute(route: any): Observable<any> {
@@ -20,6 +18,9 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.add}`,
         route,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -29,6 +30,9 @@ export class RoutesService {
       .put<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.update}`,
         route,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -38,6 +42,9 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.search}`,
         route,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -47,6 +54,9 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: any }>(
         `${this.baseUrl}${site.appsRoutes.getActive}`,
         null,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -56,6 +66,9 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.getAll}`,
         pagination,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -65,6 +78,9 @@ export class RoutesService {
       .put<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.delete}`,
         route,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
@@ -74,8 +90,10 @@ export class RoutesService {
       .post<{ success: boolean; message: string; data: Route }>(
         `${this.baseUrl}${site.appsRoutes.view}`,
         route,
+        {
+          headers: site.requestHeaders().headers,
+        },
       )
       .pipe(retry(5));
   }
-
 }

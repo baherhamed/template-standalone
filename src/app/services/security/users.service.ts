@@ -11,9 +11,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UsersService {
-  usersUrl = `${environment.url}${site.api}${site.modules.security}${site.apps.users}`;
-  token = localStorage.getItem(site.token);
-  language = localStorage.getItem(site.currentLangValue);
+  usersUrl = `${environment.url}${site.api}${site.apps.users}`;
 
   constructor(private http: HttpClient) {}
 
