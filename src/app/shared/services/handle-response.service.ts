@@ -45,6 +45,7 @@ export class HandleResponseService {
     if (!success && statusCode === site.responseStatusCodes.missingData) {
       this.notification.info(message);
     }
+    
     if (!success && statusCode === site.responseStatusCodes.loggedInFail) {
       this.notification.info(message);
     }
@@ -61,9 +62,9 @@ export class HandleResponseService {
     }
 
     if (data) {
-      return { success, data };
+      return { success, data ,paginationInfo};
     } else {
-      return { data, paginationInfo };
+      return { success };
     }
   };
 }

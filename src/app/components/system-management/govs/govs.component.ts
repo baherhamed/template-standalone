@@ -255,6 +255,7 @@ export class GovsComponent implements OnInit {
       if (!response.success) {
         return;
       }
+     
       this.actionType = site.operation.getAll;
       this.responsePaginationData = response.paginationInfo;
       this.govsList = response.data || [];
