@@ -421,4 +421,4 @@
 </ng-template>
 
 <spinner [busy]="busy"></spinner>
-<message *ngIf="showMessage.show"> </message>
+<message *ngIf="systemMessage.show" [systemMessage]='systemMessage' (action)="getUserAction($event)"> </message>

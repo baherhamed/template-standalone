@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Permission, Route, User } from 'src/app/interfaces';
 import { RoutesService, UsersService } from 'src/app/services';
 import { DefinitionsService } from 'src/app/shared/services/definitions.service';
@@ -33,6 +33,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [CommonModule, SharedModule],
 })
 export class UsersComponent implements OnInit {
+  @ViewChild('userDetails') userDetails!: User;
   responsePaginationData: ResponsePaginationData | undefined;
   inputLength: any;
   site: any;
@@ -108,7 +109,7 @@ export class UsersComponent implements OnInit {
 
     this.getSetting();
     this.getActiveLanguages();
-    this.getActiveRouts();
+    this.getActiveRoutes();
     this.getAllUsers();
   }
 
@@ -132,7 +133,7 @@ export class UsersComponent implements OnInit {
       permissionsList: [],
       active: true,
     };
-    this.getActiveRouts();
+    this.getActiveRoutes();
   }
 
   async addUser(user: User) {
@@ -158,7 +159,7 @@ export class UsersComponent implements OnInit {
       }
       this.actionType = '';
       this.usersList.push({
-        _id: Object(res.data)._id,
+        _id: Object(response.data)._id,
         name: user.name,
         mobile: user.mobile,
         email: user.email,
@@ -167,7 +168,7 @@ export class UsersComponent implements OnInit {
         routesList: user.routesList,
         permissionsList: user.permissionsList,
         active: user.active,
-        addInfo: Object(res.data).addInfo,
+        addInfo: Object(response.data).addInfo,
       });
       this.actionType = site.operation.result;
     });
@@ -188,7 +189,7 @@ export class UsersComponent implements OnInit {
         return;
       }
       this.responsePaginationData = response.paginationInfo;
-      this.usersList = res.data;
+      this.usersList = response.data;
       this.actionType = site.operation.result;
       this.busy = false;
     });
@@ -217,8 +218,8 @@ export class UsersComponent implements OnInit {
         return;
       }
       for await (const item of this.usersList) {
-        if (item._id === res.data._id) {
-          site.spliceElementToUpdate(this.usersList, res.data);
+        if (item._id === response.data._id) {
+          site.spliceElementToUpdate(this.usersList, response.data);
         }
       }
       this.actionType = site.operation.result;
@@ -246,9 +247,9 @@ export class UsersComponent implements OnInit {
           return;
         }
         for await (const item of this.usersList) {
-          if (String(item._id) === String(res.data._id)) {
+          if (String(item._id) === String(response.data._id)) {
             this.usersList.forEach((item: any, index: number) => {
-              if (item._id === res.data._id) {
+              if (item._id === response.data._id) {
                 this.usersList.splice(index, 1);
               }
             });
@@ -304,8 +305,8 @@ export class UsersComponent implements OnInit {
         return;
       }
       for await (const lang of this.languagesList) {
-        if (lang._id === Object(res.data.language)._id) {
-          site.spliceElementToUpdate(this.languagesList, Object(res.data));
+        if (lang._id === Object(response.data.language)._id) {
+          site.spliceElementToUpdate(this.languagesList, Object(response.data));
         }
       }
       this.user = {
@@ -355,9 +356,9 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  getActiveRouts() {
+  getActiveRoutes() {
     this.routesList = [];
-    this.routeService.getActiveRouts().subscribe(async (res) => {
+    this.routeService.getActiveRoutes().subscribe(async (res) => {
       this.routesList = res.data;
     });
   }
@@ -375,7 +376,7 @@ export class UsersComponent implements OnInit {
         return;
       }
       this.responsePaginationData = res.paginationInfo;
-      this.usersList = res.data || [];
+      this.usersList = response.data || [];
       this.actionType = site.operation.getAll;
     });
   }

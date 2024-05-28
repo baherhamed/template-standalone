@@ -56,4 +56,16 @@ export class DialogService {
       ariaModal: true,
     });
   }
+
+  showSystemMessage(templateRef?: any) {
+    this.dialog.open(templateRef, {
+      autoFocus: true,
+      width: '50vw',
+      maxWidth: '50vw',
+      maxHeight: '50vh',
+      position: { top: '5vh', bottom: '25vh' },
+      disableClose: true,
+      ariaModal: true,
+    });
+  }
 }

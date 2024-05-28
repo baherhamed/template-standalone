@@ -49,7 +49,7 @@ export class RoutesService {
       .pipe(retry(5));
   }
 
-  getActiveRouts(): Observable<any> {
+  getActiveRoutes(): Observable<any> {
     return this.http
       .post<{ success: boolean; message: string; data: any }>(
         `${this.baseUrl}${site.appsRoutes.getActive}`,

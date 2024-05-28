@@ -43,11 +43,11 @@ export class LoginComponent {
           return;
         }
 
-        localStorage.setItem(site.token, res.data.token);
-        localStorage.setItem(site.routesList, res.data.routesList);
-        localStorage.setItem(site.permissionsList, res.data.permissionsList);
-        localStorage.setItem(site.currentLangValue, res.data.language);
-        localStorage.setItem(site.globalSetting, res.data.globalSetting);
+        localStorage.setItem(site.token, response.data.token);
+        localStorage.setItem(site.routesList, response.data.routesList);
+        localStorage.setItem(site.permissionsList, response.data.permissionsList);
+        localStorage.setItem(site.currentLangValue, response.data.language);
+        localStorage.setItem(site.globalSetting, response.data.globalSetting);
         const tokenValues = await getTokenValue();
         this.userLoggedIn = tokenValues?.userLoggedIn;
         location.assign('/');

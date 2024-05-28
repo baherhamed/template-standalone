@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { City, Gov } from 'src/app/interfaces';
 import { CitiesService, GovsService } from 'src/app/services';
@@ -29,6 +29,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [CommonModule, SharedModule],
 })
 export class CitiesComponent {
+  @ViewChild('cityDetails') cityDetails!: City;
   responsePaginationData: ResponsePaginationData | undefined;
   inputsLength: any;
   site: any;
@@ -127,11 +128,11 @@ export class CitiesComponent {
         return;
       }
       this.citiesList.push({
-        _id: Object(res.data)._id,
+        _id: Object(response.data)._id,
         gov: city.gov,
         name: city.name,
         active: city.active,
-        addInfo: Object(res.data).addInfo,
+        addInfo: Object(response.data).addInfo,
       });
       this.actionType = site.operation.result;
     });
@@ -152,7 +153,7 @@ export class CitiesComponent {
       if (!response.success) {
         return;
       }
-      this.citiesList = res.data;
+      this.citiesList = response.data;
       this.actionType = site.operation.result;
     });
   }
@@ -174,8 +175,8 @@ export class CitiesComponent {
           return;
         }
         for await (const item of this.citiesList) {
-          if (item._id === Object(res.data)._id) {
-            site.spliceElementToUpdate(this.citiesList, Object(res.data));
+          if (item._id === Object(response.data)._id) {
+            site.spliceElementToUpdate(this.citiesList, Object(response.data));
           }
         }
         this.actionType = site.operation.result;
@@ -203,9 +204,9 @@ export class CitiesComponent {
           return;
         }
         for await (const item of this.citiesList) {
-          if (String(item._id) === String(res.data._id)) {
+          if (String(item._id) === String(response.data._id)) {
             this.citiesList.forEach((item: any, index: number) => {
-              if (item._id === res.data._id) {
+              if (item._id === response.data._id) {
                 this.citiesList.splice(index, 1);
               }
             });
@@ -227,14 +228,14 @@ export class CitiesComponent {
         return;
       }
       const selectedCityIndex = this.citiesList.findIndex(
-        (city) => city && city._id === res.data._id,
+        (city) => city && city._id === response.data._id,
       );
       selectedCityIndex >= 0
-        ? (this.citiesList[selectedCityIndex] = res.data)
-        : res.data;
+        ? (this.citiesList[selectedCityIndex] = response.data)
+        : response.data;
 
       const selectedGovIndex = this.govsList.findIndex(
-        (gov) => gov && gov._id === res.data.gov._id,
+        (gov) => gov && gov._id === response.data.gov._id,
       );
 
       this.city = {
@@ -267,7 +268,7 @@ export class CitiesComponent {
         return;
       }
       this.responsePaginationData = res.paginationInfo;
-      this.citiesList = res.data || [];
+      this.citiesList = response.data || [];
       this.actionType = site.operation.getAll;
     });
   }
@@ -279,9 +280,10 @@ export class CitiesComponent {
       if (!response.success) {
         return;
       }
-      this.govsList = res.data || [];
+      this.govsList = response.data || [];
     });
   }
+
   resetActionTypeToClose() {
     this.actionType = site.operation.close;
     this.getAllCities();

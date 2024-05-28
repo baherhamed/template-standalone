@@ -19,4 +19,8 @@ export const ValidateInputsData = {
     ar: 'يرجي التأكد من الباسورد',
     en: 'Please Check password',
   },
+  deleteGov: {
+    ar: 'هل تريد حذف هذه المحافظة?',
+    en: 'Are You Sure you want to delete this Governorate?',
+  },
 };

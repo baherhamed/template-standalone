@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Permission, Route } from 'src/app/interfaces';
 import { RoutesService } from 'src/app/services';
@@ -29,6 +29,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [CommonModule, SharedModule],
 })
 export class RoutesComponent implements OnInit {
+  @ViewChild('routeDetails') routeDetails!: Route;
   responsePaginationData: ResponsePaginationData | undefined;
   inputsLength: unknown | any;
   site: unknown | any;
@@ -151,13 +152,13 @@ export class RoutesComponent implements OnInit {
         return;
       }
       this.routesList.push({
-        _id: Object(res.data)._id,
+        _id: Object(response.data)._id,
         name: route.name,
         ar: route.ar,
         en: route.en,
         active: route.active,
-        permissionsList: Object(res.data).permissionsList,
-        addInfo: Object(res.data).addInfo,
+        permissionsList: Object(response.data).permissionsList,
+        addInfo: Object(response.data).addInfo,
       });
       this.actionType = site.operation.result;
     });
@@ -178,7 +179,7 @@ export class RoutesComponent implements OnInit {
       if (!response.success) {
         return;
       }
-      this.routesList = res.data;
+      this.routesList = response.data;
       this.actionType = site.operation.result;
     });
   }
@@ -232,8 +233,8 @@ export class RoutesComponent implements OnInit {
           return;
         }
         for await (const item of this.routesList) {
-          if (item._id === Object(res.data)._id) {
-            site.spliceElementToUpdate(this.routesList, Object(res.data));
+          if (item._id === Object(response.data)._id) {
+            site.spliceElementToUpdate(this.routesList, Object(response.data));
           }
         }
         this.actionType = site.operation.result;
@@ -263,9 +264,9 @@ export class RoutesComponent implements OnInit {
             return;
           }
           for await (const item of this.routesList) {
-            if (String(item._id) === String(res.data._id)) {
+            if (String(item._id) === String(response.data._id)) {
               this.routesList.forEach((item: Route, index: number) => {
-                if (item._id === res.data._id) {
+                if (item._id === response.data._id) {
                   this.routesList.splice(index, 1);
                 }
               });
@@ -288,7 +289,7 @@ export class RoutesComponent implements OnInit {
         return;
       }
       this.responsePaginationData = res.paginationInfo;
-      this.routesList = res.data || [];
+      this.routesList = response.data || [];
       this.actionType = site.operation.getAll;
     });
   }

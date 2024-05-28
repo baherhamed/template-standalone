@@ -19,6 +19,7 @@ import { GlobalSetting, IJson } from 'src/app/interfaces';
   imports: [CommonModule, SharedModule],
 })
 export class GlobalSettingComponent implements OnInit {
+
   lang: string = '';
   tokenValues: TokenValues = {
     userId: '',
@@ -67,14 +68,14 @@ export class GlobalSettingComponent implements OnInit {
           return;
         }
         let selectToolTipPosionIndex = this.tooltipPositionList.findIndex(
-          (p) => p && p.id === res.data.displaySetting.tooltipPosition.id,
+          (p) => p && p.id === response.data.displaySetting.tooltipPosition.id,
         );
 
-        this.globalSetting = res.data?._id ? res.data : this.globalSetting;
+        this.globalSetting = response.data?._id ? response.data : this.globalSetting;
         this.globalSetting.displaySetting.tooltipPosition =
           selectToolTipPosionIndex && selectToolTipPosionIndex >= 0
             ? this.tooltipPositionList[selectToolTipPosionIndex]
-            : res.data.displaySetting.tooltipPosition;
+            : response.data.displaySetting.tooltipPosition;
       });
   }
 
@@ -89,10 +90,10 @@ export class GlobalSettingComponent implements OnInit {
           return;
         }
         let selectToolTipPosionIndex = this.tooltipPositionList.findIndex(
-          (p) => p && p.id === res.data.displaySetting.tooltipPosition.id,
+          (p) => p && p.id === response.data.displaySetting.tooltipPosition.id,
         );
 
-        this.globalSetting = res.data;
+        this.globalSetting = response.data;
         this.globalSetting.displaySetting.tooltipPosition =
           globalSystemSetting.displaySetting.tooltipPosition;
       });

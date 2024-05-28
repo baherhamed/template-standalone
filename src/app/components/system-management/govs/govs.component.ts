@@ -17,6 +17,8 @@ import {
   getGlobalSetting,
   DialogService,
   HandleResponseService,
+  systemMessage,
+  ValidateInputsData,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -28,7 +30,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [CommonModule, SharedModule],
 })
 export class GovsComponent implements OnInit {
-  @ViewChild('govDetails') govDetails: any;
+  @ViewChild('govDetails') govDetails!: Gov;
   responsePaginationData: ResponsePaginationData | undefined;
   inputsLength: unknown | any;
   site: unknown | any;
@@ -37,10 +39,12 @@ export class GovsComponent implements OnInit {
   govsList: Gov[] = [];
   busy = false;
 
-  showMessage = {
+  systemMessage: systemMessage = {
     show: false,
+    titleClass: '',
     title: '',
-    message: '',
+    message: { ar: '', en: '' },
+    action: 0
   };
   lang: string = '';
   getGlobalSetting: any = undefined;
@@ -147,46 +151,60 @@ export class GovsComponent implements OnInit {
     });
   }
 
-  deleteGov(gov: Gov) {
-    let confirmMessage;
-    if (!this.lang || this.lang === site.language.en) {
-      confirmMessage = site.confirmMessage.en;
-    }
-    if (this.lang === site.language.ar) {
-      confirmMessage = site.confirmMessage.ar;
+  getUserAction(event: any) {
+    console.log('evenet', event);
+    // this.systemMessage.action = event;
+    this.systemMessage = {
+      show: false,
+      title: '',
+      titleClass: '',
+      message: { ar: '', en: '' },
+      action: event
     }
 
-    this.showMessage = {
+  }
+
+  deleteGov(gov: Gov) {
+    console.log('this.systemMessage', this.systemMessage);
+
+    this.systemMessage = {
       show: true,
-      title: '',
-      message: '',
+      titleClass: 'model-header-delete',
+      title: 'Actions.Delete',
+      message: ValidateInputsData.deleteGov,
+      action: this.systemMessage.action
     };
-    const confirmDelete = confirm(confirmMessage);
-    if (confirmDelete) {
-      const deletedGov = {
-        _id: gov._id,
-      };
-      this.busy = true;
-      this.govService.deleteGov(deletedGov).subscribe(async (res) => {
-        const response = await this.handleResponse.checkResponse(res);
-        this.busy = false;
-        if (!response.success) {
-          return;
-        }
-        for await (const item of this.govsList) {
-          if (
-            response?.data &&
-            String(item._id) === String(response?.data._id)
-          ) {
-            this.govsList.forEach((item: Gov, index: number) => {
-              if (item._id === response.data._id) {
-                this.govsList.splice(index, 1);
-              }
-            });
-          }
-        }
-      });
+    const action = this.systemMessage.action;
+    console.log('action', action);
+    if (!action) {
+      return
     }
+    console.log('passed');
+
+    const deletedGov = {
+      _id: gov._id,
+    };
+    this.busy = true;
+    this.govService.deleteGov(deletedGov).subscribe(async (res) => {
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
+      }
+      for await (const item of this.govsList) {
+        if (
+          response?.data &&
+          String(item._id) === String(response?.data._id)
+        ) {
+          this.govsList.forEach((item: Gov, index: number) => {
+            if (item._id === response.data._id) {
+              this.govsList.splice(index, 1);
+            }
+          });
+        }
+      }
+    });
+
   }
 
   searchGov(gov: Gov, pagination?: Pagination) {
@@ -206,7 +224,7 @@ export class GovsComponent implements OnInit {
       this.responsePaginationData = response?.paginationInfo;
       this.govsList = response.data;
       this.actionType = site.operation.result;
-    
+
     });
   }
 
@@ -237,7 +255,7 @@ export class GovsComponent implements OnInit {
           ? response.data.lastUpdateInfo
           : undefined,
       };
-  
+
     });
   }
 
@@ -255,11 +273,11 @@ export class GovsComponent implements OnInit {
       if (!response.success) {
         return;
       }
-     
+
       this.actionType = site.operation.getAll;
       this.responsePaginationData = response.paginationInfo;
       this.govsList = response.data || [];
-  
+
     });
   }
 
