@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
 
 import { RouterOutlet } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
-import { NavModule } from './nav/nav.module';
+import { LayoutModule } from './layout/layout.module';
+
 import {
   CitiesComponent,
   GovsComponent,
@@ -26,8 +27,8 @@ import {
   imports: [
     SharedModule,
     TranslateModule,
-    NavModule,
     TranslateModule,
+    LayoutModule,
     CommonModule,
     LoginComponent,
     UsersComponent,

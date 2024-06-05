@@ -3,7 +3,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Permission, Route } from 'src/app/interfaces';
+import { Permission, PermissionModel, Route, RouteModel } from 'src/app/interfaces';
 import { RoutesService } from 'src/app/services';
 
 import {
@@ -14,10 +14,12 @@ import {
   IResponse,
   ResponsePaginationData,
   TokenValues,
-  Pagination,
   getGlobalSetting,
   DialogService,
   HandleResponseService,
+  systemMessage,
+  validateInputsData,
+  TokenValuesModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -36,31 +38,14 @@ export class RoutesComponent implements OnInit {
   actionType: string = '';
   routesList: Route[] = [];
   busy = false;
-  lang: string = '';
-  route: Route = {
-    name: '',
-    ar: '',
-    en: '',
-    permissionsList: [],
-    active: true,
-  };
 
-  permission: Permission = {
-    name: '',
-    ar: '',
-    en: '',
-    active: true,
-  };
+  systemMessage: systemMessage = { ...site.systemMessage };
+  tokenValues: TokenValues = { ...TokenValuesModel };
+
+  route: Route = { ...RouteModel };
+
+  permission: Permission = { ...PermissionModel };
   getGlobalSetting: any = undefined;
-  tokenValues: TokenValues = {
-    userId: '',
-    name: '',
-    language: '',
-    routesList: [],
-    permissionsList: [],
-    isDeveloper: false,
-    userLoggedIn: false,
-  };
 
   constructor(
     private dialog: DialogService,
@@ -108,7 +93,7 @@ export class RoutesComponent implements OnInit {
       ar: '',
       en: '',
       permissionsList: [],
-      active: true,
+      active: action === 'search' ? undefined : true,
     };
   }
 
@@ -160,19 +145,14 @@ export class RoutesComponent implements OnInit {
         permissionsList: Object(response.data).permissionsList,
         addInfo: Object(response.data).addInfo,
       });
-      this.actionType = site.operation.result;
+      this.actionType = site.operation.getAll;
     });
   }
 
-  searchRoute(route: Route, pagination?: Pagination) {
+  searchRoute(route: Route, pagination = site.pagination) {
     this.routesList = [];
-    const searchData = {
-      query: route,
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
     this.busy = true;
-    this.routeService.searchRoute(searchData).subscribe(async (res) => {
+    this.routeService.searchRoute({ query: route, ...pagination }).subscribe(async (res) => {
       this.responsePaginationData = res.paginationInfo;
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
@@ -237,52 +217,55 @@ export class RoutesComponent implements OnInit {
             site.spliceElementToUpdate(this.routesList, Object(response.data));
           }
         }
-        this.actionType = site.operation.result;
+        this.actionType = site.operation.getAll;
       });
   }
 
-  deleteRoute(route: Route) {
-    let confirmMessage;
-    if (!this.lang || this.lang === site.language.en) {
-      confirmMessage = site.confirmMessage.en;
-    }
-    if (this.lang === site.language.ar) {
-      confirmMessage = site.confirmMessage.ar;
-    }
-    const confirmDelete = confirm(confirmMessage);
-    if (confirmDelete) {
-      const deletedRoute = {
-        _id: route._id,
-      };
-      this.busy = true;
-      this.routeService
-        .deleteRoute(deletedRoute)
-        .subscribe(async (res: IResponse) => {
-          const response = await this.handleResponse.checkResponse(res);
-          this.busy = false;
-          if (!response.success) {
-            return;
-          }
-          for await (const item of this.routesList) {
-            if (String(item._id) === String(response.data._id)) {
-              this.routesList.forEach((item: Route, index: number) => {
-                if (item._id === response.data._id) {
-                  this.routesList.splice(index, 1);
-                }
-              });
-            }
-          }
-        });
+  async getUserAction(event: number) {
+    if (event) {
+      this.deleteRoute(this.route, event);
     }
   }
 
-  getAllRouts(pagination?: Pagination) {
-    const paginationData = {
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
+  deleteRoute(route: Route, action?: number) {
+    if (!action) {
+      this.systemMessage = {
+        show: true,
+        titleClass: 'model-header-delete',
+        title: 'Actions.Delete',
+        message: validateInputsData.deleteRoute,
+      };
+      this.route = route;
+      return;
+    }
+    const deletedRoute = {
+      _id: route._id,
     };
     this.busy = true;
-    this.routeService.getAllRouts(paginationData).subscribe(async (res) => {
+    this.routeService
+      .deleteRoute(deletedRoute)
+      .subscribe(async (res: IResponse) => {
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        for await (const item of this.routesList) {
+          if (String(item._id) === String(response.data._id)) {
+            this.routesList.forEach((item: Route, index: number) => {
+              if (item._id === response.data._id) {
+                this.routesList.splice(index, 1);
+              }
+            });
+          }
+        }
+      });
+
+  }
+
+  getAllRouts(pagination = site.pagination) {
+    this.busy = true;
+    this.routeService.getAllRouts(pagination).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
       if (!response.success) {

@@ -1,24 +1,31 @@
-<p>message works!</p>
-
 <ng-template #systemMessageTemplate>
   <fieldset>
     <div class="{{ systemMessage.titleClass }}">
       <p class="text-center">{{ systemMessage.title | translate }}</p>
     </div>
-    <fieldset>
-      <h2 class="text-center">{{ displayMessage }}</h2>
-
+    <fieldset class="deleteMessageFieldset">
+      <p class="h4 text-center deleteMessage">{{ displayMessage }}</p>
     </fieldset>
 
     <div class="actions-buttons">
-      <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="accept()">
+      <button
+        mat-raised-button
+        color="primary"
+        [mat-dialog-close]="true"
+        (click)="accept(1)"
+      >
         {{ 'Forms.Yes' | translate }}
-        <mat-icon>check</mat-icon>
+        <mat-icon> check </mat-icon>
       </button>
 
-      <button mat-raised-button color="danger" [mat-dialog-close]="true" (click)="resetMessage()">
-        {{ 'Actions.Close' | translate }}
-        <mat-icon>close</mat-icon>
+      <button
+        mat-raised-button
+        color="danger"
+        [mat-dialog-close]="true"
+        (click)="accept(0)"
+      >
+        {{ 'Forms.No' | translate }}
+        <mat-icon> close </mat-icon>
       </button>
     </div>
   </fieldset>

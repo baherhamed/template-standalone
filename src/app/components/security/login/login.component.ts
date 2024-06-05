@@ -39,21 +39,25 @@ export class LoginComponent {
       this.securityService.login(login).subscribe(async (res: IResponse) => {
         const response = await this.handleResponse.checkResponse(res);
         this.busy = false;
+
         if (!response.success) {
           return;
         }
 
         localStorage.setItem(site.token, response.data.token);
         localStorage.setItem(site.routesList, response.data.routesList);
-        localStorage.setItem(site.permissionsList, response.data.permissionsList);
+        localStorage.setItem(
+          site.permissionsList,
+          response.data.permissionsList,
+        );
         localStorage.setItem(site.currentLangValue, response.data.language);
         localStorage.setItem(site.globalSetting, response.data.globalSetting);
         const tokenValues = await getTokenValue();
         this.userLoggedIn = tokenValues?.userLoggedIn;
         location.assign('/');
-      })
+      });
     } catch (error) {
       alert(error);
-    };
+    }
   }
 }

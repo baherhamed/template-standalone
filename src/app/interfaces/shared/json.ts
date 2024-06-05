@@ -1,5 +1,3 @@
-
-
 export interface IJson {
   id: number;
   name: string;

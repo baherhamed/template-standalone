@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Gov } from 'src/app/interfaces';
+import { Gov, GovModel } from 'src/app/interfaces';
 import { GovsService } from 'src/app/services';
 
 import {
@@ -11,14 +11,14 @@ import {
   exportToExcel,
   getTokenValue,
   inputsLength,
-  ResponsePaginationData,
   TokenValues,
-  Pagination,
   getGlobalSetting,
   DialogService,
   HandleResponseService,
   systemMessage,
-  ValidateInputsData,
+  validateInputsData,
+  ResponsePaginationData,
+  TokenValuesModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -32,38 +32,20 @@ import { SharedModule } from 'src/app/shared/shared.module';
 export class GovsComponent implements OnInit {
   @ViewChild('govDetails') govDetails!: Gov;
   responsePaginationData: ResponsePaginationData | undefined;
-  inputsLength: unknown | any;
-  site: unknown | any;
-  permissionsNames: unknown | any;
+  inputsLength: any;
+  site: any;
+  permissionsNames: any;
   actionType: string = '';
   govsList: Gov[] = [];
+  actionCode: any = 0;
   busy = false;
+  showMessage = false;
+  closeModel = false;
 
-  systemMessage: systemMessage = {
-    show: false,
-    titleClass: '',
-    title: '',
-    message: { ar: '', en: '' },
-    action: 0
-  };
-  lang: string = '';
+  systemMessage: systemMessage = { ...site.systemMessage };
+  tokenValues: TokenValues = { ...TokenValuesModel };
   getGlobalSetting: any = undefined;
-
-  gov: Gov = {
-    name: '',
-    code: '',
-    active: true,
-  };
-
-  tokenValues: TokenValues = {
-    userId: '',
-    name: '',
-    language: '',
-    routesList: [],
-    permissionsList: [],
-    isDeveloper: false,
-    userLoggedIn: false,
-  };
+  gov: Gov = { ...GovModel };
 
   constructor(
     private dialog: DialogService,
@@ -107,15 +89,18 @@ export class GovsComponent implements OnInit {
 
   resetModel(action: string) {
     this.actionType = action;
+
     this.gov = {
       name: '',
       code: '',
-      active: true,
+      active: action === 'search' ? undefined : true,
     };
   }
 
+
   async addGov(gov: Gov) {
     this.busy = true;
+
     this.govService.addGov(gov).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
@@ -129,7 +114,8 @@ export class GovsComponent implements OnInit {
         active: gov.active,
         addInfo: Object(response.data).addInfo,
       });
-      this.actionType = site.operation.result;
+      this.closeModel = true;
+      this.actionType = site.operation.getAll;
     });
   }
 
@@ -147,39 +133,28 @@ export class GovsComponent implements OnInit {
           site.spliceElementToUpdate(this.govsList, response.data);
         }
       }
-      this.actionType = site.operation.result;
+      this.actionType = site.operation.getAll;
     });
   }
 
-  getUserAction(event: any) {
-    console.log('evenet', event);
-    // this.systemMessage.action = event;
-    this.systemMessage = {
-      show: false,
-      title: '',
-      titleClass: '',
-      message: { ar: '', en: '' },
-      action: event
+  async getUserAction(event: number) {
+    if (event) {
+      this.deleteGov(this.gov, event);
     }
-
   }
 
-  deleteGov(gov: Gov) {
-    console.log('this.systemMessage', this.systemMessage);
+  async deleteGov(gov: Gov, action?: number) {
 
-    this.systemMessage = {
-      show: true,
-      titleClass: 'model-header-delete',
-      title: 'Actions.Delete',
-      message: ValidateInputsData.deleteGov,
-      action: this.systemMessage.action
-    };
-    const action = this.systemMessage.action;
-    console.log('action', action);
     if (!action) {
-      return
+      this.systemMessage = {
+        show: true,
+        titleClass: 'model-header-delete',
+        title: 'Actions.Delete',
+        message: validateInputsData.deleteGov,
+      };
+      this.gov = gov;
+      return;
     }
-    console.log('passed');
 
     const deletedGov = {
       _id: gov._id,
@@ -192,10 +167,7 @@ export class GovsComponent implements OnInit {
         return;
       }
       for await (const item of this.govsList) {
-        if (
-          response?.data &&
-          String(item._id) === String(response?.data._id)
-        ) {
+        if (response?.data && String(item._id) === String(response?.data._id)) {
           this.govsList.forEach((item: Gov, index: number) => {
             if (item._id === response.data._id) {
               this.govsList.splice(index, 1);
@@ -204,28 +176,23 @@ export class GovsComponent implements OnInit {
         }
       }
     });
-
   }
 
-  searchGov(gov: Gov, pagination?: Pagination) {
+  searchGov(gov: Gov, pagination = site.pagination) {
     this.govsList = [];
-    const searchData = {
-      query: gov,
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
     this.busy = true;
-    this.govService.searchGov(searchData).subscribe(async (res) => {
-      const response = await this.handleResponse.checkResponse(res);
-      this.busy = false;
-      if (!response.success) {
-        return;
-      }
-      this.responsePaginationData = response?.paginationInfo;
-      this.govsList = response.data;
-      this.actionType = site.operation.result;
-
-    });
+    this.govService
+      .searchGov({ query: gov, ...pagination })
+      .subscribe(async (res) => {
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        this.responsePaginationData = response?.paginationInfo;
+        this.govsList = response.data;
+        this.actionType = site.operation.result;
+      });
   }
 
   async viewGov(gov: Gov) {
@@ -255,19 +222,13 @@ export class GovsComponent implements OnInit {
           ? response.data.lastUpdateInfo
           : undefined,
       };
-
     });
   }
 
-  async getAllGovs(pagination?: Pagination) {
+  async getAllGovs(pagination = site.pagination) {
     this.busy = true;
 
-    const paginationData = {
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
-
-    this.govService.getAllGovs(paginationData).subscribe(async (res) => {
+    this.govService.getAllGovs(pagination).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
       if (!response.success) {
@@ -277,7 +238,6 @@ export class GovsComponent implements OnInit {
       this.actionType = site.operation.getAll;
       this.responsePaginationData = response.paginationInfo;
       this.govsList = response.data || [];
-
     });
   }
 

@@ -2,7 +2,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Permission, Route, User } from 'src/app/interfaces';
+import { Permission, Route, User, UserModel } from 'src/app/interfaces';
 import { RoutesService, UsersService } from 'src/app/services';
 import { DefinitionsService } from 'src/app/shared/services/definitions.service';
 
@@ -15,12 +15,13 @@ import {
   permissionsNames,
   ResponsePaginationData,
   TokenValues,
-  Pagination,
   getGlobalSetting,
   IResponse,
   DialogService,
-  NotificationService,
   HandleResponseService,
+  systemMessage,
+  validateInputsData,
+  TokenValuesModel,
 } from 'src/app/shared';
 
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -44,33 +45,13 @@ export class UsersComponent implements OnInit {
   routesList: Route[] = [];
   permissionsList: Permission[] = [];
   busy = false;
-  lang: string = '';
 
-  user: User = {
-    name: '',
-    mobile: '',
-    email: '',
-    password: '',
-    language: {
-      _id: '',
-      name: '',
-    },
-    routesList: [],
-    permissionsList: [],
-    active: true,
-  };
+  user: User = { ...UserModel };
 
   getGlobalSetting: any = undefined;
 
-  tokenValues: TokenValues = {
-    userId: '',
-    name: '',
-    language: '',
-    routesList: [],
-    permissionsList: [],
-    isDeveloper: false,
-    userLoggedIn: false,
-  };
+  systemMessage: systemMessage = { ...site.systemMessage };
+  tokenValues: TokenValues = { ...TokenValuesModel };
 
   constructor(
     private dialog: DialogService,
@@ -131,7 +112,7 @@ export class UsersComponent implements OnInit {
       },
       routesList: this.routesList,
       permissionsList: [],
-      active: true,
+      active: action === 'search' ? undefined : true,
     };
     this.getActiveRoutes();
   }
@@ -170,19 +151,14 @@ export class UsersComponent implements OnInit {
         active: user.active,
         addInfo: Object(response.data).addInfo,
       });
-      this.actionType = site.operation.result;
+      this.actionType = site.operation.getAll;
     });
   }
 
-  searchUser(user: User, pagination?: Pagination) {
+  searchUser(user: User, pagination = site.pagination) {
     this.usersList = [];
-    const searchData = {
-      query: user,
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
     this.busy = true;
-    this.userService.searchUser(searchData).subscribe(async (res) => {
+    this.userService.searchUser({ query: user, ...pagination }).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
       if (!response.success) {
@@ -222,76 +198,50 @@ export class UsersComponent implements OnInit {
           site.spliceElementToUpdate(this.usersList, response.data);
         }
       }
-      this.actionType = site.operation.result;
+      this.actionType = site.operation.getAll;
     });
   }
 
-  deleteUser(user: User) {
-    let confirmMessage;
-    if (!this.lang || this.lang === site.language.en) {
-      confirmMessage = site.confirmMessage.en;
-    }
-    if (this.lang === site.language.ar) {
-      confirmMessage = site.confirmMessage.ar;
-    }
-    const confirmDelete = confirm(confirmMessage);
-    if (confirmDelete) {
-      const deletedRuser = {
-        _id: user._id,
-      };
-      this.busy = true;
-      this.userService.deleteUser(deletedRuser).subscribe(async (res: any) => {
-        const response = await this.handleResponse.checkResponse(res);
-        this.busy = false;
-        if (!response.success) {
-          return;
-        }
-        for await (const item of this.usersList) {
-          if (String(item._id) === String(response.data._id)) {
-            this.usersList.forEach((item: any, index: number) => {
-              if (item._id === response.data._id) {
-                this.usersList.splice(index, 1);
-              }
-            });
-          }
-        }
-      });
+  async getUserAction(event: number) {
+    if (event) {
+      this.deleteUser(this.user, event);
     }
   }
 
-  // async setDetailsData(user: User) {
-  //   this.user = {
-  //     _id: user._id,
-  //     name: user.name,
-  //     mobile: user.mobile,
-  //     email: user.email,
-  //     language: user.language,
-  //     routesList: user.routesList,
-  //     permissionsList: user.permissionsList,
-  //     active: user.active,
-  //     addInfo: user.addInfo ? user.addInfo : undefined,
-  //     lastUpdateInfo: user.lastUpdateInfo ? user.lastUpdateInfo : undefined,
-  //   };
-  // }
+  deleteUser(user: User, action?: number) {
+    if (!action) {
+      this.systemMessage = {
+        show: true,
+        titleClass: 'model-header-delete',
+        title: 'Actions.Delete',
+        message: validateInputsData.deleteUser,
+      };
+      this.user = user;
+      return;
+    }
 
-  // async setData(user: User) {
-  //   let selectedLanguage;
-  //   for await (const lang of this.languagesList) {
-  //     if (lang && lang._id === user.language._id) {
-  //       selectedLanguage = lang;
-  //     }
-  //   }
+    const deletedRuser = {
+      _id: user._id,
+    };
 
-  //   this.user = {
-  //     _id: user._id,
-  //     name: user.name,
-  //     mobile: user.mobile,
-  //     email: user.email,
-  //     language: selectedLanguage || user.language,
-  //     routesList: user.routesList,
-  //     active: user.active,
-  //   };
-  // }
+    this.busy = true;
+    this.userService.deleteUser(deletedRuser).subscribe(async (res: any) => {
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
+      }
+      for await (const item of this.usersList) {
+        if (String(item._id) === String(response.data._id)) {
+          this.usersList.forEach((item: any, index: number) => {
+            if (item._id === response.data._id) {
+              this.usersList.splice(index, 1);
+            }
+          });
+        }
+      }
+    });
+  }
 
   viewUser(user: User) {
     const query = {
@@ -363,13 +313,10 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  getAllUsers(pagination?: any) {
-    const paginationData = {
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
+  getAllUsers(pagination = site.pagination) {
+
     this.busy = true;
-    this.userService.getAllUsers(paginationData).subscribe(async (res) => {
+    this.userService.getAllUsers(pagination).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
       if (!response.success) {

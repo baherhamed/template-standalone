@@ -1,44 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges,  Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Pagination, ResponsePaginationData } from '../..';
 
 @Component({
   selector: 'paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
 })
-export class PaginatorComponent implements OnInit {
-  @Input('paginationData') paginationData: any;
-  @Output('pageChange') pageChange = new EventEmitter<PageEvent>();
+export class PaginatorComponent implements OnChanges {
+  @Input('paginationData') paginationData: ResponsePaginationData | any;
+  @Output('pageChange') pageChange = new EventEmitter<Pagination>();
 
-  // constructor() {}
-  // pageIndex = 0;
-  // pageSize = 0;
-  // totalDocs = 0;
+  totalDocs: number = 0;
 
-  // pageSizeOptions = [5, 10, 20, 50, 100, 200, 300, 500, 1000];
-  // showFirstLastButtons = true;
+  length: number = 0;
+  pageSize: number = 0;
+  pageIndex: number = 0;
 
-  // async ngOnInit() {
-  //   console.log('this.paginationData', this.paginationData);
-
-  //   if (this.paginationData) {
-  //     this.totalDocs = this.paginationData.totalDocs;
-  //     this.pageSize = this.paginationData.limit;
-  //     this.pageIndex = this.paginationData.page -1;
-  //   }
-  // }
-
-  // handlePageEvent(event: PageEvent) {
-  //   console.log('event', event);
-  //   // event.pageIndex += 1;
-  //   this.pageChange.emit(event);
-  // }
-
-  length = 0;
-  pageSize = 0;
-  pageIndex = 0;
-  pageSizeOptions = [ 10, 20, 50, 100, 200, 300, 500, 1000];
+  pageSizeOptions = [1, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000];
 
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -46,26 +26,19 @@ export class PaginatorComponent implements OnInit {
   disabled = false;
 
   pageEvent: PageEvent | undefined;
-  async ngOnInit() {
+  async ngOnChanges() {
     this.length = this.paginationData?.totalDocs || 0;
+    this.totalDocs = this.paginationData?.totalDocs || 0;
     this.pageSize = this.paginationData?.limit || 0;
-    this.pageIndex = this.paginationData?.page - 1;
+    this.pageIndex = this.paginationData?.page - 1 ;
   }
 
   handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.length = e.length;
-    this.pageSize = e.pageSize;
-    // this.pageIndex = e.pageIndex;
-    this.pageIndex = e.pageIndex <= 0 ? --e.pageIndex : ++e.pageIndex;
-    this.pageChange.emit(e);
+    ++e.pageIndex;
+    const newValues = {
+      page: e.pageIndex,
+      limit: e.pageSize
+    };
+    this.pageChange.emit(newValues);
   }
-
-  // setPageSizeOptions(setPageSizeOptionsInput: string) {
-  //   if (setPageSizeOptionsInput) {
-  //     this.pageSizeOptions = setPageSizeOptionsInput
-  //       .split(',')
-  //       .map((str) => +str);
-  //   }
-  // }
 }

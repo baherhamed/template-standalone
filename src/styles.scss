@@ -186,9 +186,9 @@ mat-mdc-button-ripple {
 
 .custom-nav-item {
   color: #fff;
-  margin: 5px;
+  margin: 1px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 10px;
 }
 
 .custom-nav-item:hover {
@@ -209,10 +209,9 @@ mat-mdc-button-ripple {
   margin: 0.4em;
 }
 
-.row-buttons
-, .row-buttons > *
- {
-  margin: .09em;
+.row-buttons,
+.row-buttons > * {
+  margin: 0.09em;
 }
 
 .table-dark {
@@ -284,7 +283,7 @@ table {
   color: var(--white);
   background-color: var(--primary);
   border-radius: 5px;
-  padding: 0px 1px;
+  padding: 0px 3px;
 }
 
 .spinner {
@@ -341,14 +340,13 @@ fieldset {
 .tooltip {
   font-size: 11px;
   // color: red !important;
-  color: red ;
+  color: red;
   // background-color: yellow;
   // border: 1px solid black;
   position: relative;
   font-family: kofi_droid;
   text-align: center;
 }
-
 
 ::placeholder {
   font-style: italic;
@@ -383,6 +381,11 @@ a:active {
   // width: inherit;
 }
 
+
+svg.mat-mdc-menu-submenu-icon{
+
+  width:30px
+}
 .last-update-details-header {
   border-radius: 7px;
   color: #ffffff;
@@ -392,8 +395,6 @@ a:active {
   padding: 0.1em;
   width: inherit;
 }
-
-
 
 @media only screen and (max-width: 576px) {
   //

@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
-import { City, Gov } from 'src/app/interfaces';
+import { City, CityModel, Gov } from 'src/app/interfaces';
 import { CitiesService, GovsService } from 'src/app/services';
 
 import {
@@ -14,10 +14,12 @@ import {
   inputsLength,
   ResponsePaginationData,
   TokenValues,
-  Pagination,
   getGlobalSetting,
   DialogService,
   HandleResponseService,
+  validateInputsData,
+  systemMessage,
+  TokenValuesModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -38,27 +40,11 @@ export class CitiesComponent {
   govsList: Gov[] = [];
   citiesList: City[] = [];
   busy = false;
-  lang: string = '';
+  systemMessage: systemMessage = { ...site.systemMessage };
+  tokenValues: TokenValues = { ...TokenValuesModel };
+
   getGlobalSetting: any = undefined;
-
-  city: City = {
-    gov: {
-      _id: '',
-      name: '',
-    },
-    name: '',
-    active: true,
-  };
-
-  tokenValues: TokenValues = {
-    userId: '',
-    name: '',
-    language: '',
-    routesList: [],
-    permissionsList: [],
-    isDeveloper: false,
-    userLoggedIn: false,
-  };
+  city: City = { ...CityModel };
 
   constructor(
     private dialog: DialogService,
@@ -110,7 +96,7 @@ export class CitiesComponent {
         name: '',
       },
       name: '',
-      active: true,
+      active: action === 'search' ? undefined : true,
     };
   }
 
@@ -134,19 +120,14 @@ export class CitiesComponent {
         active: city.active,
         addInfo: Object(response.data).addInfo,
       });
-      this.actionType = site.operation.result;
+      this.actionType = site.operation.getAll;
     });
   }
 
-  searchCity(city: City, pagination?: Pagination) {
+  searchCity(city: City, pagination = site.pagination) {
     this.citiesList = [];
-    const searchData = {
-      query: city,
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
     this.busy = true;
-    this.cityService.searchCity(searchData).subscribe(async (res) => {
+    this.cityService.searchCity({ query: city, ...pagination }).subscribe(async (res) => {
       this.responsePaginationData = res.paginationInfo;
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
@@ -179,41 +160,48 @@ export class CitiesComponent {
             site.spliceElementToUpdate(this.citiesList, Object(response.data));
           }
         }
-        this.actionType = site.operation.result;
+        this.actionType = site.operation.getAll;
       });
   }
 
-  deleteCity(city: City) {
-    let confirmMessage;
-    if (!this.lang || this.lang === site.language.en) {
-      confirmMessage = site.confirmMessage.en;
+  async getUserAction(event: number) {
+    if (event) {
+      this.deleteCity(this.city, event);
     }
-    if (this.lang === site.language.ar) {
-      confirmMessage = site.confirmMessage.ar;
-    }
-    const confirmDelete = confirm(confirmMessage);
-    if (confirmDelete) {
-      const deletedCity = {
-        _id: city._id,
+  }
+
+  deleteCity(city: City, action?: number) {
+    if (!action) {
+      this.systemMessage = {
+        show: true,
+        titleClass: 'model-header-delete',
+        title: 'Actions.Delete',
+        message: validateInputsData.deleteCity,
       };
-      this.busy = true;
-      this.cityService.deleteCity(deletedCity).subscribe(async (res) => {
-        const response = await this.handleResponse.checkResponse(res);
-        this.busy = false;
-        if (!response.success) {
-          return;
-        }
-        for await (const item of this.citiesList) {
-          if (String(item._id) === String(response.data._id)) {
-            this.citiesList.forEach((item: any, index: number) => {
-              if (item._id === response.data._id) {
-                this.citiesList.splice(index, 1);
-              }
-            });
-          }
-        }
-      });
+      this.city = city;
+      return;
     }
+    const deletedCity = {
+      _id: city._id,
+    };
+    this.busy = true;
+    this.cityService.deleteCity(deletedCity).subscribe(async (res) => {
+      const response = await this.handleResponse.checkResponse(res);
+      this.busy = false;
+      if (!response.success) {
+        return;
+      }
+      for await (const item of this.citiesList) {
+        if (String(item._id) === String(response.data._id)) {
+          this.citiesList.forEach((item: any, index: number) => {
+            if (item._id === response.data._id) {
+              this.citiesList.splice(index, 1);
+            }
+          });
+        }
+      }
+    });
+
   }
 
   viewCity(city: City) {
@@ -255,13 +243,9 @@ export class CitiesComponent {
     });
   }
 
-  getAllCities(pagination?: any) {
-    const paginationData = {
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-    };
+  getAllCities(pagination = site.pagination) {
     this.busy = true;
-    this.cityService.getAllCities(paginationData).subscribe(async (res) => {
+    this.cityService.getAllCities(pagination).subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
       this.busy = false;
       if (!response.success) {

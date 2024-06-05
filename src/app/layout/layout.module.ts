@@ -4,7 +4,6 @@ import { FooterComponent, MenuComponent } from '.';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
-// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [MenuComponent, FooterComponent],
@@ -13,8 +12,7 @@ import { RouterModule } from '@angular/router';
     TranslateModule,
     MaterialModule,
     RouterModule,
-    // SharedModule,
   ],
   exports: [MenuComponent, FooterComponent],
 })
-export class NavModule {}
+export class LayoutModule {}

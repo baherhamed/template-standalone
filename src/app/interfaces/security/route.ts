@@ -7,7 +7,17 @@ export interface Route {
   ar: string;
   en: string;
   permissionsList: Permission[];
-  active: boolean;
   addInfo?: RecordDetails;
   lastUpdateInfo?: RecordDetails;
+  active?: boolean;
 }
+
+
+export const RouteModel = {
+  name: '',
+  ar: '',
+  en: '',
+  permissionsList: [],
+  active: true,
+
+};

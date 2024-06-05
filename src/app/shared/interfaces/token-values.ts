@@ -7,3 +7,14 @@ export interface TokenValues {
   isDeveloper?: boolean;
   userLoggedIn: boolean;
 }
+
+
+export const TokenValuesModel = {
+  userId: '',
+  name: '',
+  language: '',
+  routesList: [],
+  permissionsList: [],
+  isDeveloper: false,
+  userLoggedIn: false,
+};

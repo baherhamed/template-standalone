@@ -7,7 +7,15 @@ export interface Permission {
   name: string;
   ar: string;
   en: string;
-  active: boolean;
+  active?: boolean;
   addInfo?: RecordDetails;
   lastUpdateInfo?: RecordDetails;
 }
+
+
+export const PermissionModel = {
+  name: '',
+  ar: '',
+  en: '',
+  active: true,
+};

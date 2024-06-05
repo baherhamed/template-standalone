@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { HttpHeaders } from '@angular/common/http';
+import { Request } from 'express';
+import { pagination } from './pagination';
 
 import { environment } from 'src/environments/environment';
 
@@ -52,7 +54,7 @@ export const site = {
   requestHeaders: () => {
     const token = localStorage.getItem(site.token);
     const language = localStorage.getItem(site.currentLangValue);
-   
+
     const newHeader = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('accept-language', `${language}`)
@@ -151,7 +153,7 @@ export const site = {
       array.splice(itm, 1);
     }
   },
-  spliceElementToUpdate: (array: any[], elem: { _id: any }): any => {
+  spliceElementToUpdate: (array: any[], elem: { _id: any; }): any => {
     array.forEach((itm, i) => {
       if (itm._id === elem._id) {
         array.splice(i, 1, elem);
@@ -222,4 +224,11 @@ export const site = {
     globalSetting: 713,
     view: 1000,
   },
+  pagination: { page: 1, limit: 10 },
+  systemMessage: {
+    show: false,
+    titleClass: '',
+    title: '',
+    message: { ar: '', en: '' },
+  }
 };

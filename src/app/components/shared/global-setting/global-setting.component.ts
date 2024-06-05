@@ -7,9 +7,10 @@ import {
   IResponse,
   SharedService,
   TokenValues,
+  TokenValuesModel,
   getTokenValue,
 } from 'src/app/shared';
-import { GlobalSetting, IJson } from 'src/app/interfaces';
+import { DisplaySettingModel, GlobalSetting, IJson } from 'src/app/interfaces';
 
 @Component({
   selector: 'global-setting',
@@ -21,27 +22,10 @@ import { GlobalSetting, IJson } from 'src/app/interfaces';
 export class GlobalSettingComponent implements OnInit {
 
   lang: string = '';
-  tokenValues: TokenValues = {
-    userId: '',
-    name: '',
-    language: '',
-    routesList: [],
-    permissionsList: [],
-    isDeveloper: false,
-    userLoggedIn: false,
-  };
-  globalSetting: GlobalSetting = {
-    displaySetting: {
-      displayRecordDetails: false,
-      showTooltip: false,
-      tooltipPosition: {
-        id: 0,
-        name: '',
-        ar: '',
-        en: '',
-      },
-    },
-  };
+
+  tokenValues: TokenValues = { ...TokenValuesModel };
+
+  globalSetting: GlobalSetting = { ...DisplaySettingModel };
 
   busy = false;
   tooltipPositionList: IJson[] = [];
@@ -73,9 +57,8 @@ export class GlobalSettingComponent implements OnInit {
 
         this.globalSetting = response.data?._id ? response.data : this.globalSetting;
         this.globalSetting.displaySetting.tooltipPosition =
-          selectToolTipPosionIndex && selectToolTipPosionIndex >= 0
-            ? this.tooltipPositionList[selectToolTipPosionIndex]
-            : response.data.displaySetting.tooltipPosition;
+          this.tooltipPositionList[selectToolTipPosionIndex]
+          || response.data.displaySetting.tooltipPosition;
       });
   }
 
@@ -89,9 +72,6 @@ export class GlobalSettingComponent implements OnInit {
         if (!response.success) {
           return;
         }
-        let selectToolTipPosionIndex = this.tooltipPositionList.findIndex(
-          (p) => p && p.id === response.data.displaySetting.tooltipPosition.id,
-        );
 
         this.globalSetting = response.data;
         this.globalSetting.displaySetting.tooltipPosition =

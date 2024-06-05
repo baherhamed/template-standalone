@@ -5,6 +5,4 @@ export interface systemMessage {
   titleClass: string;
   title: string;
   message: systemLanguages;
-  action: number
-
 }

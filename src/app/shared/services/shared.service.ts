@@ -11,7 +11,7 @@ import { GlobalSetting } from 'src/app/interfaces';
 export class SharedService {
   globalSystemSettingUrl = `${environment.url}${site.api}${site.apps.globalSystemSetting}`;
   jsonUrl = `${environment.url}${site.api}${site.apps.json}`;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getGlobalSystemSetting(): Observable<any> {

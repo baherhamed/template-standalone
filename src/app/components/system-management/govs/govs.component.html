@@ -1,40 +1,23 @@
 <div class="actions-buttons">
-  <button
-    *ngIf="
+  <button *ngIf="
       tokenValues.userLoggedIn &&
       tokenValues.permissionsList &&
       tokenValues.permissionsList.includes(permissionsNames.addGov)
-    "
-    mat-raised-button
-    color="success"
-    (click)="resetModel(site.operation.add); displayAdd(showAdd)"
-    [disabled]="busy"
-  >
+    " mat-raised-button color="success" (click)="resetModel(site.operation.add); displayAdd(showAdd)" [disabled]="busy">
     {{ 'Actions.Add' | translate }}
     <mat-icon>add</mat-icon>
   </button>
 
-  <button
-    mat-raised-button
-    color="search"
-    (click)="resetModel(site.operation.search); displaySearch(showSearch)"
-    [disabled]="busy"
-  >
+  <button mat-raised-button color="search" (click)="resetModel(site.operation.search); displaySearch(showSearch)" [disabled]="busy">
     {{ 'Actions.Search' | translate }}
     <mat-icon>search</mat-icon>
   </button>
 
-  <button
-    mat-raised-button
-    color="info"
-    (click)="exportDataToExcel('govsList', 'govs')"
-    [disabled]="busy"
-    *ngIf="
+  <button mat-raised-button color="info" (click)="exportDataToExcel('govsList', 'govs')" [disabled]="busy" *ngIf="
       tokenValues.userLoggedIn &&
       tokenValues.permissionsList &&
       tokenValues.permissionsList.includes(permissionsNames.exportGovs)
-    "
-  >
+    ">
     {{ 'Actions.Export' | translate }}
     <mat-icon>import_export</mat-icon>
   </button>
@@ -50,107 +33,56 @@
         {{ 'Actions.Update' | translate }}
       </p>
     </div>
-    <form
-      #addGovForm="ngForm"
-      *ngIf="
+    <form #addGovForm="ngForm" *ngIf="
         (actionType && actionType === site.operation.add) ||
         actionType === site.operation.update
-      "
-    >
+      ">
       <fieldset>
         <legend>
           <p class="legend">{{ 'Legends.Basic-Informations' | translate }}</p>
         </legend>
         <div class="row">
-          <mat-form-field
-            appearance="outline"
-            class="col-lg-4 col-md-6 col-sm-12"
-          >
-            <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
-            <input
-              matInput
-              [(ngModel)]="gov.name"
-              placeholder="{{ 'Forms.Name' | translate }}"
-              name="gov-name"
-              autofocus
-              required
-              minlength="{{ inputsLength.govName }}"
-              autocomplete="off"
-            />
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
+            <mat-label>{{ 'Forms.Gov' | translate }} </mat-label>
+            <input matInput [(ngModel)]="gov.name" placeholder="{{ 'Forms.Gov' | translate }}" name="gov-name" autofocus required
+              minlength="{{ inputsLength.govName }}" autocomplete="off" />
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="col-lg-4 col-md-6 col-sm-12"
-          >
+          <mat-form-field appearance="outline" class="col-lg-4 col-md-6 col-sm-12">
             <mat-label>{{ 'Forms.Gov-Code' | translate }} </mat-label>
-            <input
-              matInput
-              [(ngModel)]="gov.code"
-              placeholder="{{ 'Forms.Gov-Code' | translate }}"
-              name="gov-code"
-              required
-              minlength="{{ inputsLength.govCode }}"
-              autocomplete="off"
-            />
+            <input matInput [(ngModel)]="gov.code" placeholder="{{ 'Forms.Gov-Code' | translate }}" name="gov-code" required
+              minlength="{{ inputsLength.govCode }}" autocomplete="off" />
           </mat-form-field>
 
           <div class="col-lg-4 col-md-6 col-sm-12">
-            <mat-checkbox
-              class="margin"
-              [(ngModel)]="gov.active"
-              name="gov-status"
-              color="primary"
-            >
+            <mat-checkbox class="margin" [(ngModel)]="gov.active" name="gov-status" color="primary">
               {{ 'Forms.Active' | translate }}
             </mat-checkbox>
           </div>
         </div>
       </fieldset>
       <div class="actions-buttons">
-        <button
-          mat-raised-button
-          [mat-dialog-close]="true"
-          color="primary"
-          [disabled]="!addGovForm.form.valid || busy"
-          *ngIf="
+        <button mat-raised-button  [mat-dialog-close]="closeModel" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.addGov) &&
             actionType &&
             actionType === site.operation.add
-          "
-          (click)="addGov(gov)"
-          class="m-1"
-        >
+          " (click)="addGov(gov)" class="m-1">
           {{ 'Actions.Save' | translate }}<mat-icon>save</mat-icon>
         </button>
 
-        <button
-          mat-raised-button
-          [mat-dialog-close]="true"
-          color="primary"
-          [disabled]="!addGovForm.form.valid || busy"
-          *ngIf="
+        <button mat-raised-button  [mat-dialog-close]="true" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.updateGov) &&
             actionType &&
             actionType === site.operation.update
-          "
-          (click)="updateGov(gov)"
-          class="m-1"
-        >
+          " (click)="updateGov(gov)" class="m-1">
           {{ 'Actions.Update' | translate }}<mat-icon>save</mat-icon>
         </button>
 
-        <button
-          mat-raised-button
-          [mat-dialog-close]="true"
-          color="danger"
-          (click)="resetActionTypeToClose()"
-          class="m-1"
-        >
+        <button mat-raised-button [mat-dialog-close]="true" color="danger" (click)="resetActionTypeToClose()" class="m-1">
           {{ 'Actions.Close' | translate }}
           <mat-icon>close</mat-icon>
         </button>
@@ -172,47 +104,23 @@
           <div class="container text-center">
             <div class="row">
               <mat-form-field appearance="outline" class="col-3">
-                <mat-label>{{ 'Forms.Name' | translate }} </mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="gov.name"
-                  placeholder="{{ 'Forms.Name' | translate }}"
-                  name="search-gov-name"
-                  autocomplete="off"
-                />
+                <mat-label>{{ 'Forms.Gov' | translate }} </mat-label>
+                <input matInput [(ngModel)]="gov.name" placeholder="{{ 'Forms.Gov' | translate }}" name="search-gov-name" autocomplete="off" />
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-2">
+              <mat-form-field appearance="outline" class="col-3">
                 <mat-label>{{ 'Forms.Gov-Code' | translate }} </mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="gov.code"
-                  placeholder="{{ 'Forms.Gov-Code' | translate }}"
-                  name="search-gov-code"
-                  autocomplete="off"
-                />
+                <input matInput [(ngModel)]="gov.code" placeholder="{{ 'Forms.Gov-Code' | translate }}" name="search-gov-code" autocomplete="off" />
               </mat-form-field>
             </div>
           </div>
         </fieldset>
         <div class="actions-buttons">
-          <button
-            mat-raised-button
-            [mat-dialog-close]="true"
-            color="primary"
-            [disabled]="!searchGovForm.form.valid || busy"
-            (click)="searchGov(gov)"
-            class="m-1"
-          >
+          <button mat-raised-button [mat-dialog-close]="true" color="primary" [disabled]="!searchGovForm.form.valid || busy" (click)="searchGov(gov)"
+            class="m-1">
             {{ 'Actions.Search' | translate }}<mat-icon>search</mat-icon>
           </button>
 
-          <button
-            mat-raised-button
-            [mat-dialog-close]="true"
-            color="danger"
-            (click)="resetActionTypeToClose()"
-            class="m-1"
-          >
+          <button mat-raised-button [mat-dialog-close]="true" color="danger" (click)="resetActionTypeToClose()" class="m-1">
             {{ 'Actions.Close' | translate }}
             <mat-icon>close</mat-icon>
           </button>
@@ -222,21 +130,18 @@
   </fieldset>
 </ng-template>
 
-<div
-  class="container"
-  *ngIf="
+<div class="container result" *ngIf="
     govsList &&
     govsList.length &&
     (actionType === site.operation.result ||
       actionType === site.operation.getAll)
-  "
->
+  ">
   <div class="table-responsive" id="govsList">
     <table class="table table-sm table-striped align-middle table-hover">
       <thead>
         <tr class="table-dark">
           <th>{{ 'Forms.S' | translate }}</th>
-          <th>{{ 'Forms.Name' | translate }}</th>
+          <th>{{ 'Forms.Gov' | translate }}</th>
           <th>{{ 'Forms.Gov-Code' | translate }}</th>
           <th>{{ 'Forms.Status' | translate }}</th>
           <th class="no_print">{{ 'Actions.Actions' | translate }}</th>
@@ -264,75 +169,47 @@
           </td>
           <td class="no_print">
             <div class="row-buttons">
-              <button
-                mat-mini-fab
-                color="edit"
-                (click)="
+              <button mat-mini-fab color="edit" (click)="
                   viewGov(gov);
                   displayUpdate(showAdd);
                   actionType = site.operation.update
-                "
-                *ngIf="
+                " *ngIf="
                   tokenValues.userLoggedIn &&
                   tokenValues.permissionsList &&
                   tokenValues.permissionsList.includes(
                     permissionsNames.updateGov
                   )
-                "
-                [matTooltipDisabled]="
+                " [matTooltipDisabled]="
                   !getGlobalSetting.displaySetting.showTooltip
-                "
-                matTooltipClass="tooltip"
-                matTooltip="{{ 'Actions.Update' | translate }}"
-                #tooltip="matTooltip"
-                [matTooltipPosition]="
+                " matTooltipClass="tooltip" matTooltip="{{ 'Actions.Update' | translate }}" #tooltip="matTooltip" [matTooltipPosition]="
                   getGlobalSetting.displaySetting.showTooltip
                     ? getGlobalSetting.displaySetting.tooltipPosition
-                    : 'null'
-                "
-              >
+                    : ''
+                ">
                 <mat-icon>edit</mat-icon>
               </button>
 
-              <button
-                mat-mini-fab
-                color="info"
-                (click)="viewGov(gov); showDetails(govDetails)"
-                [matTooltipDisabled]="
+              <button mat-mini-fab color="info" (click)="viewGov(gov); showDetails(govDetails)" [matTooltipDisabled]="
                   !getGlobalSetting.displaySetting.showTooltip
-                "
-                matTooltipClass="tooltip"
-                matTooltip="{{ 'Actions.Details' | translate }}"
-                #tooltip="matTooltip"
-                [matTooltipPosition]="
+                " matTooltipClass="tooltip" matTooltip="{{ 'Actions.Details' | translate }}" #tooltip="matTooltip" [matTooltipPosition]="
                   getGlobalSetting.displaySetting.showTooltip
                     ? getGlobalSetting.displaySetting.tooltipPosition
-                    : 'null'
-                "
-              >
+                    : ''
+                ">
                 <mat-icon>view_list</mat-icon>
               </button>
 
-              <button
-                mat-mini-fab
-                color="danger"
-                (click)="deleteGov(gov)"
-                *ngIf="
+              <button mat-mini-fab color="danger" (click)="deleteGov(gov)" *ngIf="
                   tokenValues.userLoggedIn &&
                   tokenValues.permissionsList &&
                   tokenValues.permissionsList.includes(
                     permissionsNames.deleteGov
                   )
-                "
-                matTooltipClass="tooltip"
-                matTooltip="{{ 'Actions.Delete' | translate }}"
-                #tooltip="matTooltip"
-                [matTooltipPosition]="
+                " matTooltipClass="tooltip" matTooltip="{{ 'Actions.Delete' | translate }}" #tooltip="matTooltip" [matTooltipPosition]="
                   getGlobalSetting.displaySetting.showTooltip
                     ? getGlobalSetting.displaySetting.tooltipPosition
-                    : 'null'
-                "
-              >
+                    : ''
+                ">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
@@ -344,20 +221,13 @@
 </div>
 
 <div class="paginiantion">
+  
   <div *ngIf="actionType === site.operation.getAll">
-    <paginator
-      (pageChange)="getAllGovs($event)"
-      [paginationData]="responsePaginationData"
-    >
+    <paginator (pageChange)="getAllGovs($event)" [paginationData]="responsePaginationData">
     </paginator>
   </div>
-
   <div *ngIf="actionType === site.operation.result">
-    <paginator
-      (pageChange)="searchGov(gov, $event)"
-      *ngIf="govsList && govsList.length"
-      [paginationData]="responsePaginationData"
-    >
+    <paginator (pageChange)="searchGov(gov, $event)" *ngIf="govsList && govsList.length" [paginationData]="responsePaginationData">
     </paginator>
   </div>
 </div>
@@ -372,7 +242,7 @@
         <table class="table table-sm table-striped align-middle table-hover">
           <thead>
             <tr class="table-dark">
-              <th>{{ 'Forms.Name' | translate }}</th>
+              <th>{{ 'Forms.Gov' | translate }}</th>
               <th>{{ 'Forms.Gov-Code' | translate }}</th>
               <th>{{ 'Forms.Status' | translate }}</th>
             </tr>
@@ -400,15 +270,9 @@
       </div>
     </fieldset>
 
-    <record-details
-      [addInfo]="gov.addInfo"
-      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
-    >
+    <record-details [addInfo]="gov.addInfo" *ngIf="getGlobalSetting.displaySetting.displayRecordDetails">
     </record-details>
-    <record-details
-      [lastUpdateInfo]="gov.lastUpdateInfo"
-      *ngIf="getGlobalSetting.displaySetting.displayRecordDetails"
-    >
+    <record-details [lastUpdateInfo]="gov.lastUpdateInfo" *ngIf="getGlobalSetting.displaySetting.displayRecordDetails">
     </record-details>
 
     <div class="actions-buttons">
@@ -421,4 +285,5 @@
 </ng-template>
 
 <spinner [busy]="busy"></spinner>
-<message *ngIf="systemMessage.show" [systemMessage]='systemMessage' (action)="getUserAction($event)"> </message>
+<message *ngIf="systemMessage.show" [systemMessage]="systemMessage" (action)="getUserAction($event)">
+</message>

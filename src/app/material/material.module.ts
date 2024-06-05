@@ -13,7 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // Material Navigation
 import { MatMenuModule } from '@angular/material/menu';
@@ -41,7 +41,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatCommonModule, MatRippleModule } from '@angular/material/core';
 // Material Popups & Modals
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
@@ -82,8 +82,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatBadgeModule,
     MatChipsModule,
-    MatProgressBarModule,
-    MatProgressBarModule,
     MatRippleModule,
     MatBottomSheetModule,
     MatSnackBarModule,
@@ -95,8 +93,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
+    // FontAwesomeModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatCommonModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -125,7 +125,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatBadgeModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatProgressBarModule,
     MatRippleModule,
     MatBottomSheetModule,
     MatSnackBarModule,
@@ -137,11 +136,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
+    // FontAwesomeModule,
     MatProgressSpinnerModule,
+    MatCommonModule,
+    
   ],
   providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { disableClose: true } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {   disableClose: true } },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: MatDialogRef, useValue: {} },

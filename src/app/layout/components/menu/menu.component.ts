@@ -20,6 +20,7 @@ import {
   selector: 'menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
+
 })
 export class MenuComponent {
   userLoggedIn: boolean = false;
@@ -28,7 +29,8 @@ export class MenuComponent {
   routesList: string[] = [];
   tokenValues: any;
   permissionsList: string[] = [];
-  language: string = '';
+  currentLanguage: string = '';
+  newLanguage: string = '';
   busy = false;
   inputsLength: any;
   routesNames: any;
@@ -57,8 +59,8 @@ export class MenuComponent {
     this.routesList = this.tokenValues?.routesList;
     this.permissionsList = this.tokenValues?.permissionsList;
     this.name = this.tokenValues?.name;
-    this.language = this.tokenValues?.language;
 
+    this.setDisplayLanguage();
     this.getSetting();
   }
 
@@ -74,28 +76,38 @@ export class MenuComponent {
     this.getGlobalSetting = await getGlobalSetting();
   }
 
+  setDisplayLanguage() {
+    const currentLanguage = localStorage.getItem(site.currentLangValue);
+    if (!currentLanguage || currentLanguage === site.language.ar) {
+      this.currentLanguage = site.language.ar.toUpperCase();
+      this.newLanguage = site.language.en;
+    } else {
+      this.currentLanguage = site.language.en.toUpperCase();
+      this.newLanguage = site.language.ar;
+    }
+  }
+
   changeLanguage() {
     const currentLanguage = localStorage.getItem(site.currentLangValue);
-
-    if (currentLanguage) {
-      this.language = currentLanguage;
-    }
     const htmlTag = document.querySelector('html');
     let setLang = '';
     let newlanguage = '';
     if (!currentLanguage || currentLanguage === site.language.ar) {
       if (htmlTag) {
         htmlTag.setAttribute('dir', 'ltr');
-        setLang = site.language.en;
+        setLang = site.language.ar;
         newlanguage = site.language.en;
       }
     } else if (currentLanguage && currentLanguage === site.language.en) {
       if (htmlTag) {
         htmlTag.setAttribute('dir', 'rtl');
-        setLang = site.language.ar;
+        setLang = site.language.en;
         newlanguage = site.language.ar;
       }
     }
+    // this.currentLanguage = setLang;
+    // this.newLanguage = newlanguage;
+
     this.translateService.setDefaultLang(setLang);
     localStorage.removeItem(site.currentLangValue);
     localStorage.setItem(site.currentLangValue, newlanguage);

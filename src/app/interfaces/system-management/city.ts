@@ -11,3 +11,15 @@ export interface City {
   addInfo?: RecordDetails;
   lastUpdateInfo?: RecordDetails;
 }
+export const CityModel = {
+  // _id: '',
+  gov: {
+    _id: '',
+    name: '',
+  },
+  name: '',
+  code: '',
+  active: true,
+  // addInfo: {},
+  // lastUpdateInfo: {}
+};

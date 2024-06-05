@@ -1,4 +1,4 @@
-export const ValidateInputsData = {
+export const validateInputsData = {
   valid: {
     ar: 'البيانات صحيحة',
     en: 'Data Valid',
@@ -20,7 +20,19 @@ export const ValidateInputsData = {
     en: 'Please Check password',
   },
   deleteGov: {
-    ar: 'هل تريد حذف هذه المحافظة?',
+    ar: 'هل تريد حذف هذه المحافظة؟',
     en: 'Are You Sure you want to delete this Governorate?',
+  },
+  deleteCity: {
+    ar: 'هل تريد حذف هذه المدينة؟',
+    en: 'Are You Sure you want to delete this City?',
+  },
+  deleteRoute: {
+    ar: 'هل تريد حذف هذا العنوان؟',
+    en: 'Are You Sure you want to delete this Route?',
+  },
+  deleteUser: {
+    ar: 'هل تريد حذف هذا المستخدم؟',
+    en: 'Are You Sure you want to delete this User?',
   },
 };

@@ -1,0 +1,144 @@
+<!-- <mat-sidenav-container fullscreen > -->
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <mat-button class="custom-nav-item" *ngIf="!userLoggedIn" [routerLink]="routesNames.login" (click)="setTitle('login')">
+      {{ 'Menu.Login' | translate }}
+    </mat-button>
+
+    <button mat-icon-button [matMenuTriggerFor]="systemMenu" *ngIf="userLoggedIn"> <mat-icon>menu</mat-icon></button>
+
+    <!-- <button
+        mat-mini-fab
+        [matMenuTriggerFor]="systemMenu"
+        *ngIf="userLoggedIn"
+        color="success"
+      >
+        <mat-icon>menu</mat-icon>
+      </button> -->
+
+    <h1 class="title" style="margin: auto">
+      <span>{{ title }}</span>
+    </h1>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-menu #systemMenu="matMenu">
+
+  <span class='currentLanguage active'> {{ currentLanguage }} </span>
+  <mat-slide-toggle (change)="changeLanguage()" [color]="'primary'">
+    <span> {{ newLanguage }} </span>
+  </mat-slide-toggle>
+
+  <hr>
+  <p *ngIf="userLoggedIn" class="welcome h7 status-not-active" title="{{ 'Forms.Change-Password' | translate }}">
+    <a (click)="showDetails(changePasswordTemplate)">
+      {{ 'Forms.Change-Password' | translate }}
+    </a>
+  </p>
+
+
+  <button mat-menu-item [matMenuTriggerFor]="systemManagementMenu" *ngIf="
+        (userLoggedIn &&
+          !isDeveloper &&
+          routesList &&
+          routesList.includes(routesNames.govs)) ||
+        routesList.includes(routesNames.cities)
+      ">
+    <mat-icon color="primary"> settings </mat-icon>
+    <span>
+      {{ 'Modules.System-Management' | translate }}
+    </span>
+  </button>
+
+
+
+  <button mat-menu-item [matMenuTriggerFor]="securityMenu" *ngIf="
+        userLoggedIn && routesList && routesList.includes(routesNames.users)">
+    <span>
+      {{ 'Modules.Security' | translate }}
+    </span>
+    <mat-icon color="primary"> security </mat-icon>
+  </button>
+
+  <button mat-menu-item >
+    <a class="menu-element" routerLinkActive="active" *ngIf="routesList && routesList.includes(routesNames.globalSetting)" [routerLink]="[routesNames.globalSetting]" (click)="setTitle(routesNames.globalSetting)">
+      <span>
+        {{ 'Menu.Global-Setting' | translate }}
+      </span>
+    </a>
+  </button>
+
+  <button mat-menu-item (click)="logout()">
+    <mat-icon color="primary">logout</mat-icon>
+    <span class="text-danger">
+      {{ 'Actions.Logout' | translate }}
+    </span>
+  </button>
+
+</mat-menu>
+
+<!-- systemManagement menu -->
+<mat-menu #systemManagementMenu="matMenu">
+  <a class="menu-element" *ngIf="routesList && routesList.includes(routesNames.govs)" [routerLink]="[routesNames.govs]" routerLinkActive="active"
+    (click)="setTitle(routesNames.govs)">
+    <p>{{ 'Menu.Govs' | translate }}</p>
+  </a>
+  <a class="menu-element" *ngIf="routesList && routesList.includes(routesNames.cities)" [routerLink]="[routesNames.cities]" routerLinkActive="active"
+    (click)="setTitle(routesNames.cities)">
+    <p>
+      {{ 'Menu.Cities' | translate }}
+    </p>
+  </a>
+
+</mat-menu>
+
+<!-- securityMenu menu -->
+<mat-menu #securityMenu="matMenu">
+  <a class="menu-element" *ngIf="userLoggedIn && isDeveloper" [routerLink]="[routesNames.routes]" routerLinkActive="active"
+    (click)="setTitle(routesNames.routes)">
+    <!-- <mat-icon color="primary"> image </mat-icon> -->
+    <p>
+      {{ 'Menu.Routes' | translate }}
+    </p>
+  </a>
+
+  <a class="menu-element" *ngIf="
+        userLoggedIn || (routesList && routesList.includes(routesNames.users))
+      " [routerLink]="[routesNames.users]" routerLinkActive="active" (click)="setTitle(routesNames.users)">
+    <!-- <mat-icon color="primary"> supervised_user_circle </mat-icon> -->
+    <p>
+      {{ 'Menu.Users' | translate }}
+    </p>
+  </a>
+</mat-menu>
+
+
+<router-outlet></router-outlet>
+
+<footer></footer>
+<!-- </mat-sidenav-container> -->
+
+<ng-template #changePasswordTemplate>
+  <div class="change-password">
+    <form #changePasswordForm="ngForm">
+      <mat-form-field>
+        <mat-label>{{ 'Forms.New-Password' | translate }} </mat-label>
+        <input matInput [(ngModel)]="newPasswordPassword.password" placeholder="{{ 'Forms.New-Password' | translate }}" name="new-password"
+          minlength="{{ inputsLength.password }}" required autocomplete="off" />
+      </mat-form-field>
+    </form>
+
+    <div class="row-button">
+      <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="changePassword(newPasswordPassword)"
+        [disabled]="changePasswordForm.form.invalid">
+        {{ 'Actions.Save' | translate }}
+        <mat-icon>save</mat-icon>
+      </button>
+
+      <button mat-raised-button color="danger" [mat-dialog-close]="true">
+        {{ 'Actions.Close' | translate }}
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
