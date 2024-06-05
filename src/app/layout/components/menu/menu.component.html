@@ -31,7 +31,7 @@
 
   <hr>
   <p *ngIf="userLoggedIn" class="welcome h7 status-not-active" title="{{ 'Forms.Change-Password' | translate }}">
-    <a (click)="showDetails(changePasswordTemplate)">
+    <a (click)="showDialog(site.dialogNames.details,changePasswordTemplate)">
       {{ 'Forms.Change-Password' | translate }}
     </a>
   </p>
@@ -60,8 +60,9 @@
     <mat-icon color="primary"> security </mat-icon>
   </button>
 
-  <button mat-menu-item >
-    <a class="menu-element" routerLinkActive="active" *ngIf="routesList && routesList.includes(routesNames.globalSetting)" [routerLink]="[routesNames.globalSetting]" (click)="setTitle(routesNames.globalSetting)">
+  <button mat-menu-item>
+    <a class="menu-element" routerLinkActive="active" *ngIf="routesList && routesList.includes(routesNames.globalSetting)"
+      [routerLink]="[routesNames.globalSetting]" (click)="setTitle(routesNames.globalSetting)">
       <span>
         {{ 'Menu.Global-Setting' | translate }}
       </span>

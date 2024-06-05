@@ -19,6 +19,7 @@ import {
   validateInputsData,
   ResponsePaginationData,
   TokenValuesModel,
+  responsePaginationDataModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -31,7 +32,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class GovsComponent implements OnInit {
   @ViewChild('govDetails') govDetails!: Gov;
-  responsePaginationData: ResponsePaginationData | undefined;
+  responsePaginationData: ResponsePaginationData = {
+    ...responsePaginationDataModel,
+  };
   inputsLength: any;
   site: any;
   permissionsNames: any;
@@ -57,26 +60,14 @@ export class GovsComponent implements OnInit {
     this.permissionsNames = permissionsNames;
   }
 
-  displayAdd(templateRef: unknown) {
-    this.dialog.showAdd(templateRef);
-  }
-
-  displayUpdate(templateRef: unknown) {
-    this.dialog.showUpdate(templateRef);
-  }
-
-  displaySearch(templateRef: unknown) {
-    this.dialog.showSearch(templateRef);
-  }
-
-  showDetails(templateRef: unknown) {
-    this.dialog.showDetails(templateRef);
-  }
-
   async ngOnInit() {
     this.tokenValues = await getTokenValue();
     this.getSetting();
     this.getAllGovs();
+  }
+
+  showDialog(type: string, templateRef: unknown) {
+    this.dialog.showDialog(type, templateRef);
   }
 
   async exportDataToExcel(table: string, file: string) {
@@ -96,7 +87,6 @@ export class GovsComponent implements OnInit {
       active: action === 'search' ? undefined : true,
     };
   }
-
 
   async addGov(gov: Gov) {
     this.busy = true;
@@ -144,7 +134,6 @@ export class GovsComponent implements OnInit {
   }
 
   async deleteGov(gov: Gov, action?: number) {
-
     if (!action) {
       this.systemMessage = {
         show: true,
@@ -175,6 +164,8 @@ export class GovsComponent implements OnInit {
           });
         }
       }
+      this.responsePaginationData.totalDocs = --this.responsePaginationData
+        .totalDocs;
     });
   }
 

@@ -3,12 +3,13 @@
       tokenValues.userLoggedIn &&
       tokenValues.permissionsList &&
       tokenValues.permissionsList.includes(permissionsNames.addGov)
-    " mat-raised-button color="success" (click)="resetModel(site.operation.add); displayAdd(showAdd)" [disabled]="busy">
+    " mat-raised-button color="success" (click)="resetModel(site.operation.add); showDialog(site.dialogNames.add,showAdd)" [disabled]="busy">
     {{ 'Actions.Add' | translate }}
     <mat-icon>add</mat-icon>
   </button>
 
-  <button mat-raised-button color="search" (click)="resetModel(site.operation.search); displaySearch(showSearch)" [disabled]="busy">
+  <button mat-raised-button color="search" (click)="resetModel(site.operation.search); showDialog(site.dialogNames.search,showSearch)"
+    [disabled]="busy">
     {{ 'Actions.Search' | translate }}
     <mat-icon>search</mat-icon>
   </button>
@@ -62,7 +63,7 @@
         </div>
       </fieldset>
       <div class="actions-buttons">
-        <button mat-raised-button  [mat-dialog-close]="closeModel" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
+        <button mat-raised-button [mat-dialog-close]="closeModel" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.addGov) &&
@@ -72,7 +73,7 @@
           {{ 'Actions.Save' | translate }}<mat-icon>save</mat-icon>
         </button>
 
-        <button mat-raised-button  [mat-dialog-close]="true" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
+        <button mat-raised-button [mat-dialog-close]="true" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.updateGov) &&
@@ -171,7 +172,7 @@
             <div class="row-buttons">
               <button mat-mini-fab color="edit" (click)="
                   viewGov(gov);
-                  displayUpdate(showAdd);
+                  showDialog(site.dialogNames.update,showAdd);
                   actionType = site.operation.update
                 " *ngIf="
                   tokenValues.userLoggedIn &&
@@ -189,7 +190,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
 
-              <button mat-mini-fab color="info" (click)="viewGov(gov); showDetails(govDetails)" [matTooltipDisabled]="
+              <button mat-mini-fab color="info" (click)="viewGov(gov); showDialog(site.dialogNames.details,govDetails)" [matTooltipDisabled]="
                   !getGlobalSetting.displaySetting.showTooltip
                 " matTooltipClass="tooltip" matTooltip="{{ 'Actions.Details' | translate }}" #tooltip="matTooltip" [matTooltipPosition]="
                   getGlobalSetting.displaySetting.showTooltip
@@ -221,7 +222,7 @@
 </div>
 
 <div class="paginiantion">
-  
+
   <div *ngIf="actionType === site.operation.getAll">
     <paginator (pageChange)="getAllGovs($event)" [paginationData]="responsePaginationData">
     </paginator>

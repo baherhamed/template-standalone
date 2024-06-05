@@ -3,7 +3,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Permission, PermissionModel, Route, RouteModel } from 'src/app/interfaces';
+import {
+  Permission,
+  PermissionModel,
+  Route,
+  RouteModel,
+} from 'src/app/interfaces';
 import { RoutesService } from 'src/app/services';
 
 import {
@@ -20,6 +25,7 @@ import {
   systemMessage,
   validateInputsData,
   TokenValuesModel,
+  responsePaginationDataModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -32,7 +38,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class RoutesComponent implements OnInit {
   @ViewChild('routeDetails') routeDetails!: Route;
-  responsePaginationData: ResponsePaginationData | undefined;
+  responsePaginationData: ResponsePaginationData = {
+    ...responsePaginationDataModel,
+  };
   inputsLength: unknown | any;
   site: unknown | any;
   actionType: string = '';
@@ -56,20 +64,8 @@ export class RoutesComponent implements OnInit {
     this.site = site;
   }
 
-  displayAdd(templateRef: unknown) {
-    this.dialog.showAdd(templateRef);
-  }
-
-  displayUpdate(templateRef: unknown) {
-    this.dialog.showUpdate(templateRef);
-  }
-
-  displaySearch(templateRef: unknown) {
-    this.dialog.showSearch(templateRef);
-  }
-
-  showDetails(templateRef: unknown) {
-    this.dialog.showDetails(templateRef);
+  showDialog(type: string, templateRef: unknown) {
+    this.dialog.showDialog(type, templateRef);
   }
 
   async getSetting() {
@@ -152,16 +148,18 @@ export class RoutesComponent implements OnInit {
   searchRoute(route: Route, pagination = site.pagination) {
     this.routesList = [];
     this.busy = true;
-    this.routeService.searchRoute({ query: route, ...pagination }).subscribe(async (res) => {
-      this.responsePaginationData = res.paginationInfo;
-      const response = await this.handleResponse.checkResponse(res);
-      this.busy = false;
-      if (!response.success) {
-        return;
-      }
-      this.routesList = response.data;
-      this.actionType = site.operation.result;
-    });
+    this.routeService
+      .searchRoute({ query: route, ...pagination })
+      .subscribe(async (res) => {
+        this.responsePaginationData = res.paginationInfo;
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        this.routesList = response.data;
+        this.actionType = site.operation.result;
+      });
   }
 
   viewRoute(route: Route) {
@@ -259,8 +257,9 @@ export class RoutesComponent implements OnInit {
             });
           }
         }
+        this.responsePaginationData!.totalDocs = --this.responsePaginationData
+          .totalDocs;
       });
-
   }
 
   getAllRouts(pagination = site.pagination) {

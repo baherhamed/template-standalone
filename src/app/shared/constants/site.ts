@@ -230,5 +230,12 @@ export const site = {
     titleClass: '',
     title: '',
     message: { ar: '', en: '' },
+  },
+  dialogNames: {
+    add: "add",
+    update: "update",
+    search: "search",
+    details: "details",
+    showMessage: "showMessage",
   }
 };

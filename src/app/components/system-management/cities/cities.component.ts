@@ -20,6 +20,7 @@ import {
   validateInputsData,
   systemMessage,
   TokenValuesModel,
+  responsePaginationDataModel,
 } from 'src/app/shared';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -32,7 +33,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class CitiesComponent {
   @ViewChild('cityDetails') cityDetails!: City;
-  responsePaginationData: ResponsePaginationData | undefined;
+  responsePaginationData: ResponsePaginationData = { ...responsePaginationDataModel };
   inputsLength: any;
   site: any;
   permissionsNames: any;
@@ -57,20 +58,8 @@ export class CitiesComponent {
     this.permissionsNames = permissionsNames;
   }
 
-  displayAdd(templateRef: any) {
-    this.dialog.showAdd(templateRef);
-  }
-
-  displayUpdate(templateRef: any) {
-    this.dialog.showUpdate(templateRef);
-  }
-
-  displaySearch(templateRef: any) {
-    this.dialog.showSearch(templateRef);
-  }
-
-  showDetails(templateRef: any) {
-    this.dialog.showDetails(templateRef);
+  showDialog(type: string, templateRef: unknown) {
+    this.dialog.showDialog(type, templateRef);
   }
 
   async ngOnInit() {
@@ -200,6 +189,7 @@ export class CitiesComponent {
           });
         }
       }
+      this.responsePaginationData.totalDocs = --this.responsePaginationData.totalDocs;
     });
 
   }

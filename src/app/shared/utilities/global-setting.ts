@@ -1,4 +1,5 @@
-import { site } from '.';
+import { site } from '..';
+
 
 export async function getGlobalSetting() {
   let getSetting = localStorage.getItem(site.globalSetting);

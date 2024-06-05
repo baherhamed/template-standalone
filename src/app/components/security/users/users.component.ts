@@ -22,6 +22,7 @@ import {
   systemMessage,
   validateInputsData,
   TokenValuesModel,
+  responsePaginationDataModel,
 } from 'src/app/shared';
 
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -35,7 +36,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class UsersComponent implements OnInit {
   @ViewChild('userDetails') userDetails!: User;
-  responsePaginationData: ResponsePaginationData | undefined;
+  responsePaginationData: ResponsePaginationData = { ...responsePaginationDataModel };
   inputLength: any;
   site: any;
   permissionsNames: any;
@@ -65,21 +66,11 @@ export class UsersComponent implements OnInit {
     this.permissionsNames = permissionsNames;
   }
 
-  displayAdd(templateRef: any) {
-    this.dialog.showAdd(templateRef);
+
+  showDialog(type: string, templateRef: unknown) {
+    this.dialog.showDialog(type, templateRef);
   }
 
-  displayUpdate(templateRef: any) {
-    this.dialog.showUpdate(templateRef);
-  }
-
-  displaySearch(templateRef: any) {
-    this.dialog.showSearch(templateRef);
-  }
-
-  showDetails(templateRef: any) {
-    this.dialog.showDetails(templateRef);
-  }
 
   async getSetting() {
     this.getGlobalSetting = await getGlobalSetting();
@@ -240,6 +231,7 @@ export class UsersComponent implements OnInit {
           });
         }
       }
+      this.responsePaginationData.totalDocs = --this.responsePaginationData.totalDocs;
     });
   }
 

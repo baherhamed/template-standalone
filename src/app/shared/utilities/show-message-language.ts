@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { site } from './site';
+
+import { site } from '..';
+
 export async function showMessageInLanguage(msg: any): Promise<{
   message: any;
   error: any;

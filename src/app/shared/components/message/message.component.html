@@ -8,22 +8,12 @@
     </fieldset>
 
     <div class="actions-buttons">
-      <button
-        mat-raised-button
-        color="primary"
-        [mat-dialog-close]="true"
-        (click)="accept(1)"
-      >
+      <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="accept(1)">
         {{ 'Forms.Yes' | translate }}
         <mat-icon> check </mat-icon>
       </button>
 
-      <button
-        mat-raised-button
-        color="danger"
-        [mat-dialog-close]="true"
-        (click)="accept(0)"
-      >
+      <button mat-raised-button color="danger" [mat-dialog-close]="true" (click)="accept(0)">
         {{ 'Forms.No' | translate }}
         <mat-icon> close </mat-icon>
       </button>

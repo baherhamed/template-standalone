@@ -1,5 +1,5 @@
-import { Token, TokenValues, hashString } from '..';
-import { site } from './site';
+import { Token, TokenValues, hashString, site } from '..';
+
 export async function getTokenValue() {
   let tokenValues: TokenValues = {
     userId: '',

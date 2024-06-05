@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { ScrollStrategyOptions } from '@angular/cdk/overlay';
+
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { site } from '..';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,25 @@ export class DialogService {
     //  private scrollStrategyOptions: ScrollStrategyOptions,
   }
 
-  showAdd(templateRef?: any) {
+  showDialog(type: string, templateRef?: any) {
+    if (type === site.dialogNames.add) {
+      this.add(templateRef);
+    }
+    if (type === site.dialogNames.update) {
+      this.update(templateRef);
+    }
+    if (type === site.dialogNames.search) {
+      this.search(templateRef);
+    }
+    if (type === site.dialogNames.details) {
+      this.details(templateRef);
+    }
+    if (type === site.dialogNames.showMessage) {
+      this.showMessage(templateRef);
+    }
+
+  }
+  add(templateRef?: any) {
     this.dialog.open(templateRef, {
       autoFocus: true,
       width: '90vw',
@@ -22,7 +41,7 @@ export class DialogService {
     });
   }
 
-  showUpdate(templateRef?: any) {
+  update(templateRef?: any) {
     this.dialog.open(templateRef, {
       autoFocus: true,
       width: '90vw',
@@ -33,7 +52,7 @@ export class DialogService {
     });
   }
 
-  showSearch(templateRef?: any) {
+  search(templateRef?: any) {
     this.dialog.open(templateRef, {
       autoFocus: true,
       width: '90vw',
@@ -45,7 +64,7 @@ export class DialogService {
     });
   }
 
-  showDetails(templateRef?: any) {
+  details(templateRef?: any) {
     this.dialog.open(templateRef, {
       autoFocus: true,
       width: '90vw',
@@ -57,7 +76,7 @@ export class DialogService {
     });
   }
 
-  showSystemMessage(templateRef?: any) {
+  showMessage(templateRef?: any) {
     this.dialog.open(templateRef, {
       autoFocus: true,
       width: '50vw',

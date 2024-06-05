@@ -20,7 +20,6 @@ import {
   selector: 'menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-
 })
 export class MenuComponent {
   userLoggedIn: boolean = false;
@@ -33,6 +32,7 @@ export class MenuComponent {
   newLanguage: string = '';
   busy = false;
   inputsLength: any;
+  site: any;
   routesNames: any;
   getGlobalSetting: any = undefined;
   newPasswordPassword: ChangePassword = {
@@ -49,6 +49,7 @@ export class MenuComponent {
   ) {
     this.inputsLength = inputsLength;
     this.routesNames = routesNames;
+    this.site = site;
     this.getRoute();
   }
 
@@ -105,8 +106,6 @@ export class MenuComponent {
         newlanguage = site.language.ar;
       }
     }
-    // this.currentLanguage = setLang;
-    // this.newLanguage = newlanguage;
 
     this.translateService.setDefaultLang(setLang);
     localStorage.removeItem(site.currentLangValue);
@@ -130,9 +129,9 @@ export class MenuComponent {
     });
   }
 
-  showDetails(templateRef: any) {
+  showDialog(type: string, templateRef: unknown) {
     this.newPasswordPassword.password = '';
-    this.dialog.showDetails(templateRef);
+    this.dialog.showDialog(type, templateRef);
   }
 
   logout() {
