@@ -63,7 +63,7 @@
         </div>
       </fieldset>
       <div class="actions-buttons">
-        <button mat-raised-button [mat-dialog-close]="closeModel" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
+        <button mat-raised-button color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.addGov) &&
@@ -73,7 +73,7 @@
           {{ 'Actions.Save' | translate }}<mat-icon>save</mat-icon>
         </button>
 
-        <button mat-raised-button [mat-dialog-close]="true" color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
+        <button mat-raised-button color="primary" [disabled]="!addGovForm.form.valid || busy" *ngIf="
             tokenValues.userLoggedIn &&
             tokenValues.permissionsList &&
             tokenValues.permissionsList.includes(permissionsNames.updateGov) &&
@@ -116,8 +116,7 @@
           </div>
         </fieldset>
         <div class="actions-buttons">
-          <button mat-raised-button [mat-dialog-close]="true" color="primary" [disabled]="!searchGovForm.form.valid || busy" (click)="searchGov(gov)"
-            class="m-1">
+          <button mat-raised-button color="primary" [disabled]="!searchGovForm.form.valid || busy" (click)="searchGov(gov)" class="m-1">
             {{ 'Actions.Search' | translate }}<mat-icon>search</mat-icon>
           </button>
 

@@ -141,6 +141,7 @@ export class RoutesComponent implements OnInit {
         permissionsList: Object(response.data).permissionsList,
         addInfo: Object(response.data).addInfo,
       });
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -157,6 +158,7 @@ export class RoutesComponent implements OnInit {
         if (!response.success) {
           return;
         }
+        this.dialog.close();
         this.routesList = response.data;
         this.actionType = site.operation.result;
       });
@@ -215,6 +217,7 @@ export class RoutesComponent implements OnInit {
             site.spliceElementToUpdate(this.routesList, Object(response.data));
           }
         }
+        this.dialog.close();
         this.actionType = site.operation.getAll;
       });
   }
@@ -257,6 +260,7 @@ export class RoutesComponent implements OnInit {
             });
           }
         }
+        this.dialog.close();
         this.responsePaginationData!.totalDocs = --this.responsePaginationData
           .totalDocs;
       });

@@ -28,7 +28,6 @@ export class DialogService {
     if (type === site.dialogNames.showMessage) {
       this.showMessage(templateRef);
     }
-
   }
   add(templateRef?: any) {
     this.dialog.open(templateRef, {
@@ -39,6 +38,10 @@ export class DialogService {
       position: { top: '5vh', bottom: '25vh' },
       disableClose: true,
     });
+  }
+
+  close() {
+    this.dialog.closeAll();
   }
 
   update(templateRef?: any) {

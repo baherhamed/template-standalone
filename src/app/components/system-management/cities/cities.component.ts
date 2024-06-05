@@ -33,7 +33,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class CitiesComponent {
   @ViewChild('cityDetails') cityDetails!: City;
-  responsePaginationData: ResponsePaginationData = { ...responsePaginationDataModel };
+  responsePaginationData: ResponsePaginationData = {
+    ...responsePaginationDataModel,
+  };
   inputsLength: any;
   site: any;
   permissionsNames: any;
@@ -109,6 +111,7 @@ export class CitiesComponent {
         active: city.active,
         addInfo: Object(response.data).addInfo,
       });
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -116,16 +119,19 @@ export class CitiesComponent {
   searchCity(city: City, pagination = site.pagination) {
     this.citiesList = [];
     this.busy = true;
-    this.cityService.searchCity({ query: city, ...pagination }).subscribe(async (res) => {
-      this.responsePaginationData = res.paginationInfo;
-      const response = await this.handleResponse.checkResponse(res);
-      this.busy = false;
-      if (!response.success) {
-        return;
-      }
-      this.citiesList = response.data;
-      this.actionType = site.operation.result;
-    });
+    this.cityService
+      .searchCity({ query: city, ...pagination })
+      .subscribe(async (res) => {
+        this.responsePaginationData = res.paginationInfo;
+        const response = await this.handleResponse.checkResponse(res);
+        this.busy = false;
+        if (!response.success) {
+          return;
+        }
+        this.dialog.close();
+        this.citiesList = response.data;
+        this.actionType = site.operation.result;
+      });
   }
 
   async updateCity(city: City) {
@@ -149,6 +155,7 @@ export class CitiesComponent {
             site.spliceElementToUpdate(this.citiesList, Object(response.data));
           }
         }
+        this.dialog.close();
         this.actionType = site.operation.getAll;
       });
   }
@@ -189,9 +196,10 @@ export class CitiesComponent {
           });
         }
       }
-      this.responsePaginationData.totalDocs = --this.responsePaginationData.totalDocs;
+      this.dialog.close();
+      this.responsePaginationData.totalDocs = --this.responsePaginationData
+        .totalDocs;
     });
-
   }
 
   viewCity(city: City) {
@@ -229,7 +237,6 @@ export class CitiesComponent {
           ? response.data.lastUpdateInfo
           : undefined,
       };
-      this.busy = false;
     });
   }
 
@@ -250,7 +257,6 @@ export class CitiesComponent {
   getActiveGovs() {
     this.govService.getActiveGovs().subscribe(async (res) => {
       const response = await this.handleResponse.checkResponse(res);
-      this.busy = false;
       if (!response.success) {
         return;
       }

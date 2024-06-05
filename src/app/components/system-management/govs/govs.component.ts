@@ -43,7 +43,6 @@ export class GovsComponent implements OnInit {
   actionCode: any = 0;
   busy = false;
   showMessage = false;
-  closeModel = false;
 
   systemMessage: systemMessage = { ...site.systemMessage };
   tokenValues: TokenValues = { ...TokenValuesModel };
@@ -104,7 +103,7 @@ export class GovsComponent implements OnInit {
         active: gov.active,
         addInfo: Object(response.data).addInfo,
       });
-      this.closeModel = true;
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -123,6 +122,7 @@ export class GovsComponent implements OnInit {
           site.spliceElementToUpdate(this.govsList, response.data);
         }
       }
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -164,6 +164,7 @@ export class GovsComponent implements OnInit {
           });
         }
       }
+      this.dialog.close();
       this.responsePaginationData.totalDocs = --this.responsePaginationData
         .totalDocs;
     });
@@ -182,6 +183,7 @@ export class GovsComponent implements OnInit {
         }
         this.responsePaginationData = response?.paginationInfo;
         this.govsList = response.data;
+        this.dialog.close();
         this.actionType = site.operation.result;
       });
   }

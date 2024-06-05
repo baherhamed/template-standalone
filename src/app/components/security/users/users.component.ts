@@ -142,6 +142,7 @@ export class UsersComponent implements OnInit {
         active: user.active,
         addInfo: Object(response.data).addInfo,
       });
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -158,7 +159,7 @@ export class UsersComponent implements OnInit {
       this.responsePaginationData = response.paginationInfo;
       this.usersList = response.data;
       this.actionType = site.operation.result;
-      this.busy = false;
+      this.dialog.close();
     });
   }
 
@@ -189,6 +190,7 @@ export class UsersComponent implements OnInit {
           site.spliceElementToUpdate(this.usersList, response.data);
         }
       }
+      this.dialog.close();
       this.actionType = site.operation.getAll;
     });
   }
@@ -231,6 +233,7 @@ export class UsersComponent implements OnInit {
           });
         }
       }
+      this.dialog.close();
       this.responsePaginationData.totalDocs = --this.responsePaginationData.totalDocs;
     });
   }
