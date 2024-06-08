@@ -8,16 +8,7 @@ import { RouterOutlet } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 import { LayoutModule } from './layout/layout.module';
 
-import {
-  CitiesComponent,
-  GovsComponent,
-  LoginComponent,
-  RoutesComponent,
-  UsersComponent,
-  GlobalSettingComponent,
-} from './components';
 
-// import { ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -29,14 +20,8 @@ import {
     TranslateModule,
     LayoutModule,
     CommonModule,
-    LoginComponent,
-    UsersComponent,
-    RoutesComponent,
-    GovsComponent,
-    CitiesComponent,
-    GlobalSettingComponent,
     RouterOutlet,
-    // ToastrModule,
+
   ],
   providers: [DialogService, NotificationService],
 })

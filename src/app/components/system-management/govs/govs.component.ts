@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { Gov, GovModel } from 'src/app/interfaces';
 import { GovsService } from 'src/app/services';
 
@@ -53,6 +54,7 @@ export class GovsComponent implements OnInit {
     private dialog: DialogService,
     private handleResponse: HandleResponseService,
     private govService: GovsService,
+    private meta: Meta,
   ) {
     this.inputsLength = inputsLength;
     this.site = site;
@@ -63,6 +65,7 @@ export class GovsComponent implements OnInit {
     this.tokenValues = await getTokenValue();
     this.getSetting();
     this.getAllGovs();
+    this.meta.updateTag({name: "description", content: "Gov Component"});
   }
 
   showDialog(type: string, templateRef: unknown) {
