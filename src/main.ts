@@ -24,7 +24,7 @@ bootstrapApplication(AppComponent, {
     providers: [
       provideAnimations(), 
      provideRouter(routes),
-        importProvidersFrom(HttpClientModule), 
+        importProvidersFrom(HttpClient), 
         importProvidersFrom(ToastrModule.forRoot()),         
         importProvidersFrom(MatDialogModule), 
         importProvidersFrom(TranslateModule.forRoot({

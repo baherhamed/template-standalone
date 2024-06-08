@@ -27,7 +27,6 @@ import {
   imports: [
     SharedModule,
     TranslateModule,
-    TranslateModule,
     LayoutModule,
     CommonModule,
     LoginComponent,

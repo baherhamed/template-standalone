@@ -61,6 +61,7 @@ export class MenuComponent {
     this.permissionsList = this.tokenValues?.permissionsList;
     this.name = this.tokenValues?.name;
 
+
     this.setDisplayLanguage();
     this.getSetting();
   }

@@ -22,7 +22,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov;
-      }>(`${this.govsUrl}${site.appsRoutes.add}`, gov)
+      }>(`${this.govsUrl}${site.appsRoutes.add}`, gov,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -33,7 +36,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov;
-      }>(`${this.govsUrl}${site.appsRoutes.update}`, gov)
+      }>(`${this.govsUrl}${site.appsRoutes.update}`, gov,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -44,7 +50,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: any;
-      }>(`${this.govsUrl}${site.appsRoutes.delete}`, gov)
+      }>(`${this.govsUrl}${site.appsRoutes.delete}`, gov,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -55,7 +64,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov[];
-      }>(`${this.govsUrl}${site.appsRoutes.search}`, gov)
+      }>(`${this.govsUrl}${site.appsRoutes.search}`, gov,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -66,7 +78,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov[];
-      }>(`${this.govsUrl}${site.appsRoutes.getAll}`, pagination)
+      }>(`${this.govsUrl}${site.appsRoutes.getAll}`, pagination,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -77,7 +92,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov[];
-      }>(`${this.govsUrl}${site.appsRoutes.getActive}`, null)
+      }>(`${this.govsUrl}${site.appsRoutes.getActive}`, null,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 
@@ -88,7 +106,10 @@ export class GovsService {
         statusCode: number;
         message: string;
         data: Gov;
-      }>(`${this.govsUrl}${site.appsRoutes.view}`, gov)
+      }>(`${this.govsUrl}${site.appsRoutes.view}`, gov,
+        {
+          headers: site.requestHeaders().headers,
+        })
       .pipe(retry(5));
   }
 }

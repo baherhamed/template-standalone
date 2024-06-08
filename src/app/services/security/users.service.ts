@@ -116,6 +116,9 @@ export class UsersService {
       .post<{ success: boolean; message: string; data: User }>(
         `${this.usersUrl}${site.appsRoutes.view}`,
         user,
+        {
+          headers: site.requestHeaders().headers,
+        }
       )
       .pipe(retry(5));
   }

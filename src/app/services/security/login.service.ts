@@ -22,7 +22,10 @@ export class SecurityService {
         success: boolean;
         message: string;
         data: Login;
-      }>(`${this.securityUrl}${site.apps.login}`, login)
+      }>(`${this.securityUrl}${site.apps.login}`, login,{
+        headers: site.requestHeadersForLogin().headers,
+
+      })
       .pipe(retry(5));
   }
 }
